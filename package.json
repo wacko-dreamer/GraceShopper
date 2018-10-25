@@ -8,7 +8,7 @@
     "postinstall": "npm run webpack",
     "webpack": "./node_modules/webpack/bin/webpack.js",
     "build": "npm run webpack -- --watch --mode=development",
-    "start:dev": "npm run build & DATABASE_URL=postgres://localhost/grace-shopper & JWT_SECRET='foo' nodemon server/index.js --ignore dist --ignore src",
+    "start:dev": "npm run build & DATABASE_URL=postgres://localhost/grace-shopper nodemon ./server/index.js --ignore dist --ignore src",
     "test": "mocha ./test/*.test.js --watch --require babel-polyfill --compilers js:babel-register"
   },
   "keywords": [],
@@ -45,7 +45,7 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^4.38.1",
+    "sequelize": "^4.38.0",
     "style-loader": "^0.23.0",
     "supertest": "^3.3.0",
     "webpack": "^4.17.2",
