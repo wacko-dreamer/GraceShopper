@@ -10,7 +10,7 @@ const Product = conn.define('product', {
     }
   },
   description: {
-    type: conn.Sequelize.STRING,
+    type: conn.Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -47,7 +47,7 @@ const Order = conn.define('order', {
     primaryKey: true
   },
   status: {
-    type: conn.Sequelize.ENUM('CART', 'ORDER'),
+    type: conn.Sequelize.ENUM('CART', 'CREATED', 'PROCESSING', 'CANCELLED', 'COMPLETED'),
     allowNull: false,
     defaultValue: 'CART'
   },
@@ -155,6 +155,7 @@ Category.belongsToMany(Product, { through : 'ProductCategories' });
 Product.belongsToMany(Category, { through : 'ProductCategories' });
 
 module.exports = {
+  conn,
   Product,
   LineItem,
   Order,
@@ -162,3 +163,4 @@ module.exports = {
   Category,
   Review
 }
+
