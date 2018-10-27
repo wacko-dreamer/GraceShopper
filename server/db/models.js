@@ -82,7 +82,7 @@ const LineItem = conn.define('line_item', {
 const User = conn.define('user', {
   id: {
     type: conn.Sequelize.UUID,
-    defaultValue: conn.Sequelize.UUID4,
+    defaultValue: conn.Sequelize.UUIDV4,
     primaryKey: true
   },
   name: {

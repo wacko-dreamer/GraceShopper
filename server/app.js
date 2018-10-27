@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const { User } = require('./db/models');
 const jwt = require('jwt-simple');
 
 
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
     catch(ex) {
         return next({ status: 401 });
     }
-    User.findById(id)
+    User.findByPk(id)
         .then(user => {
             req.user = user;
             next();
