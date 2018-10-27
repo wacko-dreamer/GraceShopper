@@ -90,7 +90,7 @@ export const deleteReview = (productId, reviewId) => {
 const productReducer = (state = initialState, action) => {
     switch(action.type){
         case GOT_PRODUCTS:
-            return products
+            return action.products
         default:
             return state
     }

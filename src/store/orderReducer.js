@@ -71,7 +71,7 @@ export const deleteLineItem = (orderId, lineItemId) => {
 const orderReducer = (state = initialState, action) => {
     switch(action.type){
         case GOT_ORDERS:
-             return orders
+             return action.orders
         default:
             return state
     }
