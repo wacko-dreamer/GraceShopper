@@ -35,7 +35,7 @@ export const fetchOrders = () => {
 
 export const updateOrder = (orderId, status) => {
     return (dispatch) => {
-        axios.put(`api/oders/${orderId}`, {status: status})
+        axios.put(`api/oders/${orderId}`, status)
         .then(() => dispatch(fetchOrders()))
         .catch(ex => console.log(ex))
     }
