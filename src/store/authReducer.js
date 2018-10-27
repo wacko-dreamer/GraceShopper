@@ -16,7 +16,7 @@ const exchangeTokenForAuth = history => (
             .then(res => res.data)
             .then(auth => {
                 dispatch(_setAuth(auth));
-                history.push('/cart');
+                //history.push('/cart');
             })
             .catch(ex => window.localStorage.removeItem('token'))
     }
@@ -29,7 +29,7 @@ const _setAuth = auth => ({
 
 export const logout = history => {
     window.localStorage.removeItem('token');
-    history.push('/');
+    //history.push('/');
     return _setAuth({});
 }
 

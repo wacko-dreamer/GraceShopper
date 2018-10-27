@@ -12,7 +12,7 @@ class App extends Component {
         return(
             <Router>
                 <div>
-                <Nav/>
+                <Route render={ ({ history }) => <Nav history={ history }/>}/>
                 <Route exact path = '/' component = {() => <Shop/>}/>
                 <Route path = '/user/:id/cart' component = {() => <Cart/>}/>
                 <Route path = '/user/:id/order' component = {() => <Order/>}/>

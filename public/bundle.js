@@ -42035,7 +42035,10 @@ var App = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(_Nav2.default, null),
+                    _react2.default.createElement(_reactRouterDom.Route, { render: function render(_ref) {
+                            var history = _ref.history;
+                            return _react2.default.createElement(_Nav2.default, { history: history });
+                        } }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: function component() {
                             return _react2.default.createElement(_Shop2.default, null);
                         } }),
@@ -42098,7 +42101,7 @@ var Cart = function Cart() {
         ),
         _react2.default.createElement(
             "table",
-            { "class": "table" },
+            { className: "table" },
             _react2.default.createElement(
                 "tbody",
                 null,
@@ -42273,76 +42276,188 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _authReducer = __webpack_require__(/*! ../store/authReducer */ "./src/store/authReducer.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Nav = function Nav() {
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        _react2.default.createElement(
-            'nav',
-            { className: 'navbar navbar-dark bg-dark' },
-            _react2.default.createElement(
-                'div',
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Nav = function (_Component) {
+    _inherits(Nav, _Component);
+
+    function Nav() {
+        _classCallCheck(this, Nav);
+
+        var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this));
+
+        _this.state = {
+            username: '',
+            password: '',
+            error: ''
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(Nav, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            var auth = this.props.auth;
+
+            if (prevProps !== this.props) {
+                if (auth.id) this.setState({ username: '', password: '', error: '' });
+            }
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(e) {
+            this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var handleChange = this.handleChange;
+            var _state = this.state,
+                username = _state.username,
+                password = _state.password,
+                error = _state.error;
+            var _props = this.props,
+                auth = _props.auth,
+                login = _props.login,
+                logout = _props.logout,
+                history = _props.history;
+
+            return _react2.default.createElement(
+                _react.Fragment,
                 null,
                 _react2.default.createElement(
-                    'div',
-                    null,
+                    'nav',
+                    { className: 'navbar navbar-dark bg-dark' },
                     _react2.default.createElement(
-                        _reactRouterDom.Link,
-                        { className: 'navbar-brand', to: '/' },
-                        'Wacko Dreamer'
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(
-                        'ul',
-                        { className: 'navbar-nav mr-auto mt-2 mt-lg-0' },
+                        'div',
+                        null,
                         _react2.default.createElement(
-                            'li',
-                            { className: 'nav-item active' },
+                            'div',
+                            null,
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
-                                { className: 'nav-link', to: '/user/:id/cart' },
-                                'Cart 2'
+                                { className: 'navbar-brand', to: '/' },
+                                'Wacko Dreamer'
                             )
                         ),
                         _react2.default.createElement(
-                            'li',
-                            { className: 'nav-item active' },
+                            'div',
+                            null,
                             _react2.default.createElement(
-                                _reactRouterDom.Link,
-                                { className: 'nav-link', to: '/user/:id/order' },
-                                'Order 3'
+                                'ul',
+                                { className: 'navbar-nav mr-auto mt-2 mt-lg-0' },
+                                _react2.default.createElement(
+                                    'li',
+                                    { className: 'nav-item active' },
+                                    _react2.default.createElement(
+                                        _reactRouterDom.Link,
+                                        { className: 'nav-link', to: '/user/:id/cart' },
+                                        'Cart 2'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'li',
+                                    { className: 'nav-item active' },
+                                    _react2.default.createElement(
+                                        _reactRouterDom.Link,
+                                        { className: 'nav-link', to: '/user/:id/order' },
+                                        'Order 3'
+                                    )
+                                )
+                            ),
+                            !auth.id ? _react2.default.createElement(
+                                _react.Fragment,
+                                null,
+                                _react2.default.createElement('br', null),
+                                _react2.default.createElement(
+                                    'form',
+                                    { className: 'form-inline', style: { float: 'right' } },
+                                    _react2.default.createElement('input', { onChange: handleChange, value: username, name: 'username', className: 'form-control mr-sm-2', type: 'username', placeholder: 'Username', 'aria-label': 'Username', autoFocus: true }),
+                                    _react2.default.createElement('input', { onChange: handleChange, value: password, name: 'password', className: 'form-control mr-sm-2', type: 'password', placeholder: 'Password', 'aria-label': 'Password' }),
+                                    _react2.default.createElement(
+                                        'button',
+                                        { onClick: function onClick() {
+                                                return login(_this2.state, history).catch(function () {
+                                                    return _this2.setState({ error: 'Incorrect Username and/or Password. Please try again.' });
+                                                });
+                                            },
+                                            color: 'primary', className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit' },
+                                        'Login'
+                                    )
+                                ),
+                                _react2.default.createElement('br', null),
+                                error ? _react2.default.createElement(
+                                    _react.Fragment,
+                                    null,
+                                    _react2.default.createElement('br', null),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'error-message' },
+                                        error
+                                    )
+                                ) : null
+                            ) : _react2.default.createElement(
+                                _react.Fragment,
+                                null,
+                                _react2.default.createElement('br', null),
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: function onClick() {
+                                            return logout(history);
+                                        }, color: 'danger', style: { float: 'right' }, className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit' },
+                                    'Logout'
+                                ),
+                                _react2.default.createElement(
+                                    'h3',
+                                    { style: { display: 'inline-block', float: 'right' } },
+                                    'Welcome ',
+                                    auth.username,
+                                    '!\u2003'
+                                ),
+                                _react2.default.createElement('br', null)
                             )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'form',
-                        { className: 'form-inline' },
-                        _react2.default.createElement('input', { className: 'form-control mr-sm-2', type: 'username', placeholder: 'Username', 'aria-label': 'Username' }),
-                        _react2.default.createElement('input', { className: 'form-control mr-sm-2', type: 'password', placeholder: 'Password', 'aria-label': 'Password' }),
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit' },
-                            'Login'
                         )
                     )
                 )
-            )
-        )
-    );
+            );
+        }
+    }]);
+
+    return Nav;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+    var auth = _ref.auth;
+    var history = _ref2.history;
+    return { auth: auth, history: history };
 };
 
-exports.default = Nav;
+var mapDispatchToProps = { login: _authReducer.login, logout: _authReducer.logout };
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Nav);
 
 /***/ }),
 
@@ -42387,7 +42502,7 @@ var Order = function Order() {
         _react2.default.createElement("br", null),
         _react2.default.createElement(
             "table",
-            { "class": "table" },
+            { className: "table" },
             _react2.default.createElement(
                 "tbody",
                 null,
@@ -42666,7 +42781,7 @@ var exchangeTokenForAuth = function exchangeTokenForAuth(history) {
             return res.data;
         }).then(function (auth) {
             dispatch(_setAuth(auth));
-            history.push('/cart');
+            //history.push('/cart');
         }).catch(function (ex) {
             return window.localStorage.removeItem('token');
         });
@@ -42682,7 +42797,7 @@ var _setAuth = function _setAuth(auth) {
 
 var logout = exports.logout = function logout(history) {
     window.localStorage.removeItem('token');
-    history.push('/');
+    //history.push('/');
     return _setAuth({});
 };
 
