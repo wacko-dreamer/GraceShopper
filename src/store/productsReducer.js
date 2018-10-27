@@ -16,10 +16,13 @@ export const gotProducts = (products) => ({
 })
 
 //thunks
-// 1. fetch products (with categories)
+// 1. fetch products (with categories & reviews)
 // 2. add a product
 // 3. delete a product
 // 4. edit a product
+// 5. create a review
+// 6. delete a review
+// 7. update a review
 
 export const fetchProducts = () => {
     return (dispatch) => {
@@ -43,7 +46,7 @@ export const addProduct = product => {
 
 export const deleteProduct = productId  => {
     return (dispatch) => {
-        axios.delete('/api/products', productId)
+        axios.delete(`/api/products/${productId}`)
         .then(() => {
             dispatch(fetchProducts())
         })
@@ -54,9 +57,31 @@ export const deleteProduct = productId  => {
 export const editProduct = (productId, updatedData)  => {
     return (dispatch) => {
         axios.put(`/api/products/${productId}`, updatedData)
-        .then(() => {
-            dispatch(fetchProducts())
-        })
+        .then(() => dispatch(fetchProducts()))
+        .catch(ex => console.log(ex))
+    }
+}
+
+export const createReview = (productId, review) => {
+    return (dispatch) => {
+        axios.post(`/api/products/${productId}/reviews`, review)
+        .then(() => dispatch(fetchProducts()))
+        .catch(ex => console.log(ex))
+    }
+}
+
+export const updateReview = (productId, reviewId, updatedReview) => {
+    return (dispatch) => {
+        axios.put(`api/products/${productId}/reviews/${reviewId}`, updatedReview)
+        .then(() => dispatch(fetchProducts()))
+        .catch(ex => console.log(ex))
+    }
+}
+
+export const deleteReview = (productId, reviewId) => {
+    return (dispatch) => {
+        axios.delete(`api/products/${productId}/reviews/${reviewId}`)
+        .then(() => dispatch(fetchProducts()))
         .catch(ex => console.log(ex))
     }
 }

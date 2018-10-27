@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { puts } from 'util';
 
 // initial state
  const initialState = [
@@ -18,11 +17,11 @@ export const gotOrders = (orders) => ({
 
 //thunks
 // 1. fetch orders
-// 2. create order
+// 2. update order
 // 3. create line item
 // 4. update line item
 // 5. delete line item
-// 6. create order
+
 
 export const fetchOrders = () => {
     return (dispatch) => {
@@ -34,7 +33,7 @@ export const fetchOrders = () => {
     }
 }
 
-export const createOrder = (orderId, status) => {
+export const updateOrder = (orderId, status) => {
     return (dispatch) => {
         axios.put(`api/oders/${orderId}`, {status: status})
         .then(() => dispatch(fetchOrders()))
@@ -57,6 +56,13 @@ export const updateLineItem = (orderId, lineItemId, quantity) => {
     }
 }
 
+export const deleteLineItem = (orderId, lineItemId) => {
+    return (dispatch) => {
+        axois.delete(`api/order/${orderId}/lineItems/${lineItemId}`)
+        .then(() => dispatch(fetchOrders()))
+        .catch(ex => console.log(ex))
+    }
+}
 
 
 // reducer
