@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 // initial state
-const initialState = {
+const initialState = [
 
-}
+]
 
 //constants
 const GOT_PRODUCTS = 'GOT_PRODUCTS'
@@ -16,7 +16,7 @@ export const gotProducts = (products) => ({
 })
 
 //thunks
-// 1. get all products (with categories)
+// 1. fetch products (with categories)
 // 2. add a product
 // 3. delete a product
 // 4. edit a product
