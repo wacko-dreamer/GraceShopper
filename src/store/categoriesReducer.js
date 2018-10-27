@@ -58,7 +58,7 @@ export const deleteCategory = categoryId => {
 const categoriesReducer = (state = initialState, action) => {
     switch(action.type){
         case GOT_CATEGORIES:
-            return categories
+            return action.categories
         default:
             return state
     }
