@@ -18,10 +18,10 @@ const syncAndSeed = () => {
   return conn.sync({ force : true })
     .then(() => Promise.all([
       //create products
-      Product.create({ name : 'Bonsai Tree', description : 'Bonsai is popularized by Japanese people as an art of growing ornamental, dwarf trees. Bonsai Plants is assumed to have the same life cycle of the normal size trees. Growing and taking care of Bonsai’s is one way to relieve stress and will develop as a good hobby. Can be a décor to your home or office. In feng shui, bonsai trees is believe to bring a good luck.', price : 12.69, quantity : 10 }),
-      Product.create({ name : 'Heirloom Tomato Seeds', description : '8 individual packets, with each packet having a minimum of 30 seeds', price : 9.97, quantity : 10 }),
-      Product.create({ name : 'Fresh Indoor Soil Mix', description : 'Blended for a wide variety of plants. Feeds up to 6 months.', price : 25.99, quantity : 10 }),
-      Product.create({ name : 'Spray Bottle', description : 'Great for plants, cats, and everything in between.', price : 2.99, quantity : 10 })
+      Product.create({ name : 'Bonsai Tree', description : 'Bonsai is popularized by Japanese people as an art of growing ornamental, dwarf trees.', price : 12.69, quantity : 10, imageUrl: 'https://bit.ly/2qggU12' }),
+      Product.create({ name : 'Heirloom Tomato Seeds', description : '8 individual packets, with each packet having a minimum of 30 seeds', price : 9.97, quantity : 10, imageUrl: 'https://bit.ly/2PsIfet' }),
+      Product.create({ name : 'Fresh Indoor Soil Mix', description : 'Blended for a wide variety of plants. Feeds up to 6 months.', price : 25.99, quantity : 10, imageUrl: 'https://bit.ly/2D6Lqmh' }),
+      Product.create({ name : 'Spray Bottle', description : 'Great for plants, cats, and everything in between.', price : 2.99, quantity : 10, imageUrl: 'https://bit.ly/2qhlFHn' })
     ]))
     .then((products) => {
       [ plant, seed, soil, bottle ] = products;

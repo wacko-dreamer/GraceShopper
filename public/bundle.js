@@ -52020,6 +52020,14 @@ var _Order = __webpack_require__(/*! ./Order.js */ "./src/components/Order.js");
 
 var _Order2 = _interopRequireDefault(_Order);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _productsReducer = __webpack_require__(/*! ../store/productsReducer.js */ "./src/store/productsReducer.js");
+
+var _categoriesReducer = __webpack_require__(/*! ../store/categoriesReducer.js */ "./src/store/categoriesReducer.js");
+
+var _orderReducer = __webpack_require__(/*! ../store/orderReducer.js */ "./src/store/orderReducer.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52034,10 +52042,17 @@ var App = function (_Component) {
     function App() {
         _classCallCheck(this, App);
 
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
     }
 
     _createClass(App, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchProducts();
+            this.props.fetchCategories();
+            this.props.fetchOrders();
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -52051,13 +52066,13 @@ var App = function (_Component) {
                             var history = _ref.history;
                             return _react2.default.createElement(_Auth2.default, { history: history });
                         } }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: function component() {
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', render: function render() {
                             return _react2.default.createElement(_Shop2.default, null);
                         } }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:id/cart', component: function component() {
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:id/cart', render: function render() {
                             return _react2.default.createElement(_Cart2.default, null);
                         } }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:id/order', component: function component() {
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:id/order', render: function render() {
                             return _react2.default.createElement(_Order2.default, null);
                         } })
                 )
@@ -52068,7 +52083,21 @@ var App = function (_Component) {
     return App;
 }(_react.Component);
 
-exports.default = App;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchProducts: function fetchProducts() {
+            return dispatch((0, _productsReducer.fetchProducts)());
+        },
+        fetchCategories: function fetchCategories() {
+            return dispatch((0, _categoriesReducer.fetchCategories)());
+        },
+        fetchOrders: function fetchOrders() {
+            return dispatch((0, _orderReducer.fetchOrders)());
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(App);
 
 /***/ }),
 
@@ -52245,6 +52274,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _orderReducer = __webpack_require__(/*! ../store/orderReducer */ "./src/store/orderReducer.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Cart = function Cart() {
@@ -52252,86 +52285,94 @@ var Cart = function Cart() {
         _react.Fragment,
         null,
         _react2.default.createElement(
-            "h3",
+            'h3',
             null,
-            "Shopping Cart"
+            'Shopping Cart'
         ),
         _react2.default.createElement(
-            "h4",
+            'h4',
             null,
-            "Your Shopping Cart is Empty!"
+            'Your Shopping Cart is Empty!'
         ),
         _react2.default.createElement(
-            "span",
+            'span',
             null,
-            "Here you will find all the things that you have added to your cart"
+            'Here you will find all the things that you have added to your cart'
         ),
         _react2.default.createElement(
-            "table",
-            { className: "table" },
+            'table',
+            { className: 'table' },
             _react2.default.createElement(
-                "tbody",
+                'tbody',
                 null,
                 _react2.default.createElement(
-                    "tr",
+                    'tr',
                     null,
                     _react2.default.createElement(
-                        "th",
-                        { scope: "row" },
-                        "1"
+                        'th',
+                        { scope: 'row' },
+                        '1'
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
-                        "Tomato"
+                        'Tomato'
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
-                        "Tomatoes are meh"
+                        'Tomatoes are meh'
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
-                        "$1.99"
+                        '$1.99'
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
-                        "2"
+                        '2'
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
                         _react2.default.createElement(
-                            "button",
-                            { className: "btn btn-primary" },
-                            "+"
+                            'button',
+                            { className: 'btn btn-primary' },
+                            '+'
                         )
                     ),
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
                         _react2.default.createElement(
-                            "button",
-                            { className: "btn btn-primary" },
-                            "-"
+                            'button',
+                            { className: 'btn btn-primary' },
+                            '-'
                         )
                     )
                 )
             )
         ),
         _react2.default.createElement(
-            "button",
+            'button',
             { onClick: function onClick() {
                     return console.log('ORDERED');
-                }, className: "btn btn-success my-2 my-sm-0" },
-            "Checkout"
+                }, className: 'btn btn-success my-2 my-sm-0' },
+            'Checkout'
         )
     );
 };
 
-exports.default = Cart;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        updateOrder: function updateOrder() {
+            return dispatch((0, _orderReducer.updateOrder)());
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Cart);
 
 /***/ }),
 
@@ -52355,6 +52396,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52362,6 +52407,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var catStyle = {
+    margin: '10px'
+};
 
 var Categories = function (_Component) {
     _inherits(Categories, _Component);
@@ -52373,49 +52422,41 @@ var Categories = function (_Component) {
     }
 
     _createClass(Categories, [{
-        key: "render",
+        key: 'render',
         value: function render() {
+            var categories = this.props.categories;
+
             return _react2.default.createElement(
-                "div",
-                null,
+                'div',
+                { style: catStyle },
+                _react2.default.createElement('br', null),
                 _react2.default.createElement(
-                    "ul",
-                    { className: "nav flex-column" },
+                    'h6',
+                    null,
+                    'Show results for'
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    { className: 'nav flex-column' },
+                    categories.map(function (category) {
+                        return _react2.default.createElement(
+                            _reactRouterDom.Link,
+                            { to: '/' + category.id },
+                            _react2.default.createElement(
+                                'li',
+                                { className: 'nav-item', key: category.id },
+                                _react2.default.createElement(
+                                    'strong',
+                                    null,
+                                    category.name
+                                )
+                            )
+                        );
+                    }),
                     _react2.default.createElement(
-                        "li",
-                        { className: "nav-item" },
-                        _react2.default.createElement(
-                            "a",
-                            { className: "nav-link active", href: "/" },
-                            "Large"
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "li",
-                        { className: "nav-item" },
-                        _react2.default.createElement(
-                            "a",
-                            { className: "nav-link", href: "/" },
-                            "Medium"
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "li",
-                        { className: "nav-item" },
-                        _react2.default.createElement(
-                            "a",
-                            { className: "nav-link", href: "/" },
-                            "Small"
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "li",
-                        { className: "nav-item" },
-                        _react2.default.createElement(
-                            "a",
-                            { className: "nav-link disabled", href: "#" },
-                            "All Categories"
-                        )
+                        'li',
+                        { className: 'nav-item' },
+                        'All categories'
                     )
                 )
             );
@@ -52425,7 +52466,15 @@ var Categories = function (_Component) {
     return Categories;
 }(_react.Component);
 
-exports.default = Categories;
+var mapStateToProps = function mapStateToProps(_ref) {
+    var categories = _ref.categories;
+
+    return {
+        categories: categories
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Categories);
 
 /***/ }),
 
@@ -52494,17 +52543,6 @@ var Nav = function Nav() {
                                 'Order 3'
                             )
                         )
-                    ),
-                    _react2.default.createElement(
-                        'form',
-                        { className: 'form-inline' },
-                        _react2.default.createElement('input', { className: 'form-control mr-sm-2', type: 'username', placeholder: 'Username', 'aria-label': 'Username' }),
-                        _react2.default.createElement('input', { className: 'form-control mr-sm-2', type: 'password', placeholder: 'Password', 'aria-label': 'Password' }),
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit' },
-                            'Login'
-                        )
                     )
                 )
             )
@@ -52530,72 +52568,151 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _orderReducer = __webpack_require__(/*! ../store/orderReducer.js */ "./src/store/orderReducer.js");
+
+var _util = __webpack_require__(/*! ../util */ "./src/util.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Order = function Order() {
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        _react2.default.createElement(
-            "div",
-            null,
-            _react2.default.createElement(
-                "h3",
-                null,
-                "Your Orders"
-            ),
-            _react2.default.createElement(
-                "span",
-                null,
-                "Here you will find all the things that you have orderd from Wacko Dreamer"
-            )
-        ),
-        _react2.default.createElement("br", null),
-        _react2.default.createElement(
-            "table",
-            { className: "table" },
-            _react2.default.createElement(
-                "tbody",
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Order = function (_Component) {
+    _inherits(Order, _Component);
+
+    function Order() {
+        _classCallCheck(this, Order);
+
+        return _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).call(this));
+    }
+
+    _createClass(Order, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchOrders();
+            console.log(this.props.order);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _react.Fragment,
                 null,
                 _react2.default.createElement(
-                    "tr",
+                    'div',
                     null,
                     _react2.default.createElement(
-                        "h4",
+                        'h3',
                         null,
-                        "Order No."
+                        'Your Orders'
                     ),
                     _react2.default.createElement(
-                        "th",
-                        { scope: "row" },
-                        "1"
-                    ),
-                    _react2.default.createElement(
-                        "td",
+                        'span',
                         null,
-                        "Tomato"
-                    ),
+                        'Here you will find all the things that you have orderd from Wacko Dreamer'
+                    )
+                ),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'table',
+                    { className: 'table' },
                     _react2.default.createElement(
-                        "td",
+                        'tbody',
                         null,
-                        "Tomatoes are meh"
-                    ),
-                    _react2.default.createElement(
-                        "td",
-                        null,
-                        "$1.99"
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            this.props.order.map(function (ord) {
+                                return _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    _react2.default.createElement(
+                                        'h4',
+                                        null,
+                                        'ORDER ID: ',
+                                        ord.id
+                                    ),
+                                    _react2.default.createElement(
+                                        'th',
+                                        { scope: 'row' },
+                                        '1'
+                                    ),
+                                    _react2.default.createElement(
+                                        'td',
+                                        null,
+                                        ord.total
+                                    ),
+                                    _react2.default.createElement(
+                                        'td',
+                                        null,
+                                        ord.shippingAddress
+                                    ),
+                                    _react2.default.createElement(
+                                        'ul',
+                                        null,
+                                        ord.lineItems.map(function (lineItem) {
+                                            return _react2.default.createElement(
+                                                'div',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'li',
+                                                    null,
+                                                    lineItem.product.id
+                                                ),
+                                                _react2.default.createElement(
+                                                    'li',
+                                                    null,
+                                                    lineItem.quantity
+                                                ),
+                                                _react2.default.createElement(
+                                                    'li',
+                                                    null,
+                                                    lineItem.price
+                                                )
+                                            );
+                                        })
+                                    )
+                                );
+                            })
+                        )
                     )
                 )
-            )
-        )
-    );
+            );
+        }
+    }]);
+
+    return Order;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(_ref) {
+    var order = _ref.order;
+
+    order = (0, _util.findFinishedOrders)(order);
+    return {
+        order: order
+    };
 };
 
-exports.default = Order;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchOrders: function fetchOrders() {
+            return dispatch((0, _orderReducer.fetchOrders)());
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Order);
 
 /***/ }),
 
@@ -52619,6 +52736,8 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52629,13 +52748,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var cardStyle = {
     border: '1px solid grey',
-    height: '320px',
-    width: '18rem'
+    height: '500px',
+    width: '18rem',
+    margin: '10px'
 };
 
 var divStyle = {
     display: 'flex',
-    justifyContent: 'evenly-spaced'
+    justifyContent: 'space-between',
+    margin: '10px',
+    padding: '10px'
 };
 
 var Products = function (_Component) {
@@ -52650,60 +52772,51 @@ var Products = function (_Component) {
     _createClass(Products, [{
         key: 'render',
         value: function render() {
+            var products = this.props.products;
+
             return _react2.default.createElement(
                 _react.Fragment,
                 null,
+                _react2.default.createElement('br', null),
                 _react2.default.createElement(
                     'div',
                     { style: divStyle },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'card', style: cardStyle },
-                        _react2.default.createElement('img', { className: 'card-img-top', src: 'https://images-na.ssl-images-amazon.com/images/I/41U8g8Ggf4L._AC_US200_.jpg', alt: 'Card image cap' }),
-                        _react2.default.createElement(
+                    products.map(function (product) {
+                        return _react2.default.createElement(
                             'div',
-                            { className: 'card-body' },
+                            { className: 'card', style: cardStyle, key: product.id },
+                            _react2.default.createElement('img', { className: 'card-img-top', src: product.imageUrl, alt: 'Card image cap' }),
                             _react2.default.createElement(
-                                'h5',
-                                { className: 'card-title' },
-                                'Coat 1'
-                            ),
-                            _react2.default.createElement(
-                                'p',
-                                { className: 'card-text' },
-                                'Coat 1 bio'
-                            ),
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#', className: 'btn btn-primary' },
-                                'Add To Cart'
+                                'div',
+                                { className: 'card-body' },
+                                _react2.default.createElement(
+                                    'h5',
+                                    { className: 'card-title' },
+                                    product.name
+                                ),
+                                _react2.default.createElement(
+                                    'p',
+                                    { className: 'card-text' },
+                                    product.description
+                                ),
+                                _react2.default.createElement(
+                                    'p',
+                                    { className: 'card-text' },
+                                    _react2.default.createElement(
+                                        'strong',
+                                        null,
+                                        '$',
+                                        product.price
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'a',
+                                    { href: '#', className: 'btn btn-success' },
+                                    'Add To Cart'
+                                )
                             )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'card', style: cardStyle },
-                        _react2.default.createElement('img', { className: 'card-img-top', src: 'https://images-na.ssl-images-amazon.com/images/I/516eEKsbFiL._AC_US200_.jpg', alt: 'Card image cap' }),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'card-body' },
-                            _react2.default.createElement(
-                                'h5',
-                                { className: 'card-title' },
-                                'Coat 1'
-                            ),
-                            _react2.default.createElement(
-                                'p',
-                                { className: 'card-text' },
-                                'Coat 1 bio'
-                            ),
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#', className: 'btn btn-primary' },
-                                'Add To Cart'
-                            )
-                        )
-                    )
+                        );
+                    })
                 )
             );
         }
@@ -52712,7 +52825,21 @@ var Products = function (_Component) {
     return Products;
 }(_react.Component);
 
-exports.default = Products;
+var mapStateToProps = function mapStateToProps(_ref) {
+    var products = _ref.products,
+        pathname = _ref.pathname;
+
+    console.log(pathname);
+    // check this here!
+    // if (pathname) {
+    //   products = products.filter(product => product.categories.map(cat => cat.id !== id ))  
+    // }
+    return {
+        products: products
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Products);
 
 /***/ }),
 
@@ -52896,7 +53023,7 @@ exports.default = authReducer;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.fetchCategories = exports.gotCategories = undefined;
+exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.fetchCategories = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -52904,17 +53031,43 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 //initial State
 var initialState = [];
 
 //constants
 var GOT_CATEGORIES = 'GOT CATEGORIES';
+var CREATED_CATEGORY = 'CREATED_CATEGORY';
+var UPDATED_CATEGORY = 'UPDATED_CATEGORY';
+var DELETED_CATEGORY = 'DELETED_CATEGORY';
 
 //action creators
-var gotCategories = exports.gotCategories = function gotCategories(categories) {
+var gotCategories = function gotCategories(categories) {
     return {
         type: GOT_CATEGORIES,
         categories: categories
+    };
+};
+
+var createdCategory = function createdCategory(category) {
+    return {
+        type: CREATED_CATEGORY,
+        category: category
+    };
+};
+
+var updatedCategory = function updatedCategory(category) {
+    return {
+        type: UPDATED_CATEGORY,
+        category: category
+    };
+};
+
+var deletedCategory = function deletedCategory(categoryId) {
+    return {
+        type: DELETED_CATEGORY,
+        categoryId: categoryId
     };
 };
 
@@ -52938,7 +53091,9 @@ var createCategory = exports.createCategory = function createCategory(categoryNa
     return function (dispatch) {
         _axios2.default.post('/api/categories', categoryName).then(function () {
             return dispatch(fetchCategories());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(createdCategory(res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -52948,7 +53103,9 @@ var updateCategory = exports.updateCategory = function updateCategory(categoryId
     return function (dispatch) {
         _axios2.default.put('/api/categories/' + categoryId, updatedCategory).then(function () {
             return dispatch(fetchCategories());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(updatedCategory(res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -52958,7 +53115,9 @@ var deleteCategory = exports.deleteCategory = function deleteCategory(categoryId
     return function (dispatch) {
         _axios2.default.delete('api/categories/' + categoryId).then(function () {
             return dispatch(fetchCategories());
-        }).catch(function (ex) {
+        })
+        // .then(() => dispatch(deletedCategory(categoryId)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -52972,6 +53131,22 @@ var categoriesReducer = function categoriesReducer() {
     switch (action.type) {
         case GOT_CATEGORIES:
             return action.categories;
+
+        case UPDATED_CATEGORY:
+            var newState = state.filter(function (category) {
+                return category.id !== action.category.id;
+            });
+            return [].concat(_toConsumableArray(newState), [action.category]);
+
+        case CREATED_CATEGORY:
+            return [].concat(_toConsumableArray(state), [action.category]);
+
+        case DELETED_CATEGORY:
+            newState = state.filter(function (category) {
+                return category.id !== action.categoryId;
+            });
+            return newState;
+
         default:
             return state;
     }
@@ -53049,7 +53224,7 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.deleteLineItem = exports.updateLineItem = exports.createLineItem = exports.updateOrder = exports.fetchOrders = exports.gotOrders = undefined;
+exports.deleteLineItem = exports.updateLineItem = exports.createLineItem = exports.updateOrder = exports.fetchOrders = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -53057,18 +53232,55 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 // initial state
 var initialState = [];
 
 //constants
 var GOT_ORDERS = 'GOT ORDERS';
+var UPDATED_ORDER = 'UPDATED_ORDER';
+var CREATED_LINEITEM = 'CREATED_LINEITEM';
+var UPDATED_LINEITEM = 'UPDATED_LINEITEM';
+var DELETED_LINEITEM = 'DELETED_LINEITEM';
 
 //action creators
 
-var gotOrders = exports.gotOrders = function gotOrders(orders) {
+var gotOrders = function gotOrders(orders) {
     return {
         type: GOT_ORDERS,
         orders: orders
+    };
+};
+
+var updatedOrder = function updatedOrder(order) {
+    return {
+        type: UPDATED_ORDER,
+        order: order
+    };
+};
+
+var createdLineItem = function createdLineItem(orderId, lineItem) {
+    return {
+        type: CREATED_LINEITEM,
+        orderId: orderId,
+        lineItem: lineItem
+    };
+};
+
+var updatedLineItem = function updatedLineItem(orderId, lineItem) {
+    return {
+        type: UPDATED_LINEITEM,
+        orderId: orderId,
+        lineItem: lineItem
+    };
+};
+
+var deletedLineItem = function deletedLineItem(orderId, lineItem) {
+    return {
+        type: DELETED__LINEITEM,
+        orderId: orderId,
+        lineItem: lineItem
     };
 };
 
@@ -53094,7 +53306,9 @@ var updateOrder = exports.updateOrder = function updateOrder(orderId, status) {
     return function (dispatch) {
         _axios2.default.put('api/oders/' + orderId, status).then(function () {
             return dispatch(fetchOrders());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(updatedOrder(res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53104,6 +53318,10 @@ var createLineItem = exports.createLineItem = function createLineItem(orderId, l
     return function (dispatch) {
         _axios2.default.post('/api/orders/' + orderId + '/lineItems', lineItem).then(function () {
             return dispatch(fetchOrders());
+        })
+        // .then(res => dispatch(createdLineItem(orderId,res.data)))
+        .catch(function (ex) {
+            return console.log(ex);
         });
     };
 };
@@ -53112,7 +53330,9 @@ var updateLineItem = exports.updateLineItem = function updateLineItem(orderId, l
     return function (dispatch) {
         _axios2.default.put('api/orders/' + orderId + '/lineItems/' + lineItemId, quantity).then(function () {
             return dispatch(fetchOrders());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(updatedLineItem(orderId,res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53122,7 +53342,11 @@ var deleteLineItem = exports.deleteLineItem = function deleteLineItem(orderId, l
     return function (dispatch) {
         axois.delete('api/order/' + orderId + '/lineItems/' + lineItemId).then(function () {
             return dispatch(fetchOrders());
-        }).catch(function (ex) {
+        }).then(function () {
+            return dispatch(fetchOrders());
+        })
+        // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53138,6 +53362,47 @@ var orderReducer = function orderReducer() {
     switch (action.type) {
         case GOT_ORDERS:
             return action.orders;
+
+        case UPDATED_ORDER:
+            var filteredState = state.filter(function (order) {
+                return order.id !== action.order.id;
+            });
+            return [].concat(_toConsumableArray(filteredState), [action.order]);
+
+        case CREATED_LINEITEM:
+            var newState = state.map(function (order) {
+                if (order.id == action.orderId) {
+                    order.lineItem.push(action.lineItem);
+                }
+                return order;
+            });
+            return newState;
+
+        case UPDATED_LINEITEM:
+            newState = state.map(function (order) {
+                if (order.id == action.orderId) {
+                    order.lineItem.map(function (lineItem) {
+                        if (lineItem.id === action.lineItem.id) {
+                            lineItem = action.lineItem;
+                        }
+                        return lineItem;
+                    });
+                }
+                return order;
+            });
+            return newState;
+
+        case DELETED_LINEITEM:
+            newState = state.map(function (order) {
+                if (order.id == action.orderId) {
+                    order.lineItem.filter(function (lineItem) {
+                        return lineItem.id !== action.lineItemId;
+                    });
+                }
+                return order;
+            });
+            return newState;
+
         default:
             return state;
     }
@@ -53160,7 +53425,7 @@ exports.default = orderReducer;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.deleteReview = exports.updateReview = exports.createReview = exports.editProduct = exports.deleteProduct = exports.addProduct = exports.fetchProducts = exports.gotProducts = undefined;
+exports.deleteReview = exports.updateReview = exports.createReview = exports.editProduct = exports.deleteProduct = exports.addProduct = exports.fetchProducts = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -53168,17 +53433,70 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 // initial state
 var initialState = [];
 
 //constants
 var GOT_PRODUCTS = 'GOT_PRODUCTS';
+var CREATED_PRODUCT = 'CREATED_PRODUCT';
+var UPDATED_PRODUCT = 'UPDATED_PRODUCT';
+var DELETED_PRODUCT = 'DELETED_PRODUCT';
+var CREATED_REVIEW = 'CREATED_REVIEW';
+var UPDATED_REVIEW = 'UPDATED_REVIEW';
+var DELETED_REVIEW = 'DELETED_REVIEW';
 
 //action creators
-var gotProducts = exports.gotProducts = function gotProducts(products) {
+var gotProducts = function gotProducts(products) {
     return {
         type: GOT_PRODUCTS,
         products: products
+    };
+};
+
+var createdProduct = function createdProduct(product) {
+    return {
+        type: CREATED_PRODUCT,
+        product: product
+    };
+};
+
+var updatedProduct = function updatedProduct(product) {
+    return {
+        type: UPDATED_PRODUCT,
+        product: product
+    };
+};
+
+var deletedProduct = function deletedProduct(productId) {
+    return {
+        type: DELETED_PRODUCT,
+        productId: productId
+    };
+};
+
+var createdReview = function createdReview(productId, review) {
+    return {
+        type: CREATED_REVIEW,
+        productId: productId,
+        review: review
+    };
+};
+
+var updatedReview = function updatedReview(productId, review) {
+    return {
+        type: UPDATED_REVIEW,
+        productId: productId,
+        review: review
+    };
+};
+
+var deletedReview = function deletedReview(productId, reviewId) {
+    return {
+        type: DELETED_REVIEW,
+        productId: productId,
+        reviewId: reviewId
     };
 };
 
@@ -53194,7 +53512,7 @@ var gotProducts = exports.gotProducts = function gotProducts(products) {
 var fetchProducts = exports.fetchProducts = function fetchProducts() {
     return function (dispatch) {
         _axios2.default.get('/api/products').then(function (res) {
-            dispatch(gotProducts(res.data));
+            return dispatch(gotProducts(res.data));
         }).catch(function (ex) {
             return console.log(ex);
         });
@@ -53204,8 +53522,10 @@ var fetchProducts = exports.fetchProducts = function fetchProducts() {
 var addProduct = exports.addProduct = function addProduct(product) {
     return function (dispatch) {
         _axios2.default.post('/api/products', product).then(function () {
-            dispatch(fetchProducts());
-        }).catch(function (ex) {
+            return dispatch(fetchProducts());
+        })
+        // .then(res => dispatch(createdProduct(res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53214,8 +53534,10 @@ var addProduct = exports.addProduct = function addProduct(product) {
 var deleteProduct = exports.deleteProduct = function deleteProduct(productId) {
     return function (dispatch) {
         _axios2.default.delete('/api/products/' + productId).then(function () {
-            dispatch(fetchProducts());
-        }).catch(function (ex) {
+            return dispatch(fetchProducts());
+        })
+        // .then(() => dispatch(deletedProduct(productId)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53225,7 +53547,9 @@ var editProduct = exports.editProduct = function editProduct(productId, updatedD
     return function (dispatch) {
         _axios2.default.put('/api/products/' + productId, updatedData).then(function () {
             return dispatch(fetchProducts());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(updatedProduct(res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53235,7 +53559,9 @@ var createReview = exports.createReview = function createReview(productId, revie
     return function (dispatch) {
         _axios2.default.post('/api/products/' + productId + '/reviews', review).then(function () {
             return dispatch(fetchProducts());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(createdReview(productId, res.data))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53245,7 +53571,9 @@ var updateReview = exports.updateReview = function updateReview(productId, revie
     return function (dispatch) {
         _axios2.default.put('api/products/' + productId + '/reviews/' + reviewId, updatedReview).then(function () {
             return dispatch(fetchProducts());
-        }).catch(function (ex) {
+        })
+        // .then(res => dispatch(updatedReview(productId, res.data)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53255,7 +53583,9 @@ var deleteReview = exports.deleteReview = function deleteReview(productId, revie
     return function (dispatch) {
         _axios2.default.delete('api/products/' + productId + '/reviews/' + reviewId).then(function () {
             return dispatch(fetchProducts());
-        }).catch(function (ex) {
+        })
+        // .then(() => dispatch(deletedReview(productId, reviewId)))
+        .catch(function (ex) {
             return console.log(ex);
         });
     };
@@ -53269,12 +53599,73 @@ var productReducer = function productReducer() {
     switch (action.type) {
         case GOT_PRODUCTS:
             return action.products;
+
+        case UPDATED_PRODUCT:
+            var filteredState = state.filter(function (product) {
+                return product.id !== action.product.id;
+            });
+            return [].concat(_toConsumableArray(filteredState), [action.product]);
+
+        case DELETED_PRODUCT:
+            var newState = state.filter(function (product) {
+                return product.id !== action.productId;
+            });
+            return newState;
+
+        case CREATED_PRODUCT:
+            return [].concat(_toConsumableArray(state), [action.product]);
+
+        case CREATED_REVIEW:
+            newState = state.map(function (product) {
+                if (product.id == action.productId) {
+                    product.review.push(action.review);
+                }
+                return product;
+            });
+            return newState;
+        case UPDATED_REVIEW:
+            newState = state.map(function (product) {
+                if (product.id = action.productId) {
+                    product.review.map(function (review) {
+                        if (review.id = action.review.id) {
+                            review = action.review;
+                        }
+                        return review;
+                    });
+                }
+                return product;
+            });
+            return newState;
+
+        case DELETED_REVIEW:
+            newState = state.map(function (product) {
+                if (product.id == action.productId) {
+                    product.review.filter(function (review) {
+                        return review.id !== action.reviewId;
+                    });
+                }
+                return product;
+            });
+            return newState;
+
         default:
             return state;
     }
 };
 
 exports.default = productReducer;
+
+/***/ }),
+
+/***/ "./src/util.js":
+/*!*********************!*\
+  !*** ./src/util.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ }),
 

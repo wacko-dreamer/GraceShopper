@@ -136,14 +136,14 @@ const productReducer = (state = initialState, action) => {
             return [...filteredState, action.product]
 
         case DELETED_PRODUCT:
-            const newState = state.filter(product => product.id !== action.productId)
+            let newState = state.filter(product => product.id !== action.productId)
             return newState
 
         case CREATED_PRODUCT:
             return [...state, action.product]
 
         case CREATED_REVIEW:
-            const newState = state.map(product => {
+            newState = state.map(product => {
                 if (product.id == action.productId){
                     product.review.push(action.review)
                 }
@@ -151,7 +151,7 @@ const productReducer = (state = initialState, action) => {
             })
             return newState
         case UPDATED_REVIEW:
-            const newState = state.map(product => {
+            newState = state.map(product => {
                 if (product.id = action.productId){
                     product.review.map(review => {
                         if (review.id = action.review.id){
@@ -165,7 +165,7 @@ const productReducer = (state = initialState, action) => {
             return newState
 
         case DELETED_REVIEW:
-            const newState = state.map(product => {
+            newState = state.map(product => {
                 if (product.id == action.productId){
                     product.review.filter(review => review.id !== action.reviewId)
                 }

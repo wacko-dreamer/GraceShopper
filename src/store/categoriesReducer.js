@@ -81,14 +81,14 @@ const categoriesReducer = (state = initialState, action) => {
             return action.categories
 
         case UPDATED_CATEGORY:
-            const newState = state.filter(category => category.id !== action.category.id)
+            let newState = state.filter(category => category.id !== action.category.id)
             return [...newState, action.category] 
 
         case CREATED_CATEGORY:
             return [...state, action.category]
 
         case DELETED_CATEGORY:
-            const newState = state.filter(category => category.id !== action.categoryId)
+            newState = state.filter(category => category.id !== action.categoryId)
             return newState
             
         default:

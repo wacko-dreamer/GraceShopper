@@ -1,4 +1,7 @@
 import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import { updateOrder } from '../store/orderReducer';
+
 
 const Cart = () => {
     return (
@@ -24,4 +27,11 @@ const Cart = () => {
     )
 }
 
-export default Cart
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateOrder: () => dispatch(updateOrder())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Cart)

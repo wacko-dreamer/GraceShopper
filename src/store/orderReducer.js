@@ -111,7 +111,7 @@ const orderReducer = (state = initialState, action) => {
             return [...filteredState, action.order]
 
         case CREATED_LINEITEM:
-            const newState = state.map(order => {
+            let newState = state.map(order => {
                 if(order.id == action.orderId){
                     order.lineItem.push(action.lineItem)
                 }
@@ -120,7 +120,7 @@ const orderReducer = (state = initialState, action) => {
             return newState
 
         case UPDATED_LINEITEM:
-            const newState = state.map(order => {
+            newState = state.map(order => {
                 if(order.id == action.orderId){
                     order.lineItem.map(lineItem => {
                         if(lineItem.id === action.lineItem.id){
@@ -134,7 +134,7 @@ const orderReducer = (state = initialState, action) => {
             return newState
 
         case DELETED_LINEITEM:
-            const newState = state.map(order => {
+            newState = state.map(order => {
                 if(order.id == action.orderId){
                     order.lineItem.filter(lineItem => lineItem.id !== action.lineItemId)
                 }
