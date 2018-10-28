@@ -89,9 +89,10 @@ export const updateLineItem = (lineItem, _quantity, change) => {
     }
 }
 
-export const deleteLineItem = (orderId, lineItemId) => {
+export const deleteLineItem = (lineItem) => {
+    let userId;
     return (dispatch) => {
-        axios.delete(`api/order/${orderId}/lineItems/${lineItemId}`)
+        axios.delete(`api/users/${userId}/orders/${lineItem.orderId}/lineItems/${lineItem.id}`)
         .then(() => dispatch(fetchOrders()))
         //.then(() => dispatch(fetchOrders()))
         // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))

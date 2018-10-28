@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { createLineItem, updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
+import { updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
 
 
-const Cart = ({ auth, lineItems, createLineItem, updateLineItem, deleteLineItem, updateOrder }) => {
+const Cart = ({ auth, lineItems, updateLineItem, deleteLineItem, updateOrder }) => {
     console.log(auth, lineItems)
     return (
         <Fragment>
@@ -24,7 +24,8 @@ const Cart = ({ auth, lineItems, createLineItem, updateLineItem, deleteLineItem,
                                     <td>${ lineItem.product.price }</td>
                                     <td>Quantity: { lineItem.quantity }</td>
                                     <td><button onClick={ () => updateLineItem(lineItem, lineItem.quantity, 1) } className="btn btn-primary">+</button></td> 
-                                    <td><button onClick={ () => updateLineItem(lineItem, lineItem.quantity, -1 ) } disabled={ lineItem.quantity === 1 } className="btn btn-primary">-</button></td> 
+                                    <td><button onClick={ () => updateLineItem(lineItem, lineItem.quantity, -1 ) } disabled={ lineItem.quantity === 1 } className="btn btn-primary">-</button></td>
+                                    <td><button onClick={ () => deleteLineItem(lineItem) } className="btn btn-danger">Delete</button></td> 
                                 </tr>
                             ))
                         }
@@ -45,6 +46,6 @@ const mapStateToProps = ({ auth, orders }) => {
     return { auth, lineItems };
 }
 
-const mapDispatchToProps = ({ createLineItem, updateLineItem, deleteLineItem, updateOrder });
+const mapDispatchToProps = ({ updateLineItem, deleteLineItem, updateOrder });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)
