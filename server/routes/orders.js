@@ -14,7 +14,9 @@ router.get('/', async (req, res, next) => {
             cart = await Order.create(attr);
         }
         const orders = await Order.findAll({
-            include: [ LineItem ],
+            include: [ { model: LineItem, include: [
+                { model: Product }
+            ]} ],
             order: [['createdAt', 'DESC']]
         })
         res.send(orders);

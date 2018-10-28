@@ -78,9 +78,11 @@ export const createLineItem = (orderId, lineItem) => {
     }
 }
 
-export const updateLineItem = (orderId, lineItemId, quantity) => {
+export const updateLineItem = (lineItem, _quantity, change) => {
+    let userId;
+    lineItem = { ...lineItem, quantity: _quantity + change };
     return (dispatch) =>{
-        axios.put(`api/orders/${orderId}/lineItems/${lineItemId}`, quantity)
+        axios.put(`api/users/${userId}/orders/${lineItem.orderId}/lineItems/${lineItem.id}`, lineItem)
         .then(() => dispatch(fetchOrders()))
         // .then(res => dispatch(updatedLineItem(orderId,res.data)))
         .catch(ex => console.log(ex))
@@ -89,9 +91,9 @@ export const updateLineItem = (orderId, lineItemId, quantity) => {
 
 export const deleteLineItem = (orderId, lineItemId) => {
     return (dispatch) => {
-        axois.delete(`api/order/${orderId}/lineItems/${lineItemId}`)
+        axios.delete(`api/order/${orderId}/lineItems/${lineItemId}`)
         .then(() => dispatch(fetchOrders()))
-        .then(() => dispatch(fetchOrders()))
+        //.then(() => dispatch(fetchOrders()))
         // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
         .catch(ex => console.log(ex))
     }
