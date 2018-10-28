@@ -16,16 +16,18 @@ class Categories extends Component {
                 <ul className="nav flex-column">
                     {categories.map(category => {
                         return (
-                            <Link to={`/${category.id}`}>
+                            <Link to={`/categories/${category.id}`}>
                                 <li className="nav-item" key={category.id}>
                                     <strong>{category.name}</strong>
                                 </li>
                             </Link>
                         )
                     })}
+                    <Link to={`/`}>
                     <li className="nav-item">
                         All categories
                     </li>
+                    </Link>
                 </ul>
             </div>
         )
