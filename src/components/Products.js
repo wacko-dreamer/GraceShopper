@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import {findLineItemById} from '../util.js'
 
 
 const cardStyle = {
@@ -11,15 +12,17 @@ const cardStyle = {
 }
 
 const divStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
     margin: '10px',
-    padding: '10px'
+    padding: '10px',
+    display: 'flex',
+    position: 'absolute',
+    left: '200px'
 }
 
 class Products extends Component {
     render() {
         const {products} = this.props
+        let quantity = 0
         return (
             <Fragment>
                 <br />
@@ -31,17 +34,19 @@ class Products extends Component {
                                 <div className="card-body">
                                     <h5 className="card-title">{product.name}</h5>
                                     <p className="card-text">{product.description}</p>
+                                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                     <p className="card-text"><strong>${product.price}</strong></p>
-                                    <a href="#" className="btn btn-success">Add To Cart</a>
+                                    <p className="card-text"><strong>{quantity}</strong></p>
+                                    </div>
+                                    <button className="btn btn-info" style={{margin: '5px'}}>+</button>
+                                    <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
-                                    <Link to={`/products/${product.id}`}><button className="btn btn-primary">Edit</button></Link>
+                                    <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link>
                                 </div>
                             </div>
                         )
                     })}
-                </div>
-                <div>
-                <Link to={`/products/create`}><button className="btn btn-outline-secondary">+ Add New Products</button></Link>
+                <Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link>
                 </div>
             </Fragment>
         )

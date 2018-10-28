@@ -38,7 +38,7 @@ class Auth extends Component {
                         <input onChange={ handleChange } value={ password } name='password' placeholder='Password' />
                         <Button onClick={ () => login(this.state, history)
                             .catch(() => this.setState({ error: 'Incorrect Username and/or Password. Please try again.' })) } 
-                            color='primary' >Login</Button>
+                            color='success'>Login</Button>
                     </form>
                     <br/>
                 {
@@ -52,7 +52,7 @@ class Auth extends Component {
                 </Fragment>
             ) : (<Fragment>
                     <br/>
-                    <Button onClick={ () => logout(history) } color='danger' style={{ float: 'right' }} >Logout</Button>
+                    <Button onClick={ () => logout(history) } color='danger' style={{ float: 'right' }}>Logout</Button>
                     <h3 style={{ display: 'inline-block', float: 'right' }} >Welcome { auth.name }!&emsp;</h3>
                     <br/>
                 </Fragment>

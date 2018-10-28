@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const catStyle = {
-    margin: '10px'
+    margin: '10px',
+    width: '300px',
 }
 
 class Categories extends Component {
@@ -18,7 +19,7 @@ class Categories extends Component {
                         return (
                             <Link to={`/categories/${category.id}`}>
                                 <li className="nav-item" key={category.id}>
-                                    <strong>{category.name}</strong>
+                                    {category.name}
                                 </li>
                             </Link>
                         )
