@@ -28,7 +28,6 @@ class Auth extends Component {
         const { handleChange } = this;
         const { username, password, error } = this.state;
         const { auth, login, logout, history } = this.props;
-        console.log(auth)
         return(
             !auth.id ? (
                 <Fragment>

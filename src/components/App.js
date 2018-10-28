@@ -8,7 +8,7 @@ import Order from './Order.js'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
-import { fetchOrders } from '../store/orderReducer.js'
+import { fetchOrders } from '../store/ordersReducer.js'
 
 
 class App extends Component {

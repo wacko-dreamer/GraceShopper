@@ -49,16 +49,13 @@ class Products extends Component {
 }
 
 const mapStateToProps = ({ products }, { categoryId }) => {
-    console.log(categoryId)
     if (categoryId){
        products = products.filter( product => {
-            console.log(product.categories.find(cat => cat.id === categoryId*1))
            if (product.categories.find(category => category.id === categoryId*1)){
                return true
            }
        })
     }
-    console.log(products)
     return {
         products
     }

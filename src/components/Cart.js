@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { updateOrder } from '../store/orderReducer';
+import { updateOrder } from '../store/ordersReducer';
 
 
-const Cart = () => {
+const Cart = ({ auth, order, updateOrder }) => {
+    console.log(auth, order)
     return (
         <Fragment>
             <h3>Shopping Cart</h3>
@@ -27,11 +28,11 @@ const Cart = () => {
     )
 }
 
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateOrder: () => dispatch(updateOrder())
-    }
+const mapStateToProps = ({ auth, orders }) => {
+    const order = orders.find(order => order.customerId === auth.id);
+    return { auth, order };
 }
 
-export default connect(null, mapDispatchToProps)(Cart)
+const mapDispatchToProps = ({ updateOrder });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
