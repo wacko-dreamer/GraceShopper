@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category } = require('../db/models');
+const { Category, Product } = require('../db/models');
 
 
 router.get('/', (req, res, next) => {
@@ -9,7 +9,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-    Category.findById(req.params.id)
+    Category.findById(req.params.id, {
+        include: [
+        {
+            model: Product,
+        }
+        ]
+    })
         .then(category => res.send(category))
         .catch(next)
 })

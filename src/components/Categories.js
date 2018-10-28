@@ -1,21 +1,30 @@
 import React, { Component, Fragment } from 'react'
+import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
+
+const catStyle = {
+    margin: '10px'
+}
 
 class Categories extends Component {
     render() {
+        const { categories } = this.props
         return (
-            <div>
+            <div style = {catStyle}>
+                <br/>
+                <h6>Show results for</h6>
                 <ul className="nav flex-column">
+                    {categories.map(category => {
+                        return (
+                            <Link to={`/${category.id}`}>
+                            <li className="nav-item" key = { category.id }>
+                                <strong>{category.name}</strong>
+                            </li>
+                            </Link>
+                        )
+                    })}
                     <li className="nav-item">
-                        <a className="nav-link active" href="/">Large</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="/">Medium</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="/">Small</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link disabled" href="#">All Categories</a>
+                        All categories
                     </li>
                 </ul>
             </div>
@@ -23,4 +32,10 @@ class Categories extends Component {
     }
 }
 
-export default Categories
+const mapStateToProps = ({ categories }) => {
+    return {
+        categories
+    }
+}
+
+export default connect(mapStateToProps)(Categories)

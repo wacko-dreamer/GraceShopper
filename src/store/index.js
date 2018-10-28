@@ -1,4 +1,4 @@
-import { combineReducers, createStore, applyMiddleware } from 'react-redux'
+import { combineReducers, createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import loggerMiddleware from 'redux-logger'
 import products from './productsReducer'

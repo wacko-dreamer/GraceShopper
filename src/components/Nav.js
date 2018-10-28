@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Login from './Login.js'
 
 const Nav = () => {
     return (
@@ -14,19 +16,17 @@ const Nav = () => {
                         </form> */}
                     </div>
                     <div>
-                        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <ul className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <Link className="nav-link" to="/user/:id/cart">Cart 2</Link>
+                                <Link className="nav-link" to="/cart">Cart 2</Link>
                             </li>
                             <li className="nav-item active">
-                                <Link className="nav-link" to="/user/:id/order">Order 3</Link>
+                                <Link className="nav-link" to="/orders">Order 3</Link>
                             </li>
                         </ul>
-                        <form className="form-inline">
-                            <input className="form-control mr-sm-2" type="username" placeholder="Username" aria-label="Username" />
-                            <input className="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password" />
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-                        </form>
+                    </div>
+                    <div>
+                        <Login/>
                     </div>
                 </div>
             </nav>
@@ -34,4 +34,7 @@ const Nav = () => {
     )
 }
 
-export default Nav
+const mapStateToProps = () => {
+    return
+}
+export default connect(mapStateToProps)(Nav)
