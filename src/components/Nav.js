@@ -23,11 +23,6 @@ const Nav = () => {
                                 <Link className="nav-link" to="/user/:id/order">Order 3</Link>
                             </li>
                         </ul>
-                        <form className="form-inline">
-                            <input className="form-control mr-sm-2" type="username" placeholder="Username" aria-label="Username" />
-                            <input className="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password" />
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-                        </form>
                     </div>
                 </div>
             </nav>
