@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 
@@ -21,7 +22,7 @@ class Products extends Component {
         const {products} = this.props
         return (
             <Fragment>
-                 <br />
+                <br />
                 <div style={divStyle}>
                     {products.map(product => {
                         return (
@@ -32,10 +33,15 @@ class Products extends Component {
                                     <p className="card-text">{product.description}</p>
                                     <p className="card-text"><strong>${product.price}</strong></p>
                                     <a href="#" className="btn btn-success">Add To Cart</a>
+                                    {/* If user is admin then render below */}
+                                    <Link to={`/products/${product.id}`}><button className="btn btn-primary">Edit</button></Link>
                                 </div>
                             </div>
                         )
                     })}
+                </div>
+                <div>
+                <Link to={`/products/create`}><button className="btn btn-outline-secondary">+ Add New Products</button></Link>
                 </div>
             </Fragment>
         )
