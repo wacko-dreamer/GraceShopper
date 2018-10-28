@@ -2,12 +2,13 @@ import React, {Fragment} from 'react'
 import Categories from './Categories.js'
 import Products from './Products.js'
 
-const Shop = () => {
+const Shop = (props) => {
+    const {categoryId} = props
     return (
         <Fragment>
             <div style={{display: 'flex'}}>
             <Categories/>
-            <Products/>
+            <Products categoryId={categoryId}/>
             </div>
         </Fragment>
     )

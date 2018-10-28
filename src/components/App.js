@@ -30,8 +30,9 @@ class App extends Component {
                 <Nav/>
                 <Route render={ ({ history }) => <Auth history={ history }/>}/>
                 <Route exact path = '/' render = {() => <Shop/>}/>
-                <Route path = '/user/:id/cart' render = {() => <Cart/>}/>
-                <Route path = '/user/:id/order' render = {() => <Order/>}/>
+                <Route path = '/user/:userId/cart' render = {() => <Cart/>}/>
+                <Route path = '/user/:userId/order' render = {() => <Order/>}/>
+                <Route path = '/categories/:categoryId' render = {({match}) => <Shop categoryId={match.params.categoryId}/>}/>
                 </div>
             </Router>
         )
