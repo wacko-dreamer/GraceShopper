@@ -8,7 +8,7 @@ const Order = () => {
             <span>Here you will find all the things that you have orderd from Wacko Dreamer</span>
             </div>
             <br/>
-            <table class="table">
+            <table className="table">
                 <tbody>
                     <tr>
                         <h4>Order No.</h4>

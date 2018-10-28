@@ -17,7 +17,7 @@ class Products extends Component {
             <Fragment>
                 <div style={divStyle}>
                     <div className="card" style={cardStyle}>
-                        <img class="card-img-top" src="https://images-na.ssl-images-amazon.com/images/I/41U8g8Ggf4L._AC_US200_.jpg" alt="Card image cap" />
+                        <img className="card-img-top" src="https://images-na.ssl-images-amazon.com/images/I/41U8g8Ggf4L._AC_US200_.jpg" alt="Card image cap" />
                         <div className="card-body">
                             <h5 className="card-title">Coat 1</h5>
                             <p className="card-text">Coat 1 bio</p>
@@ -25,7 +25,7 @@ class Products extends Component {
                         </div>
                     </div>
                     <div className="card" style={cardStyle}> 
-                        <img class="card-img-top" src="https://images-na.ssl-images-amazon.com/images/I/516eEKsbFiL._AC_US200_.jpg" alt="Card image cap" />
+                        <img className="card-img-top" src="https://images-na.ssl-images-amazon.com/images/I/516eEKsbFiL._AC_US200_.jpg" alt="Card image cap" />
                         <div className="card-body">
                             <h5 className="card-title">Coat 1</h5>
                             <p className="card-text">Coat 1 bio</p>

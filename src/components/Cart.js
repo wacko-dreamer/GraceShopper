@@ -6,7 +6,7 @@ const Cart = () => {
             <h3>Shopping Cart</h3>
             <h4>Your Shopping Cart is Empty!</h4>
             <span>Here you will find all the things that you have added to your cart</span>
-            <table class="table">
+            <table className="table">
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
