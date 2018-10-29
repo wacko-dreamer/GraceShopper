@@ -91,20 +91,24 @@ const User = conn.define('user', {
   },
   username: {
     type: conn.Sequelize.STRING(80),
-    allowNull: false,
+    /* allowNull: false,
     unique: true,
     validate: {
       isEmail: true
-    }
+    } */
   },
   password: {
     type: conn.Sequelize.STRING,
-    allowNull: false,
+    /* allowNull: false,
     validate: {
       notEmpty: true
-    }
+    } */
   },
   isAdmin: {
+    type: conn.Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  isGuest: {
     type: conn.Sequelize.BOOLEAN,
     defaultValue: false
   },

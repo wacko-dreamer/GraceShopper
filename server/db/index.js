@@ -35,14 +35,14 @@ const syncAndSeed = () => {
       [ gardening, household ] = categories;
       //create order
       return Promise.all([
-        Order.create({ status : 'CART' }),
+        /* Order.create({ status : 'CART' }), */
         Order.create({ status : 'CART' }),
         Order.create({ status : 'COMPLETED', shippingAddress : '5 Hanover Sq, New York, NY 10004', total : 47.85 }),
         Order.create({ status : 'PROCESSING', shippingAddress : '123 abc ave, def, GH 56789', total : 30.00 })
       ]);
     })
     .then((orders) => {
-      [ cart, testCart, authOrder, guestOrder ] = orders;
+      [ /* cart,  */testCart, authOrder, guestOrder ] = orders;
       //create line items
       return Promise.all([
         LineItem.create({ quantity : 2, price : 12.69 }),
@@ -62,7 +62,7 @@ const syncAndSeed = () => {
       return Promise.all([
         User.create({ name : 'Sample AuthUser', username : 'sampleAuthUser@gmail.com', password : 'a', isAdmin : false, address: ['5 Hanover Sq, New York, NY 10004', 'abc 123st, You, ME 01234'] }),
         User.create({ name : 'Sample Admin', username : 'sampleAdmin@gmail.com', password : 'abc123', isAdmin : true }),
-        User.create({ name : 'Sample Guest', username : 'sampleGuest@email.com', password : 'na', isAdmin : false })
+        User.create({ name : 'Sample Guest', username : 'sampleGuest@email.com', password : 'na', isAdmin : false, isGuest : true })
       ]);
     })
     .then((users) => {
@@ -78,12 +78,12 @@ const syncAndSeed = () => {
       return Promise.all([
         //connect line items to an order
         //connect line items to a product
-        plantLI.setOrder(cart),
-        plantLI.setProduct(plant),
+        //plantLI.setOrder(cart),       needs a customerId
+        //plantLI.setProduct(plant),
         seedLI.setOrder(authOrder),
         seedLI.setProduct(seed),
-        soilLI.setOrder(cart),
-        soilLI.setProduct(soil),
+        /* soilLI.setOrder(cart),       needs a customerId
+        soilLI.setProduct(soil), */
         bottleLI.setOrder(authOrder),
         bottleLI.setProduct(bottle),
         guestPlantLI.setOrder(guestOrder),

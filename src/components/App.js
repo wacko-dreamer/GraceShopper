@@ -20,7 +20,7 @@ class App extends Component {
     componentDidMount(){
         this.props.fetchProducts()
         this.props.fetchCategories()
-        this.props.fetchOrders()
+        this.props.fetchOrders(this.props.auth)
     }
 
     render(){
@@ -39,6 +39,16 @@ class App extends Component {
     }
 }
 
+const mapStateToProps = ({ auth, orders }) => {
+    const guest = orders.find(order => {
+        if(order.customer) {
+            if(order.customer.isGuest === true && order.status === 'CART') return true;
+        }
+    })
+    console.log(guest, 'app')
+    return { auth };
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchProducts: () => dispatch(fetchProducts()),
@@ -47,4 +57,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null,mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

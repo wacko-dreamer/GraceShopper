@@ -31,7 +31,7 @@ const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOr
                         }
                         </tbody>
                     </table>
-                    <button onClick={() => updateOrder(order, 'CREATED', auth)} className="btn btn-success my-2 my-sm-0">Checkout</button>
+                    <button onClick={() => updateOrder(order, 'CREATED')} className="btn btn-success my-2 my-sm-0">Checkout</button>
                 </Fragment>
             )
         }
@@ -40,7 +40,9 @@ const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOr
 }
 
 const mapStateToProps = ({ auth, orders }) => {
-    const order = orders.find(order => order.customerId === auth.id && order.status === 'CART');
+    let order = {};
+    if(auth.id) order = orders.find(order => order.customerId === auth.id && order.status === 'CART');
+    if(!auth.id) order = orders.find(order => !order.customerId && order.status === 'CART');
     let lineItems = [];
     if(order) lineItems = order.line_items.sort((a, b) => a.id - b.id);
     return { auth, lineItems, order };

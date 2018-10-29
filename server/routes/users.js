@@ -77,8 +77,8 @@ router.post('/:userId/orders/:orderId/lineItems', (req, res, next) => {
 
 //update order
 router.put('/:userId/orders/:orderId', (req, res, next) => {
-    Order.findById(req.params.orderId)
-        .then(order => order.update({ ...req.body, userId: req.params.userId }))
+    Order.findByPk(req.params.orderId)
+        .then(order => order.update({ ...req.body, /* userId: req.params.userId  */}))
         .then(order => res.send(order))
         .catch(next)
 })

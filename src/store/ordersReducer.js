@@ -50,9 +50,11 @@ const deletedLineItem  = (orderId, lineItem) => ({
 // 5. delete line item
 
 
-export const fetchOrders = () => {
+export const fetchOrders = auth => {
+    let authId = null;
+    if(auth) authId = auth.id;
     return (dispatch) => {
-        axios.get('api/orders')
+        axios.get(`api/orders/users/${authId}`)
         .then(res => {
             dispatch(gotOrders(res.data))
         })
@@ -60,10 +62,11 @@ export const fetchOrders = () => {
     }
 }
 
-export const updateOrder = (order, status, user) => {
+export const updateOrder = (order, status) => {
+    let userId;
     order = { ...order, status };
     return (dispatch) => {
-        axios.put(`api/users/${user.id}/orders/${order.id}`, order)
+        axios.put(`api/users/${userId}/orders/${order.id}`, order)
         .then(() => dispatch(fetchOrders()))
         // .then(res => dispatch(updatedOrder(res.data)))
         .catch(ex => console.log(ex))

@@ -4,19 +4,36 @@ const conn = require('../db/conn');
 
 
 //get all orders
-router.get('/', async (req, res, next) => {
-    const attr = {
-        status: 'CART'
+router.get('/users/:userId', async (req, res, next) => {
+    let attr = {};
+    console.log(req.params.userId)
+    if(typeof req.params.userId === 'object') {
+        attr = {
+            status: 'CART',
+            customerId: req.params.userId 
+        }
+        let isGuest = false;
     }
+    if(req.params.userId) {
+        console.log('h')
+        attr = {
+            status: 'CART'
+        }
+        isGuest = true
+    }
+
     try {
-        let cart = await Order.findOne({ where: attr })
+        let cart = await Order.findOne({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
+        if(cart.dataValues.status !== 'CART') cart = null;
         if(!cart) {
+            guest = await User.create({ name: 'guest', isGuest: true });
             cart = await Order.create(attr);
+            cart.setCustomer(guest);
         }
         const orders = await Order.findAll({
             include: [ { model: LineItem, include: [
                 { model: Product }
-            ]} ],
+            ]}, { model: User, as: 'customer' } ],
             order: [['createdAt', 'DESC']]
         })
         res.send(orders);
