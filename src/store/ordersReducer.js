@@ -50,9 +50,13 @@ const deletedLineItem  = (orderId, lineItem) => ({
 // 5. delete line item
 
 
-export const fetchOrders = isGuest => {
+export const fetchOrders = (cart, isGuest) => {
+    let userId = null;
+    if(cart) userId = cart.customerId;
+    if(!isGuest) isGuest = null;
+    console.log(userId, cart)
     return (dispatch) => {
-        axios.get(`api/orders/users/${isGuest}`)
+        axios.get(`api/orders/users/${userId}/${isGuest}`)
         .then(res => {
             dispatch(gotOrders(res.data))
         })

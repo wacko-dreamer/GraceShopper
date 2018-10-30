@@ -1,10 +1,16 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
+import { fetchOrders, updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
 
 
-const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOrder }) => {
-    console.log(auth, lineItems, order)
+const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineItem, deleteLineItem, updateOrder }) => {
+    /* const createOrder = (order, cart, isGuest) => {
+        console.log(updateOrder)
+        if(updateOrder) {
+            updateOrder(order, 'CREATED')
+            fetchOrders(cart, isGuest)      //.then doesn't work...
+        }
+    } */
     return (
         <Fragment>
             <h3>Shopping Cart</h3>
@@ -31,7 +37,7 @@ const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOr
                         }
                         </tbody>
                     </table>
-                    <button onClick={() => updateOrder(order, 'CREATED')} className="btn btn-success my-2 my-sm-0">Checkout</button>
+                    <button onClick={() => updateOrder(order, 'CREATED') } className="btn btn-success my-2 my-sm-0">Checkout</button>
                 </Fragment>
             )
         }
@@ -40,6 +46,8 @@ const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOr
 }
 
 const mapStateToProps = ({ auth, orders }) => {
+
+    //lineItem logic
     let order = {};
     if(auth.id) order = orders.find(order => order.customerId === auth.id && order.status === 'CART');
     if(!auth.id) order = orders.find(order => {
@@ -47,9 +55,31 @@ const mapStateToProps = ({ auth, orders }) => {
     })
     let lineItems = [];
     if(order) lineItems = order.line_items.sort((a, b) => a.id - b.id);
-    return { auth, lineItems, order };
+
+    //creating order logic
+    const guestCart = orders.find(order => {
+        if(order.customer) {
+            if(order.customer.isGuest === true && order.status === 'CART') return true;
+        }
+    })
+    const authCart = orders.find(order => {
+        if(order.customer) {
+            if(order.customer.isGuest === false && order.status === 'CART') return true;
+        }
+    })
+    let cart, isGuest;
+    if(auth.id) { 
+        cart = authCart;
+        isGuest = false;
+    }
+    else {
+        cart = guestCart;
+        isGuest = true;
+    }
+
+    return { auth, lineItems, order, cart, isGuest };
 }
 
-const mapDispatchToProps = ({ updateLineItem, deleteLineItem, updateOrder });
+const mapDispatchToProps = ({ fetchOrders, updateLineItem, deleteLineItem, updateOrder });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

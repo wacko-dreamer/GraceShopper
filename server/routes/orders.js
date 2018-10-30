@@ -4,9 +4,10 @@ const conn = require('../db/conn');
 
 
 //get all orders
-router.get('/users/:isGuest', async (req, res, next) => {
-    let attr = {};
-    if(/* typeof req.params.userId === 'object' */ !req.params.isGuest) {
+router.get('/users/:userId/:isGuest', async (req, res, next) => {
+    /* typeof req.params.userId === 'object' */ 
+    /* let attr = {};
+    if(!req.params.isGuest) {
         attr = {
             status: 'CART',
             customerId: req.params.userId 
@@ -18,14 +19,24 @@ router.get('/users/:isGuest', async (req, res, next) => {
             status: 'CART'
         }
         isGuest = true
-    }
-
+    } */
+    let cart;
     try {
-        let cart = await Order.findOne({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
-        if(cart.dataValues.status !== 'CART') {
-            guest = await User.create({ name: 'guest', isGuest: true });
-            cart = await Order.create(attr);
-            cart.setCustomer(guest);
+        if(req.params.isGuest === true) {
+            cart = await Order.findOne({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
+            if(cart.dataValues.status !== 'CART') {
+                let guest = await User.create({ name: 'guest', isGuest: true });
+                cart = await Order.create({ status: 'CART' });
+                cart.setCustomer(guest);
+            }
+        }
+        else if(req.params.isGuest === false && req.params.userId) {
+            cart = await Order.findOne({ where: { customerId: req.params.userId } });
+            if(cart.dataValues.status !== 'CART') {
+                cart = await Order.create({ status: 'CART' });
+                user = await User.findbyPk(req.params.userId);
+                cart.setCustomer(user);
+            }
         }
         const orders = await Order.findAll({
             include: [ { model: LineItem, include: [
