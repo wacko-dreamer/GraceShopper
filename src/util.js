@@ -5,6 +5,6 @@ export const findLineItemById = (cart, product) => (
 export const findFinishedOrders = (auth, orders) => (
     orders.filter(order => {
         if(auth.id) return order.status === 'COMPLETED' && order.customerId === auth.id;
-        //else return order.status === 'COMPLETED' && or                need to merge with cart so I can get "isGuest" property
+        //else return order.status === 'COMPLETED' && order.customer.isGuest === true;            need "isGuest" property from cart branch
     })
 )
