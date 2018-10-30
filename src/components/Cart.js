@@ -42,7 +42,9 @@ const Cart = ({ auth, lineItems, order, updateLineItem, deleteLineItem, updateOr
 const mapStateToProps = ({ auth, orders }) => {
     let order = {};
     if(auth.id) order = orders.find(order => order.customerId === auth.id && order.status === 'CART');
-    if(!auth.id) order = orders.find(order => !order.customerId && order.status === 'CART');
+    if(!auth.id) order = orders.find(order => {
+        if(order.customer) return order.customer.isGuest === true && order.status === 'CART';
+    })
     let lineItems = [];
     if(order) lineItems = order.line_items.sort((a, b) => a.id - b.id);
     return { auth, lineItems, order };

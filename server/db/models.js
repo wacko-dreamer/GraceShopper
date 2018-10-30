@@ -91,7 +91,7 @@ const User = conn.define('user', {
   },
   username: {
     type: conn.Sequelize.STRING(80),
-    /* allowNull: false,
+    /* allowNull: false,            // guest does not need username to add to cart
     unique: true,
     validate: {
       isEmail: true
@@ -99,7 +99,7 @@ const User = conn.define('user', {
   },
   password: {
     type: conn.Sequelize.STRING,
-    /* allowNull: false,
+    /* allowNull: false,            // guest does not need password to add to cart
     validate: {
       notEmpty: true
     } */
