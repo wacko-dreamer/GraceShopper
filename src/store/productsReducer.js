@@ -71,7 +71,7 @@ export const fetchProducts = () => {
     }
 }
 
-export const addProduct = product => {
+export const addProduct = (product, categories) => {
     return (dispatch) => {
         axios.post('/api/products', product)
         .then(() => dispatch(fetchProducts()))
@@ -91,8 +91,6 @@ export const deleteProduct = productId  => {
 
 export const editProduct = (productId, updatedData)  => {
     return (dispatch) => {
-        console.log('updatedData: ', updatedData)
-        console.log('productIdthunk: ', productId)
         axios.put(`/api/products/${productId}`, updatedData)
         .then(() => dispatch(fetchProducts()))
         // .then(res => dispatch(updatedProduct(res.data)))

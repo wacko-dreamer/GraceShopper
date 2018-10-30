@@ -51992,8 +51992,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -52004,9 +52002,13 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _productsReducer = __webpack_require__(/*! ../store/productsReducer */ "./src/store/productsReducer.js");
 
+var _categoriesReducer = __webpack_require__(/*! ../store/categoriesReducer */ "./src/store/categoriesReducer.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -52027,7 +52029,8 @@ var AddProduct = function (_Component) {
       description: '',
       price: '',
       quantity: '',
-      imageUrl: ''
+      imageUrl: '',
+      categories: []
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -52037,27 +52040,49 @@ var AddProduct = function (_Component) {
   _createClass(AddProduct, [{
     key: 'handleChange',
     value: function handleChange(evt) {
-      this.setState(_defineProperty({}, evt.target.name, evt.target.value));
+      console.log('target_name:', [evt.target.name]);
+      console.log('target_value', evt.target.value);
+
+      this.setState(_defineProperty({}, evt.target.name, [evt.target.name] == 'categories' ? [].concat(_toConsumableArray(evt.target.selectedOptions)).map(function (option) {
+        return option.value;
+      }) : evt.target.value));
+      console.log('state:', this.state);
     }
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(evt) {
       evt.preventDefault();
-      var product = _extends({}, this.state, { price: this.state.price * 1, quantity: this.state.quantity * 1 });
-      this.props.addProduct(product);
-      this.props.history.push('/');
-    }
-  }, {
-    key: 'render',
-    value: function render() {
+      console.log('submitstate: ', this.state);
       var _state = this.state,
           name = _state.name,
           description = _state.description,
           price = _state.price,
           quantity = _state.quantity,
-          imageUrl = _state.imageUrl;
+          imageUrl = _state.imageUrl,
+          categories = _state.categories;
+
+      var product = { name: name, description: description, price: price, quantity: quantity * 1, imageUrl: imageUrl };
+      var prodCats = categories.reduce(function (memo, cat) {
+        var obj = { name: cat };
+        memo.push(obj);
+        return memo;
+      }, []);
+      console.log('categories', prodCats);
+      this.props.addProduct(product, prodCats);
+      this.props.history.push('/');
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _state2 = this.state,
+          name = _state2.name,
+          description = _state2.description,
+          price = _state2.price,
+          quantity = _state2.quantity,
+          imageUrl = _state2.imageUrl;
       var handleChange = this.handleChange,
           handleSubmit = this.handleSubmit;
+      var categories = this.props.categories;
 
       return _react2.default.createElement(
         'div',
@@ -52121,9 +52146,43 @@ var AddProduct = function (_Component) {
             )
           ),
           _react2.default.createElement(
-            'button',
-            { type: 'submit' },
-            'Submit'
+            'h4',
+            null,
+            'Product Category'
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'label',
+              null,
+              'Select from existing categories:',
+              _react2.default.createElement(
+                'select',
+                { name: 'categories', multiple: true, value: this.state.categories, onChange: handleChange },
+                _react2.default.createElement(
+                  'option',
+                  { value: '' },
+                  'None'
+                ),
+                categories.map(function (category) {
+                  return _react2.default.createElement(
+                    'option',
+                    { key: category.id },
+                    category.name
+                  );
+                })
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'button',
+              { type: 'submit' },
+              'Submit'
+            )
           )
         )
       );
@@ -52133,15 +52192,21 @@ var AddProduct = function (_Component) {
   return AddProduct;
 }(_react.Component);
 
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    categories: state.categories
+  };
+};
+
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    addProduct: function addProduct(product) {
-      return dispatch((0, _productsReducer.addProduct)(product));
+    addProduct: function addProduct(product, categories) {
+      return dispatch((0, _productsReducer.addProduct)(product, categories));
     }
   };
 };
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AddProduct);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AddProduct);
 
 /***/ }),
 
