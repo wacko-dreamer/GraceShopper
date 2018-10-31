@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const catStyle = {
-    margin: '10px'
+    margin: '10px',
+    width: '300px',
 }
 
 class Categories extends Component {

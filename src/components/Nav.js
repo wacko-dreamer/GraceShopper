@@ -15,15 +15,9 @@ const Nav = () => {
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </form> */}
                     </div>
-                    <div>
-                        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="nav-item active">
-                                <Link className="nav-link" to="/user/:id/cart">Cart 2</Link>
-                            </li>
-                            <li className="nav-item active">
-                                <Link className="nav-link" to="/user/:id/order">Order 3</Link>
-                            </li>
-                        </ul>
+                    <div style={{display:'flex', justifyContent: 'space-between'}}>
+                        <Link to="/user/:id/cart" style={{color:'white'}}>Cart 2</Link>
+                        <Link to="/user/:id/order" style={{color:'white'}}>Order 3</Link>
                     </div>
                 </div>
             </nav>
