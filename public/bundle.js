@@ -52319,15 +52319,19 @@ var App = function (_Component) {
                             var match = _ref2.match;
                             return _react2.default.createElement(_Shop2.default, { categoryId: match.params.categoryId });
                         } }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, strict: true, path: '/products/create', render: function render(_ref3) {
-                            var history = _ref3.history;
-                            return _react2.default.createElement(_AddProduct2.default, { history: history });
-                        } }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/products/:productId', render: function render(_ref4) {
-                            var match = _ref4.match,
-                                history = _ref4.history;
-                            return _react2.default.createElement(_Product2.default, { productId: match.params.productId, history: history });
-                        } })
+                    _react2.default.createElement(
+                        _reactRouterDom.Switch,
+                        null,
+                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, strict: true, path: '/products/create', render: function render(_ref3) {
+                                var history = _ref3.history;
+                                return _react2.default.createElement(_AddProduct2.default, { history: history });
+                            } }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: '/products/:productId', render: function render(_ref4) {
+                                var match = _ref4.match,
+                                    history = _ref4.history;
+                                return _react2.default.createElement(_Product2.default, { productId: match.params.productId, history: history });
+                            } })
+                    )
                 )
             );
         }
@@ -54074,7 +54078,7 @@ var fetchProducts = exports.fetchProducts = function fetchProducts() {
     };
 };
 
-var addProduct = exports.addProduct = function addProduct(product) {
+var addProduct = exports.addProduct = function addProduct(product, categories) {
     return function (dispatch) {
         _axios2.default.post('/api/products', product).then(function () {
             return dispatch(fetchProducts());
@@ -54100,8 +54104,6 @@ var deleteProduct = exports.deleteProduct = function deleteProduct(productId) {
 
 var editProduct = exports.editProduct = function editProduct(productId, updatedData) {
     return function (dispatch) {
-        console.log('updatedData: ', updatedData);
-        console.log('productIdthunk: ', productId);
         _axios2.default.put('/api/products/' + productId, updatedData).then(function () {
             return dispatch(fetchProducts());
         })
