@@ -1,5 +1,6 @@
 import React, {Fragment, Component} from 'react'
 import { connect } from 'react-redux'
+import { fetchOrders } from '../store/ordersReducer.js'
 import { findFinishedOrders } from '../util';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 

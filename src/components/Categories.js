@@ -19,7 +19,7 @@ class Categories extends Component {
                         return (
                             <Link to={`/categories/${category.id}`} key={category.id}>
                                 <li className="nav-item">
-                                    {category.name}
+                                    <strong>{category.name}</strong>
                                 </li>
                             </Link>
                         )
