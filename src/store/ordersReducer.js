@@ -50,9 +50,13 @@ const deletedLineItem  = (orderId, lineItem) => ({
 // 5. delete line item
 
 
-export const fetchOrders = () => {
+export const fetchOrders = (cart, isGuest) => {
+    let userId = null;
+    if(cart) userId = cart.customerId;
+    if(!isGuest) isGuest = null;
+    console.log(userId, cart)
     return (dispatch) => {
-        axios.get('api/orders')
+        axios.get(`api/orders/users/${userId}/${isGuest}`)
         .then(res => {
             dispatch(gotOrders(res.data))
         })
@@ -60,9 +64,11 @@ export const fetchOrders = () => {
     }
 }
 
-export const updateOrder = (orderId, status) => {
+export const updateOrder = (order, status) => {
+    let userId;
+    order = { ...order, status };
     return (dispatch) => {
-        axios.put(`api/oders/${orderId}`, status)
+        axios.put(`api/users/${userId}/orders/${order.id}`, order)
         .then(() => dispatch(fetchOrders()))
         // .then(res => dispatch(updatedOrder(res.data)))
         .catch(ex => console.log(ex))
@@ -78,20 +84,23 @@ export const createLineItem = (orderId, lineItem) => {
     }
 }
 
-export const updateLineItem = (orderId, lineItemId, quantity) => {
+export const updateLineItem = (order, lineItem, _quantity, change) => {
+    let userId;
+    lineItem = { ...lineItem, quantity: _quantity + change };
     return (dispatch) =>{
-        axios.put(`api/orders/${orderId}/lineItems/${lineItemId}`, quantity)
+        axios.put(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`, lineItem)
         .then(() => dispatch(fetchOrders()))
         // .then(res => dispatch(updatedLineItem(orderId,res.data)))
         .catch(ex => console.log(ex))
     }
 }
 
-export const deleteLineItem = (orderId, lineItemId) => {
+export const deleteLineItem = (order, lineItem) => {
+    let userId;
     return (dispatch) => {
-        axois.delete(`api/order/${orderId}/lineItems/${lineItemId}`)
+        axios.delete(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`)
         .then(() => dispatch(fetchOrders()))
-        .then(() => dispatch(fetchOrders()))
+        //.then(() => dispatch(fetchOrders()))
         // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
         .catch(ex => console.log(ex))
     }

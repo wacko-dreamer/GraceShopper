@@ -5,11 +5,11 @@ const syncAndSeed = () => {
   //product variables
   let plant, seed, soil, bottle
   //order variables
-  let cart, guestOrder, authOrder;
+  let guestCart, authCart, guestOrder, authOrder;
   //category variables
   let gardening, household;
   //line item variables
-  let plantLI, seedLI, soilLI, bottleLI, guestPlantLI, guestSeedLI;
+  let plantLI, seedLI, soilLI, bottleLI, guestPlantLI, guestSeedLI, adminTestLI, adminTestLI2;
   //user variables
   let authUser, adminUser, guestUser;
   //review variables
@@ -36,12 +36,13 @@ const syncAndSeed = () => {
       //create order
       return Promise.all([
         Order.create({ status : 'CART' }),
+        Order.create({ status : 'CART' }),
         Order.create({ status : 'COMPLETED', shippingAddress : '5 Hanover Sq, New York, NY 10004', total : 47.85 }),
         Order.create({ status : 'PROCESSING', shippingAddress : '123 abc ave, def, GH 56789', total : 30.00 })
       ]);
     })
     .then((orders) => {
-      [ cart, authOrder, guestOrder ] = orders;
+      [ guestCart, authCart, authOrder, guestOrder ] = orders;
       //create line items
       return Promise.all([
         LineItem.create({ quantity : 2, price : 12.69 }),
@@ -49,17 +50,19 @@ const syncAndSeed = () => {
         LineItem.create({ quantity : 5, price : 25.99 }),
         LineItem.create({ quantity : 6, price : 2.99 }),
         LineItem.create({ quantity : 1, price : 12.69 }),
-        LineItem.create({ quantity : 1, price : 9.97 })
+        LineItem.create({ quantity : 1, price : 9.97 }),
+        LineItem.create({ quantity : 1, price : 10.68 }),
+        LineItem.create({ quantity : 2, price : 4.56 })
       ]);
     })
     .then((lineItems) => {
-      [ plantLI, seedLI, soilLI, bottleLI, guestPlantLI, guestSeedLI ] = lineItems;
+      [ plantLI, seedLI, soilLI, bottleLI, guestPlantLI, guestSeedLI, adminTestLI, adminTestLI2 ] = lineItems;
 
       //create users
       return Promise.all([
-        User.create({ name : 'Sample AuthUser', username : 'sampleAuthUser@gmail.com', password : 'abc123', isAdmin : false, address: ['5 Hanover Sq, New York, NY 10004', 'abc 123st, You, ME 01234'] }),
+        User.create({ name : 'Sample AuthUser', username : 'sampleAuthUser@gmail.com', password : 'a', isAdmin : false, address: ['5 Hanover Sq, New York, NY 10004', 'abc 123st, You, ME 01234'] }),
         User.create({ name : 'Sample Admin', username : 'sampleAdmin@gmail.com', password : 'abc123', isAdmin : true }),
-        User.create({ name : 'Sample Guest', username : 'sampleGuest@email.com', password : 'na', isAdmin : false })
+        User.create({ name : 'guest', isGuest : true })
       ]);
     })
     .then((users) => {
@@ -75,25 +78,31 @@ const syncAndSeed = () => {
       return Promise.all([
         //connect line items to an order
         //connect line items to a product
-        plantLI.setOrder(cart),
+        plantLI.setOrder(guestCart),       //needs a customerId
         plantLI.setProduct(plant),
         seedLI.setOrder(authOrder),
         seedLI.setProduct(seed),
-        soilLI.setOrder(cart),
+        soilLI.setOrder(guestCart),       //needs a customerId
         soilLI.setProduct(soil),
         bottleLI.setOrder(authOrder),
         bottleLI.setProduct(bottle),
         guestPlantLI.setOrder(guestOrder),
         guestPlantLI.setProduct(plant),
         guestSeedLI.setOrder(guestOrder),
-        guestSeedLI.setProduct(seed)
+        guestSeedLI.setProduct(seed),
+        adminTestLI.setOrder(authCart),
+        adminTestLI.setProduct(plant),
+        adminTestLI2.setOrder(authCart),
+        adminTestLI2.setProduct(seed)
       ]);
     })
     .then(() => {
       return Promise.all([
         //connect orders to users
         authOrder.setCustomer(authUser),
+        authCart.setCustomer(authUser),
         guestOrder.setCustomer(guestUser),
+        guestCart.setCustomer(guestUser),
         //connect reviews to products
         //connect reviews to users
         seed.setReviews(seedReview),

@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from 'react'
 import { connect } from 'react-redux'
-import { fetchOrders } from '../store/orderReducer.js'
+import { fetchOrders } from '../store/ordersReducer.js'
 import { findFinishedOrders } from '../util';
 
 class Order extends Component {

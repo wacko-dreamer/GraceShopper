@@ -4,17 +4,44 @@ const conn = require('../db/conn');
 
 
 //get all orders
-router.get('/', async (req, res, next) => {
-    const attr = {
-        status: 'CART'
+router.get('/users/:userId/:isGuest', async (req, res, next) => {
+    /* typeof req.params.userId === 'object' */ 
+    /* let attr = {};
+    if(!req.params.isGuest) {
+        attr = {
+            status: 'CART',
+            customerId: req.params.userId 
+        }
+        let isGuest = false;
     }
+    if(req.params.isGuest) {
+        attr = {
+            status: 'CART'
+        }
+        isGuest = true
+    } */
+    let cart;
     try {
-        let cart = await Order.findOne({ where: attr })
-        if(!cart) {
-            cart = await Order.create(attr);
+        if(req.params.isGuest === true) {
+            cart = await Order.findOne({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
+            if(cart.dataValues.status !== 'CART') {
+                let guest = await User.create({ name: 'guest', isGuest: true });
+                cart = await Order.create({ status: 'CART' });
+                cart.setCustomer(guest);
+            }
+        }
+        else if(req.params.isGuest === false && req.params.userId) {
+            cart = await Order.findOne({ where: { customerId: req.params.userId } });
+            if(cart.dataValues.status !== 'CART') {
+                cart = await Order.create({ status: 'CART' });
+                user = await User.findbyPk(req.params.userId);
+                cart.setCustomer(user);
+            }
         }
         const orders = await Order.findAll({
-            include: [ LineItem ],
+            include: [ { model: LineItem, include: [
+                { model: Product }
+            ]}, { model: User, as: 'customer' } ],
             order: [['createdAt', 'DESC']]
         })
         res.send(orders);
