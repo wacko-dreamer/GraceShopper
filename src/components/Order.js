@@ -15,22 +15,20 @@ class Order extends Component {
                 </div>
                 <br />
             {
-                orders[0] ? (
-                    orders.map(ord => (
-                        <ListGroup key={ord.id}>
-                            <Fragment>ORDER ID: {ord.id}</Fragment><br/>
-                            <Fragment>Shipping Address: {ord.shippingAddress}</Fragment><br/>
-                        {   
-                            ord.line_items.map(lineItem => (
-                                <ListGroupItem key={lineItem.id}>
-                                    <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                                </ListGroupItem>
-                            ))
-                        }
-                            <Fragment>Total: ${ord.total}</Fragment><br/>
-                        </ListGroup>
-                    ))
-                ) : null
+                orders.map(ord => (
+                    <ListGroup key={ord.id}>
+                        <Fragment>ORDER ID: {ord.id}</Fragment><br/>
+                        <Fragment>Shipping Address: {ord.shippingAddress}</Fragment><br/>
+                    {   
+                        ord.line_items.map(lineItem => (
+                            <ListGroupItem key={lineItem.id}>
+                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
+                            </ListGroupItem>
+                        ))
+                    }
+                        <Fragment>Total: ${ord.total}</Fragment><br/>
+                    </ListGroup>
+                ))
             }
             </Fragment>
         )
@@ -38,8 +36,7 @@ class Order extends Component {
 }
 
 const mapStateToProps = ({ auth, orders }) => {
-    orders = findOrders(auth, orders, 'COMPLETED')      //stuck here...
-    console.log(orders)
+    orders = findOrders(auth, orders, 'COMPLETED')
     return { orders }
 }
 

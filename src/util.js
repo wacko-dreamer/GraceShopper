@@ -17,8 +17,8 @@ export const findOrder = (auth, orders, status) => (
 )
 
 export const findOrders = (auth, orders, status) => (
-    orders.map(order => {
+    orders.filter(order => {
         if(auth.id) return order.status === status && order.customerId === auth.id;
-        else return order.status === status && order.customer.isGuest === true;
+        else if(order.customer) return order.status === status && order.customer.isGuest === true;
     })
 )
