@@ -71,7 +71,7 @@ export const fetchProducts = () => {
     }
 }
 
-export const addProduct = product => {
+export const addProduct = (product) => {
     return (dispatch) => {
         axios.post('/api/products', product)
         .then(() => dispatch(fetchProducts()))
