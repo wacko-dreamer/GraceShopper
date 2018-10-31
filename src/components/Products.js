@@ -61,9 +61,7 @@ const mapStateToProps = ({ products }, { categoryId }) => {
            }
        })
     }
-    return {
-        products
-    }
+    return { products }
 }
 
 export default connect(mapStateToProps)(Products)

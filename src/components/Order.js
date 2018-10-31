@@ -2,19 +2,11 @@ import React, {Fragment, Component} from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders } from '../store/ordersReducer.js'
 import { findFinishedOrders } from '../util';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 class Order extends Component {
-
-    constructor() {
-        super()
-    }
-
-    componentDidMount(){
-        this.props.fetchOrders()
-        console.log(this.props.order)
-    }
-
     render() {
+        const { orders } = this.props;
         return (
             <Fragment>
                 <div>
@@ -22,49 +14,30 @@ class Order extends Component {
                     <span>Here you will find all the things that you have orderd from Wacko Dreamer</span>
                 </div>
                 <br />
-                <table className="table">
-                    <tbody>
-                        <tr>
-                            {this.props.order.map(ord => {
-                                return (
-                                    <div>
-                                        <h4>ORDER ID: {ord.id}</h4>
-                                        <th scope="row">1</th>
-                                        <td>{ord.total}</td>
-                                        <td>{ord.shippingAddress}</td>
-                                        <ul>
-                                            {ord.lineItems.map(lineItem => {
-                                                return (
-                                                    <div>
-                                                        <li>{lineItem.product.id}</li>
-                                                        <li>{lineItem.quantity}</li>
-                                                        <li>{lineItem.price}</li>
-                                                    </div>
-                                                )
-                                            })}
-                                        </ul>
-                                    </div>
-                                )
-                            })}
-                        </tr>
-                    </tbody>
-                </table>
+            {
+                orders.map(ord => (
+                    <ListGroup key={ord.id}>
+                        <Fragment>ORDER ID: {ord.id}</Fragment><br/>
+                        <Fragment>Shipping Address: {ord.shippingAddress}</Fragment><br/>
+                    {   
+                        ord.line_items.map(lineItem => (
+                            <ListGroupItem key={lineItem.id}>
+                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
+                            </ListGroupItem>
+                        ))
+                    }
+                        <Fragment>Total: ${ord.total}</Fragment><br/>
+                    </ListGroup>
+                ))
+            }
             </Fragment>
         )
     }
 }
 
-const mapStateToProps = ({ order }) => {
-    order = findFinishedOrders(order)
-    return {
-        order
-    }
+const mapStateToProps = ({ auth, orders }) => {
+    orders = findFinishedOrders(auth, orders)
+    return { orders }
 }
 
-const mapDispatchToProps = (dispatch) =>{
-    return {
-        fetchOrders: () => dispatch(fetchOrders())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Order)
+export default connect(mapStateToProps)(Order)
