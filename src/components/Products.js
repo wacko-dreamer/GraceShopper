@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {findLineItemById} from '../util.js'
+import { createLineItem } from '../store/ordersReducer';
+import { findOrder } from '../util';
 
 
 const cardStyle = {
@@ -21,8 +23,9 @@ const divStyle = {
 
 class Products extends Component {
     render() {
-        const {products} = this.props
+        const {order, products, createLineItem} = this.props
         let quantity = 0
+        console.log(order)
         return (
             <Fragment>
                 <br />
@@ -42,6 +45,7 @@ class Products extends Component {
                                     <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
                                     <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link>
+                                    <button onClick={ () => createLineItem(order, product) } className="btn btn-success">Add To Cart</button>
                                 </div>
                             </div>
                         )
@@ -53,7 +57,7 @@ class Products extends Component {
     }
 }
 
-const mapStateToProps = ({ products }, { categoryId }) => {
+const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
     if (categoryId){
        products = products.filter( product => {
            if (product.categories.find(category => category.id === categoryId*1)){
@@ -61,7 +65,11 @@ const mapStateToProps = ({ products }, { categoryId }) => {
            }
        })
     }
-    return { products }
+    //lineItem logic
+    let order = findOrder(auth, orders, 'CART');
+    return { products, order }
 }
 
-export default connect(mapStateToProps)(Products)
+const mapDispatchToProps = ({ createLineItem });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products)

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders, updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
+import { findOrders } from '../util';
 
 
 const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineItem, deleteLineItem, updateOrder }) => {
@@ -57,24 +58,10 @@ const mapStateToProps = ({ auth, orders }) => {
     if(order) lineItems = order.line_items.sort((a, b) => a.id - b.id);
 
     //creating order logic
-    const guestCart = orders.find(order => {
-        if(order.customer) {
-            if(order.customer.isGuest === true && order.status === 'CART') return true;
-        }
-    })
-    const authCart = orders.find(order => {
-        if(order.customer) {
-            if(order.customer.isGuest === false && order.status === 'CART') return true;
-        }
-    })
-    let cart, isGuest;
-    if(auth.id) { 
-        cart = authCart;
-        isGuest = false;
-    }
-    else {
-        cart = guestCart;
-        isGuest = true;
+    const cart = findOrders(auth, orders, 'CART');
+    let isGuest;
+    if(cart) {
+        if(cart.customer) isGuest = cart.customer.isGuest;
     }
 
     return { auth, lineItems, order, cart, isGuest };

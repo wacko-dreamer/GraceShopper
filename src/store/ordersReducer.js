@@ -75,9 +75,10 @@ export const updateOrder = (order, status) => {
     }
 }
 
-export const createLineItem = (orderId, lineItem) => {
+export const createLineItem = (order, product) => {
+    let userId = null;
     return (dispatch) => {
-        axios.post(`/api/orders/${orderId}/lineItems`, lineItem)
+        axios.post(`/api/users/${userId}/orders/${order.id}/lineItems`, product)
         .then(() => dispatch(fetchOrders()))
         // .then(res => dispatch(createdLineItem(orderId,res.data)))
         .catch(ex => console.log(ex))
