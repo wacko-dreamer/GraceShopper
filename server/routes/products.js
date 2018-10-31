@@ -16,6 +16,7 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     Product.create(req.body)
+        .then(product => product.addCategories(req.body.categories))
         .then(product => res.send(product))
         .catch(next)
 })
@@ -23,6 +24,7 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
     Product.findById(req.params.id)
         .then(product => product.update(req.body))
+        .then(product => product.setCategories(req.body.categories))
         .then(product => res.send(product))
         .catch(next)
 })
