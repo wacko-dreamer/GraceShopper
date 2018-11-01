@@ -25,7 +25,6 @@ class Products extends Component {
     render() {
         const {order, products, createLineItem} = this.props
         let quantity = 0
-        console.log(order)
         return (
             <Fragment>
                 <br />

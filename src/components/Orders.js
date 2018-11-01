@@ -4,14 +4,14 @@ import { fetchOrders } from '../store/ordersReducer.js'
 import { findOrders } from '../util';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-class Order extends Component {
+class Orders extends Component {
     render() {
         const { orders } = this.props;
         return (
             <Fragment>
                 <div>
                     <h3>Your Orders</h3>
-                    <span>Here you will find all the things that you have orderd from Wacko Dreamer</span>
+                    <span>Here you will find all the things that you have ordered from Wacko Dreamer</span>
                 </div>
                 <br />
             {
@@ -40,4 +40,4 @@ const mapStateToProps = ({ auth, orders }) => {
     return { orders }
 }
 
-export default connect(mapStateToProps)(Order)
+export default connect(mapStateToProps)(Orders)

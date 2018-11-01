@@ -4,7 +4,9 @@ import Nav from './Nav'
 import Auth from './Auth.js'
 import Shop from './Shop.js'
 import Cart from './Cart.js'
-import Order from './Order.js'
+import OrderDetail from './OrderDetail';
+import Orders from './Orders.js'
+import Checkout from './Checkout'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
@@ -30,8 +32,10 @@ class App extends Component {
                 <Nav/>
                 <Route render={ ({ history }) => <Auth history={ history }/>}/>
                 <Route exact path = '/' render = {() => <Shop/>}/>
-                <Route path = '/user/:userId/cart' render = {() => <Cart/>}/>
-                <Route path = '/user/:userId/order' render = {() => <Order/>}/>
+                <Route path = '/user/:userId/cart' render = {({ history }) => <Cart history={ history }/>}/>
+                <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
+                <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
+                <Route exact path = '/user/:userId/orders' render = {() => <Orders/>}/>
                 <Route path = '/categories/:categoryId' render = {({match}) => <Shop categoryId={match.params.categoryId}/>}/>
                 </div>
             </Router>

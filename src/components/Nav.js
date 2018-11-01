@@ -17,7 +17,7 @@ const Nav = () => {
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between'}}>
                         <Link to="/user/:id/cart" style={{color:'white'}}>Cart 2</Link>
-                        <Link to="/user/:id/order" style={{color:'white'}}>Order 3</Link>
+                        <Link to="/user/:id/orders" style={{color:'white'}}>Orders 3</Link>
                     </div>
                 </div>
             </nav>

@@ -64,14 +64,18 @@ export const fetchOrders = (cart, isGuest) => {
     }
 }
 
-export const updateOrder = (order, status) => {
+export const updateOrder = (order, status, history) => {
     let userId;
     order = { ...order, status };
     return (dispatch) => {
         axios.put(`api/users/${userId}/orders/${order.id}`, order)
-        .then(() => dispatch(fetchOrders()))
-        // .then(res => dispatch(updatedOrder(res.data)))
-        .catch(ex => console.log(ex))
+            .then(() => {
+                if(status === 'CREATED') history.push('/user/:userId/checkout');
+                if(status === 'COMPLETED') history.push('/user/:userId/orders/:orderId');
+            })
+            .then(() => dispatch(fetchOrders()))
+            // .then(res => dispatch(updatedOrder(res.data)))
+            .catch(ex => console.log(ex))
     }
 }
 

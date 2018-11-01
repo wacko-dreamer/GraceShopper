@@ -4,7 +4,7 @@ import { fetchOrders, updateLineItem, deleteLineItem, updateOrder } from '../sto
 import { findOrders } from '../util';
 
 
-const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineItem, deleteLineItem, updateOrder }) => {
+const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineItem, deleteLineItem, updateOrder, history }) => {
     /* const createOrder = (order, cart, isGuest) => {
         console.log(updateOrder)
         if(updateOrder) {
@@ -38,7 +38,7 @@ const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineIt
                         }
                         </tbody>
                     </table>
-                    <button onClick={() => updateOrder(order, 'CREATED') } className="btn btn-success my-2 my-sm-0">Checkout</button>
+                    <button onClick={() => updateOrder(order, 'CREATED', history) } className="btn btn-success my-2 my-sm-0">Checkout</button>
                 </Fragment>
             )
         }
@@ -46,7 +46,7 @@ const Cart = ({ auth, lineItems, order, cart, isGuest, fetchOrders, updateLineIt
     )
 }
 
-const mapStateToProps = ({ auth, orders }) => {
+const mapStateToProps = ({ auth, orders }, { history }) => {
 
     //lineItem logic
     let order = {};
@@ -64,7 +64,7 @@ const mapStateToProps = ({ auth, orders }) => {
         if(cart.customer) isGuest = cart.customer.isGuest;
     }
 
-    return { auth, lineItems, order, cart, isGuest };
+    return { auth, lineItems, order, cart, isGuest, history };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateLineItem, deleteLineItem, updateOrder });
