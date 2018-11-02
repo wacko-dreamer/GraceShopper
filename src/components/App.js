@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {HashRouter as Router, Route} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 import Nav from './Nav'
 import Auth from './Auth.js'
 import Shop from './Shop.js'
@@ -38,6 +38,10 @@ class App extends Component {
                 <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
                 <Route exact path = '/user/:userId/orders' render = {() => <Orders/>}/>
                 <Route path = '/categories/:categoryId' render = {({match}) => <Shop categoryId={match.params.categoryId}/>}/>
+                <Switch>
+                    <Route path='/products/create' render={({ history }) => <AddProduct history={history}/>} />
+                    <Route path='/products/:productId' render={({ match, history }) => <ProductDetail productId={match.params.productId} history={history}/>}/>
+                </Switch>
                 </div>
             </Router>
         )
