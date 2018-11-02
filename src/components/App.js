@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
 import { fetchOrders } from '../store/ordersReducer.js'
+import { findOrder } from '../util';
 
 
 class App extends Component {
@@ -20,9 +21,9 @@ class App extends Component {
     }
 
     componentDidMount(){
+        this.props.fetchOrders()
         this.props.fetchProducts()
         this.props.fetchCategories()
-        this.props.fetchOrders()
     }
 
     render(){

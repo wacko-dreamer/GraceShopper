@@ -5,36 +5,30 @@ const conn = require('../db/conn');
 
 //get all orders
 router.get('/users/:userId/:isGuest', async (req, res, next) => {
-    /* typeof req.params.userId === 'object' */ 
-    /* let attr = {};
-    if(!req.params.isGuest) {
-        attr = {
-            status: 'CART',
-            customerId: req.params.userId 
-        }
-        let isGuest = false;
-    }
-    if(req.params.isGuest) {
-        attr = {
-            status: 'CART'
-        }
-        isGuest = true
-    } */
-    let cart;
+    console.log(req.params.isGuest, req.params.userId)
+    let cart; 
     try {
-        if(req.params.isGuest === true) {
-            cart = await Order.findOne({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
-            if(cart.dataValues.status !== 'CART') {
-                let guest = await User.create({ name: 'guest', isGuest: true });
-                cart = await Order.create({ status: 'CART' });
-                cart.setCustomer(guest);
+        if(req.params.isGuest === 'true' && req.params.userId !== 'null') {
+            console.log('ifff')
+            let orders;
+            orders = await Order.findAll({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
+            //console.log(orders)
+            cart = orders.find(order => order.dataValues.status === 'CART');
+            console.log(cart)
+            if(cart) {
+                if(!cart.dataValues) {
+                    let guest = await User.create({ name: 'guest', isGuest: true });
+                    cart = await Order.create({ status: 'CART' });
+                    cart.setCustomer(guest);
+                }
             }
         }
-        else if(req.params.isGuest === false && req.params.userId) {
+        else if(req.params.isGuest === 'false' && req.params.userId !== 'null') {
+            console.log('else if')
             cart = await Order.findOne({ where: { customerId: req.params.userId } });
             if(cart.dataValues.status !== 'CART') {
                 cart = await Order.create({ status: 'CART' });
-                user = await User.findbyPk(req.params.userId);
+                user = await User.findById(req.params.userId);
                 cart.setCustomer(user);
             }
         }

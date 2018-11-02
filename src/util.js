@@ -12,13 +12,21 @@ export const findFinishedOrders = (auth, orders) => (
 export const findOrder = (auth, orders, status) => (
     orders.find(order => {
         if(auth.id) return order.status === status && order.customerId === auth.id;
-        else return order.status === status && order.customer.isGuest === true;
+        else {
+            if(order.status === status && order.customer) {
+                return order.customer.isGuest;
+            }
+        }
     })
 )
 
 export const findOrders = (auth, orders, status) => (
     orders.filter(order => {
         if(auth.id) return order.status === status && order.customerId === auth.id;
-        else if(order.customer) return order.status === status && order.customer.isGuest === true;
+        else {
+            if(order.status === status && order.customer) {
+                return order.customer.isGuest;
+            }
+        }
     })
 )

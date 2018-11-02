@@ -51,10 +51,8 @@ const deletedLineItem  = (orderId, lineItem) => ({
 
 
 export const fetchOrders = (cart, isGuest) => {
-    let userId = null;
+    let userId = 'null';
     if(cart) userId = cart.customerId;
-    if(!isGuest) isGuest = null;
-    console.log(userId, cart)
     return (dispatch) => {
         axios.get(`api/orders/users/${userId}/${isGuest}`)
         .then(res => {
@@ -64,7 +62,7 @@ export const fetchOrders = (cart, isGuest) => {
     }
 }
 
-export const updateOrder = (order, status, history) => {
+export const updateOrder = (order, status, isGuest, history) => {
     let userId;
     order = { ...order, status };
     return (dispatch) => {
@@ -73,7 +71,7 @@ export const updateOrder = (order, status, history) => {
                 if(status === 'CREATED') history.push('/user/:userId/checkout');
                 if(status === 'COMPLETED') history.push('/user/:userId/orders/:orderId');
             })
-            .then(() => dispatch(fetchOrders()))
+            .then(() => dispatch(fetchOrders(order, isGuest)))
             // .then(res => dispatch(updatedOrder(res.data)))
             .catch(ex => console.log(ex))
     }

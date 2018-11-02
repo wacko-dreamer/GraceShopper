@@ -3,17 +3,15 @@ import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
 import { findOrder } from '../util';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { create } from 'domain';
 
 
 class Checkout extends Component {
     constructor() {
         super();
     }
-    componentDidMount() {
-        fetchOrders()       //create new cart here
-    }
     render() {
-        const { createdOrder, updateOrder, history } = this.props;
+        const { createdOrder, updateOrder, isGuest, history } = this.props;
         return(
             <Fragment>
                 <div>
@@ -37,15 +35,18 @@ class Checkout extends Component {
                     </ListGroup>
                 ): null
             }
-                <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', history) } >Confirm Order</Button>
+                <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', isGuest, history) } >Confirm Order</Button>
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = ({ auth, orders }, { history }) => {
-    const createdOrder = findOrder(auth, orders, 'CREATED');
-    return { createdOrder, history };
+    let createdOrder = findOrder(auth, orders, 'CREATED');
+    if(createdOrder === undefined) createdOrder = null;
+    let isGuest = true; 
+    if(auth.id) isGuest = false;
+    return { createdOrder, isGuest, history };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateOrder });
