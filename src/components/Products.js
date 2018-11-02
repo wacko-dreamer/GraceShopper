@@ -44,7 +44,6 @@ class Products extends Component {
                                     <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
                                     <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link>
-                                    <button onClick={ () => createLineItem(order, product) } className="btn btn-success">Add To Cart</button>
                                 </div>
                             </div>
                         )
