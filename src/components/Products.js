@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {findLineItemById} from '../util.js'
+import { createLineItem } from '../store/ordersReducer';
+import { findOrder } from '../util';
 
 
 const cardStyle = {
@@ -21,7 +23,7 @@ const divStyle = {
 
 class Products extends Component {
     render() {
-        const {products} = this.props
+        const {order, products, createLineItem} = this.props
         let quantity = 0
         return (
             <Fragment>
@@ -53,7 +55,7 @@ class Products extends Component {
     }
 }
 
-const mapStateToProps = ({ products }, { categoryId }) => {
+const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
     if (categoryId){
        products = products.filter( product => {
            if (product.categories.find(category => category.id === categoryId*1)){
@@ -61,7 +63,11 @@ const mapStateToProps = ({ products }, { categoryId }) => {
            }
        })
     }
-    return { products }
+    //lineItem logic
+    let order = findOrder(auth, orders, 'CART');
+    return { products, order }
 }
 
-export default connect(mapStateToProps)(Products)
+const mapDispatchToProps = ({ createLineItem });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products)

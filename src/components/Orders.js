@@ -1,17 +1,17 @@
 import React, {Fragment, Component} from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders } from '../store/ordersReducer.js'
-import { findFinishedOrders } from '../util';
+import { findOrders } from '../util';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-class Order extends Component {
+class Orders extends Component {
     render() {
         const { orders } = this.props;
         return (
             <Fragment>
                 <div>
                     <h3>Your Orders</h3>
-                    <span>Here you will find all the things that you have orderd from Wacko Dreamer</span>
+                    <span>Here you will find all the things that you have ordered from Wacko Dreamer</span>
                 </div>
                 <br />
             {
@@ -36,8 +36,8 @@ class Order extends Component {
 }
 
 const mapStateToProps = ({ auth, orders }) => {
-    orders = findFinishedOrders(auth, orders)
+    orders = findOrders(auth, orders, 'COMPLETED')
     return { orders }
 }
 
-export default connect(mapStateToProps)(Order)
+export default connect(mapStateToProps)(Orders)

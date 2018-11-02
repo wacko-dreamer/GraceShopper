@@ -68,8 +68,9 @@ router.get('/:userId/orders', async (req, res, next) => {
 router.post('/:userId/orders/:orderId/lineItems', (req, res, next) => {
     LineItem.create({
         orderId: req.params.orderId,
-        quantity: req.body.quantity,
-        productId: req.body.productId
+        quantity: 1,
+        productId: req.body.id,
+        price: req.body.price
     })    
         .then(lineItem => res.send(lineItem))
         .catch(next)
@@ -77,7 +78,7 @@ router.post('/:userId/orders/:orderId/lineItems', (req, res, next) => {
 
 //update order
 router.put('/:userId/orders/:orderId', (req, res, next) => {
-    Order.findByPk(req.params.orderId)
+    Order.findById(req.params.orderId)
         .then(order => order.update({ ...req.body, /* userId: req.params.userId  */}))
         .then(order => res.send(order))
         .catch(next)

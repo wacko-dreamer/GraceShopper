@@ -4,13 +4,14 @@ import Nav from './Nav'
 import Auth from './Auth.js'
 import Shop from './Shop.js'
 import Cart from './Cart.js'
-import Order from './Order.js'
-import AddProduct from './AddProduct.js'
-import ProductDetail from './ProductDetail.js'
+import OrderDetail from './OrderDetail';
+import Orders from './Orders.js'
+import Checkout from './Checkout'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
 import { fetchOrders } from '../store/ordersReducer.js'
+import { findOrder } from '../util';
 
 
 class App extends Component {
@@ -20,9 +21,9 @@ class App extends Component {
     }
 
     componentDidMount(){
+        this.props.fetchOrders()
         this.props.fetchProducts()
         this.props.fetchCategories()
-        this.props.fetchOrders()
     }
 
     render(){
@@ -32,8 +33,10 @@ class App extends Component {
                 <Nav/>
                 <Route render={ ({ history }) => <Auth history={ history }/>}/>
                 <Route exact path = '/' render = {() => <Shop/>}/>
-                <Route path = '/user/:userId/cart' render = {() => <Cart/>}/>
-                <Route path = '/user/:userId/order' render = {() => <Order/>}/>
+                <Route path = '/user/:userId/cart' render = {({ history }) => <Cart history={ history }/>}/>
+                <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
+                <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
+                <Route exact path = '/user/:userId/orders' render = {() => <Orders/>}/>
                 <Route path = '/categories/:categoryId' render = {({match}) => <Shop categoryId={match.params.categoryId}/>}/>
                 <Switch>
                     <Route path='/products/create' render={({ history }) => <AddProduct history={history}/>} />
