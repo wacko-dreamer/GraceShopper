@@ -78,6 +78,7 @@ export const updateOrder = (order, status, isGuest, history) => {
 }
 
 export const createLineItem = (order, product) => {
+    console.log(order)
     let userId = null;
     return (dispatch) => {
         axios.post(`/api/users/${userId}/orders/${order.id}/lineItems`, product)

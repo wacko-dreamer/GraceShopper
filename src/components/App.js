@@ -7,6 +7,7 @@ import Cart from './Cart.js'
 import OrderDetail from './OrderDetail';
 import Orders from './Orders.js'
 import Checkout from './Checkout'
+import ProductDetail from './ProductDetail';
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'

@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editProduct, deleteProduct } from '../store/productsReducer';
+import { createLineItem } from '../store/ordersReducer';
+import { findOrder } from '../util';
 
 const cardStyle = {
   border: '1px solid grey',
@@ -24,6 +26,7 @@ class Product extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleAddToCart = this.handleAddToCart.bind(this);
   }
   handleSubmit(evt) {
     evt.preventDefault()
@@ -34,7 +37,6 @@ class Product extends Component {
       return memo
     }, []);
     const product = { name, description, price, quantity : quantity * 1, imageUrl, categories : prodCats };
-    console.log('submittedProd:', product);
     this.props.editProduct(this.props.productId, product)
   }
 
@@ -50,11 +52,22 @@ class Product extends Component {
     this.props.history.push('/')
   }
 
+  handleAddToCart(evt) {
+    const { products, createLineItem, order, productId } = this.props;
+    //evt.preventDefault();
+    const findProduct = products => {
+        let arr = products.filter(_product => _product.id == productId);
+        return arr[0];
+    };
+    const product = findProduct(products) || {};
+    createLineItem(order, product);
+  }
+
   render () {
 
     const { products, productId, auth, categories } = this.props;
     const { name, description, price, quantity, imageUrl } = this.state;
-    const { handleChange, handleSubmit, handleDelete } = this;
+    const { handleChange, handleSubmit, handleDelete, handleAddToCart } = this;
     const findProduct = products => {
       let arr = products.filter(_product => _product.id == productId);
       return arr[0];
@@ -62,7 +75,6 @@ class Product extends Component {
     const product = findProduct(products) || {};
     const productCats = product.categories || [];
     const productReviews = product.reviews || [];
-    console.log('product:', product);
     return(
         <div>
             {/* Product detail section */}
@@ -72,7 +84,7 @@ class Product extends Component {
                 <h5 className="card-title">{product.name}</h5>
                 <p className="card-text">{product.description}</p>
                 <p className="card-text"><strong>${product.price}</strong></p>
-                <a href="#" className="btn btn-success">Add To Cart</a>
+                <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
             </div>
             </div>
         <div>
@@ -163,18 +175,16 @@ class Product extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth : state.auth,
-    products : state.products,
-    categories : state.categories
-  };
+const mapStateToProps = ({ auth, products, categories, orders }) => {
+    const order = findOrder(auth, orders, 'CART');
+    return { auth, products, categories };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     editProduct : (productId, product) => dispatch(editProduct(productId, product)),
-    deleteProduct : (product) => dispatch(deleteProduct(product))
+    deleteProduct : (product) => dispatch(deleteProduct(product)),
+    createLineItem : (order, product) => dispatch(createLineItem(order, product))
   };
 };
 
