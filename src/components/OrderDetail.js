@@ -34,6 +34,7 @@ const OrderDetail = ({ completedOrder }) => {
 
 const mapStateToProps = ({ auth, orders }) => {
     const completedOrder = findOrder(auth, orders, 'COMPLETED');
+    console.log(completedOrder)
     return { completedOrder };
 }
 

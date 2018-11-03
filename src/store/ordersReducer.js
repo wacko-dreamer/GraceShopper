@@ -68,8 +68,8 @@ export const updateOrder = (order, status, isGuest, history) => {
     return (dispatch) => (
         axios.put(`api/users/${userId}/orders/${order.id}`, order)
             .then(() => {
-                if(status === 'CREATED') history.push('/user/:userId/checkout');
-                if(status === 'COMPLETED') history.push('/user/:userId/orders/:orderId');
+                if(status === 'CREATED') history.push(`/user/${ order.customerId }/checkout`);
+                if(status === 'COMPLETED') history.push(`/user/${ order.customerId }/orders/${ order.id }`);
             })
             .then(() => dispatch(fetchOrders(order, isGuest)))
             // .then(res => dispatch(updatedOrder(res.data)))
