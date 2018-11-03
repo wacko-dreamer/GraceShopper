@@ -1,9 +1,12 @@
 
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { Badge } from 'reactstrap';
+import { findOrder, findOrders, findLiQuantityByCartOrder } from '../util';
 
 
-const Nav = () => {
+const Nav = ({ liQuantity, completedOrders }) => {
     return (
         <Fragment>
             <nav className="navbar navbar-dark bg-dark">
@@ -16,8 +19,8 @@ const Nav = () => {
                         </form> */}
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between'}}>
-                        <Link to="/user/:id/cart" style={{color:'white'}}>Cart 2</Link>
-                        <Link to="/user/:id/orders" style={{color:'white'}}>Orders 3</Link>
+                        <Link to="/user/:id/cart" style={{color:'white'}}>Cart <Badge>{ liQuantity }</Badge></Link>
+                        <Link to="/user/:id/orders" style={{color:'white'}}>Orders <Badge>{ completedOrders.length }</Badge></Link>
                     </div>
                 </div>
             </nav>
@@ -25,4 +28,11 @@ const Nav = () => {
     )
 }
 
-export default Nav
+const mapStateToProps = ({ auth, orders }) => {
+    const cartOrder = findOrder(auth, orders, 'CART');
+    const liQuantity = findLiQuantityByCartOrder(cartOrder);
+    const completedOrders = findOrders(auth, orders, 'COMPLETED');
+    return ({ liQuantity, orders, completedOrders });
+}
+
+export default connect(mapStateToProps)(Nav);
