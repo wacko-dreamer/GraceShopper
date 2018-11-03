@@ -18,7 +18,7 @@ const OrderDetail = ({ completedOrder }) => {
                         <Fragment>ORDER ID: {completedOrder.id}</Fragment><br/>
                         <Fragment>Shipping Address: {completedOrder.shippingAddress}</Fragment><br/>
                     {   
-                        completedOrder.line_items.map(lineItem => (
+                        completedOrder.lineItems.map(lineItem => (
                             <ListGroupItem key={lineItem.id}>
                                 <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
                             </ListGroupItem>

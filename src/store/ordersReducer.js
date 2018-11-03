@@ -78,7 +78,6 @@ export const updateOrder = (order, status, isGuest, history) => {
 }
 
 export const createLineItem = (order, product) => {
-    console.log(order)
     let userId = null;
     return (dispatch) => {
         axios.post(`/api/users/${userId}/orders/${order.id}/lineItems`, product)
@@ -88,9 +87,11 @@ export const createLineItem = (order, product) => {
     }
 }
 
-export const updateLineItem = (order, lineItem, _quantity, change) => {
+export const updateLineItem = (order, lineItem, change) => {
     let userId;
-    lineItem = { ...lineItem, quantity: _quantity + change };
+    if(change === 'increment') change = 1;
+    else change = - 1;
+    lineItem = { ...lineItem, quantity: lineItem.quantity + change };
     return (dispatch) =>{
         axios.put(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`, lineItem)
         .then(() => dispatch(fetchOrders()))

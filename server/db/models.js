@@ -65,7 +65,7 @@ const Order = conn.define('order', {
   }
 });
 
-const LineItem = conn.define('line_item', {
+const LineItem = conn.define('lineItem', {
   quantity: {
     type: conn.Sequelize.INTEGER,
     defaultValue : 1

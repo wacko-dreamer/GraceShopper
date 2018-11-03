@@ -5,16 +5,16 @@ const conn = require('../db/conn');
 
 //get all orders
 router.get('/users/:userId/:isGuest', async (req, res, next) => {
-    console.log(req.params.isGuest, req.params.userId)
+    //console.log(req.params.isGuest, req.params.userId)
     let cart; 
     try {
         if(req.params.isGuest === 'true' && req.params.userId !== 'null') {
-            console.log('ifff')
+            //console.log('ifff')
             let orders;
             orders = await Order.findAll({ include: [ { model: User, as: 'customer', where: { isGuest: true } } ] });
             //console.log(orders)
             cart = orders.find(order => order.dataValues.status === 'CART');
-            console.log(cart)
+            //console.log(cart)
             if(cart) {
                 if(!cart.dataValues) {
                     let guest = await User.create({ name: 'guest', isGuest: true });
@@ -24,7 +24,7 @@ router.get('/users/:userId/:isGuest', async (req, res, next) => {
             }
         }
         else if(req.params.isGuest === 'false' && req.params.userId !== 'null') {
-            console.log('else if')
+            //console.log('else if')
             cart = await Order.findOne({ where: { customerId: req.params.userId } });
             if(cart.dataValues.status !== 'CART') {
                 cart = await Order.create({ status: 'CART' });

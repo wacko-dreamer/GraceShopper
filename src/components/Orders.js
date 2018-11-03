@@ -1,4 +1,4 @@
-import React, {Fragment, Component} from 'react'
+import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders } from '../store/ordersReducer.js'
 import { findOrders } from '../util';
@@ -15,18 +15,18 @@ class Orders extends Component {
                 </div>
                 <br />
             {
-                orders.map(ord => (
-                    <ListGroup key={ord.id}>
-                        <Fragment>ORDER ID: {ord.id}</Fragment><br/>
-                        <Fragment>Shipping Address: {ord.shippingAddress}</Fragment><br/>
+                orders.map(order => (
+                    <ListGroup key={ order.id }>
+                        <Fragment>ORDER ID: { order.id }</Fragment><br/>
+                        <Fragment>Shipping Address: { ord.shippingAddress }</Fragment><br/>
                     {   
-                        ord.line_items.map(lineItem => (
-                            <ListGroupItem key={lineItem.id}>
-                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
+                        order.lineItems.map(lineItem => (
+                            <ListGroupItem key={ lineItem.id }>
+                                <Fragment>ProductId: { lineItem.productId } Quantity: { lineItem.quantity } Price: ${ lineItem.price }</Fragment>
                             </ListGroupItem>
                         ))
                     }
-                        <Fragment>Total: ${ord.total}</Fragment><br/>
+                        <Fragment>Total: ${order.total}</Fragment><br/>
                     </ListGroup>
                 ))
             }
