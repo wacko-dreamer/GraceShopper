@@ -25,7 +25,8 @@ const Product = conn.define('product', {
     allowNull: false
   },
   imageUrl: {
-    type: conn.Sequelize.STRING
+    type: conn.Sequelize.STRING,
+    defaultValue: "https://www.theshelbygroup.com/wp-content/uploads/2018/03/280x240-placeholder.png"
   }
 });
 
