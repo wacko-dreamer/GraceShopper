@@ -41,7 +41,7 @@ class App extends Component {
                 <Nav/>
                 <Route render={ ({ history }) => <Auth history={ history }/>}/>
                 <Route exact path = '/' render = {() => <Shop/>}/>
-                <Route path = '/user/:userId/cart' render = {({ history }) => <Cart history={ history }/>}/>
+                <Route path = '/user/:userId/cart' render = {({ history, match }) => <Cart history={ history } userId={ match.params.userId }/>}/>
                 <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
                 <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
                 <Route exact path = '/user/:userId/orders' render = {() => <Orders />} />

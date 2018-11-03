@@ -3,9 +3,10 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge } from 'reactstrap';
 import { findOrder, findOrders, findLiQuantityByCartOrder, findUserId } from '../util';
+import { connect } from 'react-redux';
 
 
-const Nav = ({ liQuantity, completedOrders, userId }) => {
+const Nav = ({ liQuantity, completedOrders, userId, auth }) => {
     return (
         <Fragment>
             <nav className="navbar navbar-dark bg-dark">
@@ -25,7 +26,7 @@ const Nav = ({ liQuantity, completedOrders, userId }) => {
                             Orders <Badge color='success'>{ completedOrders.length }</Badge>
                         </Link>
                         {
-                            this.props.auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
+                            auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
                         }
                     </div>
                 </div>
@@ -34,16 +35,12 @@ const Nav = ({ liQuantity, completedOrders, userId }) => {
     )
 }
 
-const mapStateToProps = ({ auth }) => {
-    return { auth }
-}
-
 const mapStateToProps = ({ auth, orders }) => {
     const cartOrder = findOrder(auth, orders, 'CART');
     const liQuantity = findLiQuantityByCartOrder(cartOrder);
     const completedOrders = findOrders(auth, orders, 'COMPLETED');
     const userId = findUserId(auth, cartOrder)
-    return ({ liQuantity, orders, completedOrders, userId });
+    return ({ liQuantity, orders, completedOrders, userId, auth });
 }
 
 export default connect(mapStateToProps)(Nav);

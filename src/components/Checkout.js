@@ -69,17 +69,18 @@ class Checkout extends Component {
     }
 }
 
-const mapStateToProps = ({ auth, orders }, { history }) => {
-    let createdOrder = findOrder(auth, orders, 'CREATED');
+const mapStateToProps = ({ auth, orders }, { history, userId }) => {
+    let createdOrder = findOrder(auth, orders, 'CREATED', userId);
     let isGuest = true; 
     if(auth.id) isGuest = false;
     let amount = 0
-    if (createdOrder) {
+    if (createdOrder.lineItems) {
         amount = createdOrder.lineItems.reduce((accum, lineItem) => {
             return accum + lineItem.quantity * lineItem.price
         },0)
     }
     amount = Math.round(amount*100)/100
+    console.log(createdOrder)
     return { createdOrder, isGuest, history, amount };
 }
 
