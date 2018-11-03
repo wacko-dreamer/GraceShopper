@@ -20,7 +20,7 @@ class Nav extends Component {
                             <Link to="/user/:id/cart" style={{color:'white'}}> Cart 2 </Link>
                             <Link to="/user/:id/orders" style={{color:'white'}}> Orders 3 </Link>
                             {
-                                this.props.auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin Page </Link> : <span></span>
+                                this.props.auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
                             }
                         </div>
                     </div>
