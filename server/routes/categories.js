@@ -24,6 +24,7 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
     Category.findById(req.params.id)
         .then(category => category.update(req.body))
+        .then(category => category.setProducts(req.body.products))
         .then(category => res.send(category))
         .catch(next)
 })
