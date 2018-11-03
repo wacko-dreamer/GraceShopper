@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AdminOrderView from './AdminOrderView'
+import AdminOrdersView from './AdminOrdersView'
 
 
 class AdminOrderPage extends Component {
@@ -17,26 +17,32 @@ class AdminOrderPage extends Component {
   }
 
   render () {
-    const { orders } = this.props;
+    const { orders, auth } = this.props;
     const { updateOrderView } = this;
     const { status } = this.state;
-    return (
-      <div>
-        <ul>
-          <li style={{fontWeight : 'bold'}}>Order Status</li>
-          <li onClick={() => updateOrderView('CREATED')}>Created</li>
-          <li onClick={() => updateOrderView('PROCESSING')}>Processing</li>
-          <li onClick={() => updateOrderView('CANCELLED')}>Cancelled</li>
-          <li onClick={() => updateOrderView('COMPLETED')}>Completed</li>
-        </ul>
-        <AdminOrderView orders={orders} status={status}/>
-      </div>
-    )
+    console.log(orders)
+    if(auth.isAdmin) {
+      return (
+        <div>
+          <ul>
+            <li style={{fontWeight : 'bold'}}>Order Status</li>
+            <li onClick={() => updateOrderView('CREATED')}>Created</li>
+            <li onClick={() => updateOrderView('PROCESSING')}>Processing</li>
+            <li onClick={() => updateOrderView('CANCELLED')}>Cancelled</li>
+            <li onClick={() => updateOrderView('COMPLETED')}>Completed</li>
+          </ul>
+          <AdminOrdersView orders={orders} status={status}/>
+        </div>
+      )
+    } else {
+      return <h3>You are not authoritized to  view this page</h3>
+    }
+
   }
 }
 
-const mapStateToProps = ({ orders }) => {
-  return { orders }
+const mapStateToProps = ({ orders, auth }) => {
+  return { orders, auth }
 }
 
 export default connect(mapStateToProps)(AdminOrderPage)
