@@ -18,7 +18,7 @@ class Orders extends Component {
                 orders.map(order => (
                     <ListGroup key={ order.id }>
                         <Fragment>ORDER ID: { order.id }</Fragment><br/>
-                        <Fragment>Shipping Address: { ord.shippingAddress }</Fragment><br/>
+                        <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
                     {   
                         order.lineItems.map(lineItem => (
                             <ListGroupItem key={ lineItem.id }>
