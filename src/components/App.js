@@ -43,7 +43,7 @@ class App extends Component {
                 <Route exact path = '/' render = {() => <Shop/>}/>
                 <Route path = '/user/:userId/cart' render = {({ history, match }) => <Cart history={ history } userId={ match.params.userId }/>}/>
                 <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
-                <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
+                <Route path = '/user/:userId/orders/:orderId' render = { ({ match }) => <OrderDetail orderId={ match.params.orderId }/> } />
                 <Route exact path = '/user/:userId/orders' render = {() => <Orders />} />
                 <Route path='/categories/:categoryId' render={({ match }) => <Shop categoryId={match.params.categoryId} />} />
                 <Route path='/products/:productId' render={({ match, history }) => <ProductDetail productId={match.params.productId} history={history} />} />

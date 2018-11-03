@@ -25,7 +25,6 @@ class CheckoutForm extends Component {
       token: token.id,
       amount: fromUSDToCent(amount)
     });
-
     if (res.data === 'succeeded'){
       this.setState({complete:true})
       updateOrder(createdOrder, 'COMPLETED', isGuest, history)
