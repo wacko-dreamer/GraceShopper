@@ -45,7 +45,7 @@ class ProductDetail extends Component {
   }
 
   handleChange(evt) {
-      console.log(evt.target, evt.target.name, evt.target.value)
+      //console.log(evt.target, evt.target.name, evt.target.value)
     this.setState({
         [ evt.target.name ] : [ evt.target.name ] == 'categories' ? [...evt.target.selectedOptions].map(option => option.value) : evt.target.value
       })

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { HashRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import Nav from './Nav'
 import Auth from './Auth.js'
 import Shop from './Shop.js'
@@ -14,6 +14,7 @@ import AdminPage from './AdminPage'
 import Products from './Products'
 import Categories from './Categories'
 import AdminOrderPage from './AdminOrderPage'
+import AdminOrderInfo from './AdminOrderInfo'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
@@ -52,7 +53,10 @@ class App extends Component {
                 <Route path='/admin/categories' component={Categories} />
                 <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
                 <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
+                <Switch>
+                <Route path='/admin/orders/:orderId' render={({ match, history }) => <AdminOrderInfo history={history} orderId={match.params.orderId}/>} />
                 <Route path='/admin/orders' component={AdminOrderPage} />
+                </Switch>
                 </div>
             </Router>
         )
