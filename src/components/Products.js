@@ -44,7 +44,7 @@ class Products extends Component {
                                     <button className="btn btn-info" style={{margin: '5px'}}>+</button>
                                     <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
-                                    {auth.id ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
+                                    {auth.isAdmin ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
                                 </div>
                             </div>
                         )
