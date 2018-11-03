@@ -22,7 +22,7 @@ const Nav = ({ liQuantity, completedOrders, userId, auth }) => {
                         <Link to={ `/user/${userId}/cart` } style={ { color:'white' } }>
                             Cart <Badge color='success'>{ liQuantity }</Badge>
                         </Link>
-                        <Link to="/user/:id/orders" style={ { color:'white' } }>
+                        <Link to={ `/user/${userId}/orders` } style={ { color:'white' } }>
                             Orders <Badge color='success'>{ completedOrders.length }</Badge>
                         </Link>
                         {

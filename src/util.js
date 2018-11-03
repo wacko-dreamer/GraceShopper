@@ -12,9 +12,10 @@ export const findFinishedOrders = (auth, orders) => (
     })
 )
 
-export const findOrder = (auth, orders, status, userId) => {
+export const findOrder = (auth, orders, status, userId, orderId) => {
     const order = orders.find(order => {
-        if(auth.id) return order.status === status && order.customerId === auth.id;
+        if(order.id === orderId) return true; 
+        else if(auth.id) return order.status === status && order.customerId === auth.id;
         else if(order.status === status && order.customerId === userId ) return true;
         else {
             if(order.status === status && order.customer) {

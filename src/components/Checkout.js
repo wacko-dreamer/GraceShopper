@@ -117,7 +117,6 @@ const mapStateToProps = ({ auth, orders }, { history, userId }) => {
         },0)
     }
     amount = Math.round(amount*100)/100
-    console.log(createdOrder)
     return { createdOrder, isGuest, history, amount };
 }
 
