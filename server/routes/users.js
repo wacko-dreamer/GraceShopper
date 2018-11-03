@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:userId', (req, res, next) => {
-    User.findById(req.params.userId)
+    User.findByPk(req.params.userId)
         .then(user => res.send(user))
         .catch(next)
 })
@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.put('/:userId', (req, res, next) => {
-    User.findById(req.params.userId)
+    User.findByPk(req.params.userId)
         .then(user => user.update(req.body))
         .then(user => res.send(user))
         .catch(next)
@@ -45,7 +45,7 @@ router.get('/:userId/orders', async (req, res, next) => {
         })
         if(!cart) {
             cart = await Order.create({ where: { status: 'CART' } });
-            user = await User.findById(req.params.userId);
+            user = await User.findByPk(req.params.userId);
             await cart.setUser(user);
         }
         const orders = await Order.findAll({

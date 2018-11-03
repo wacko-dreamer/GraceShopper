@@ -3,10 +3,10 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { Badge } from 'reactstrap';
-import { findOrder, findOrders, findLiQuantityByCartOrder } from '../util';
+import { findOrder, findOrders, findLiQuantityByCartOrder, findUserId } from '../util';
 
 
-const Nav = ({ liQuantity, completedOrders }) => {
+const Nav = ({ liQuantity, completedOrders, userId }) => {
     return (
         <Fragment>
             <nav className="navbar navbar-dark bg-dark">
@@ -18,9 +18,13 @@ const Nav = ({ liQuantity, completedOrders }) => {
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </form> */}
                     </div>
-                    <div style={{display:'flex', justifyContent: 'space-between'}}>
-                        <Link to="/user/:id/cart" style={{color:'white'}}>Cart <Badge>{ liQuantity }</Badge></Link>
-                        <Link to="/user/:id/orders" style={{color:'white'}}>Orders <Badge>{ completedOrders.length }</Badge></Link>
+                    <div style={ { display:'flex', justifyContent: 'space-between' } }>
+                        <Link to={ `/user/${userId}/cart` } style={ { color:'white' } }>
+                            Cart <Badge color='success'>{ liQuantity }</Badge>
+                        </Link>
+                        <Link to="/user/:id/orders" style={ { color:'white' } }>
+                            Orders <Badge color='success'>{ completedOrders.length }</Badge>
+                        </Link>
                     </div>
                 </div>
             </nav>
@@ -32,7 +36,8 @@ const mapStateToProps = ({ auth, orders }) => {
     const cartOrder = findOrder(auth, orders, 'CART');
     const liQuantity = findLiQuantityByCartOrder(cartOrder);
     const completedOrders = findOrders(auth, orders, 'COMPLETED');
-    return ({ liQuantity, orders, completedOrders });
+    const userId = findUserId(auth, cartOrder)
+    return ({ liQuantity, orders, completedOrders, userId });
 }
 
 export default connect(mapStateToProps)(Nav);
