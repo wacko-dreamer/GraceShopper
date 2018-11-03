@@ -34,7 +34,8 @@ class AddProduct extends Component {
       memo.push(catId[0])
       return memo
     }, []);
-    const product = { name, description, price, quantity : quantity * 1, imageUrl, categories : prodCats };
+    let product = {}
+    imageUrl ? product = { name, description, price, imageUrl, quantity : quantity * 1, categories : prodCats } : product = { name, description, price, quantity : quantity * 1, categories : prodCats } ;
     this.props.addProduct(product);
     this.props.history.push('/');
   }
