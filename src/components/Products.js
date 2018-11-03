@@ -49,10 +49,9 @@ class Products extends Component {
                             </div>
                         )
                     })}
-                {auth.id ? <div><Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link><Link to={`/categories/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Categories</button></Link></div> : null }
                     <div>
                         {
-                            auth.id && categoryId ? <EditCategory categoryId={categoryId} /> : <span></span>
+                            auth.isAdmin && categoryId ? <EditCategory categoryId={categoryId} /> : null
                         }
                     </div>
 
