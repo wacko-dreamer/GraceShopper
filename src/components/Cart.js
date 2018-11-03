@@ -53,7 +53,7 @@ const mapStateToProps = ({ auth, orders }, { history }) => {
     cartOrder = findOrder(auth, orders, 'CART')
     //console.log(cartOrder)
     let lineItems = [];
-    if(cartOrder) lineItems = cartOrder.lineItems.sort((a, b) => a.id - b.id);
+    if(cartOrder.id) lineItems = cartOrder.lineItems.sort((a, b) => a.id - b.id);
 
     //creating order logic
     let isGuest = true; 

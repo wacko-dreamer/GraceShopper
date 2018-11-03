@@ -45,12 +45,10 @@ class ProductDetail extends Component {
   }
 
   handleChange(evt) {
-      //console.log(evt.target, evt.target.name, evt.target.value)
     this.setState({
         [ evt.target.name ] : [ evt.target.name ] == 'categories' ? [...evt.target.selectedOptions].map(option => option.value) : evt.target.value
       })
   }
-
   handleDelete(evt) {
     evt.preventDefault()
     this.props.deleteProduct(this.props.productId)
@@ -59,15 +57,15 @@ class ProductDetail extends Component {
 
   handleAddToCart(evt) {
     const { product, createLineItem, updateLineItem, order, lineItem } = this.props;
+    const { liQuantity } = this.state;
     //evt.preventDefault();
-    if(!lineItem.id) createLineItem(order, product);
-    else updateLineItem(order, lineItem, 'increment');
+    if(!lineItem.id) createLineItem(order, lineItem, product, liQuantity * 1);
+    else updateLineItem(order, lineItem, 'increment', liQuantity * 1);
   }
   toggle() {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
   render () {
-
     const { product, auth, categories, order, lineItem } = this.props;
     const { name, description, price, quantity, imageUrl, dropdownOpen, liQuantity } = this.state;
     const { handleChange, handleSubmit, handleDelete, handleAddToCart, toggle } = this;
@@ -75,30 +73,30 @@ class ProductDetail extends Component {
     <Fragment>
     {
         product.id ? (
-                <div>
+            <div>
                 {/* Product detail section */}
                 <div className="card" style={cardStyle}>
                     <img className="card-img-top" src={product.imageUrl} alt="Card image cap" />
-                <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                    <p className="card-text">{product.description}</p>
-                    <p className="card-text"><strong>${product.price}</strong></p>
-                    <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
-                        <DropdownToggle caret>Quantity</DropdownToggle>
-                        <DropdownMenu>
-                        {
-                            [1, 2, 3, 4, 5].map(_liQuantity => (
-                                <DropdownItem key={ _liQuantity }>
-                                    <div onClick={ () => handleChange() } name="liQuantity" value={ _liQuantity*1 }>{ _liQuantity }</div>
-                                </DropdownItem>
-                            ))
-                        }
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
+                    <div className="card-body">
+                        <h5 className="card-title">{product.name}</h5>
+                        <p className="card-text">{product.description}</p>
+                        <p className="card-text"><strong>${product.price}</strong></p>
+                        <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
+                            <DropdownToggle color="dark" caret>{ liQuantity ? liQuantity : "Quantity" }</DropdownToggle>
+                            <DropdownMenu>
+                            {
+                                [1, 2, 3, 4, 5].map(_liQuantity => (
+                                    <DropdownItem key={ _liQuantity } onClick={ (e) => handleChange(e) } name="liQuantity" value={ _liQuantity }>
+                                        { _liQuantity }
+                                    </DropdownItem>
+                                ))
+                            }
+                            </DropdownMenu>
+                        </ButtonDropdown>
+                        <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
+                    </div>
                 </div>
-                </div>
-            <div>
+                <div>
                 <div>
                     {/* Category section */}
                     <p style={{fontWeight : 'bold'}}>{product.name} Categories</p>
@@ -117,11 +115,11 @@ class ProductDetail extends Component {
                                 return (
                                     <li key={review.id} style={{ borderStyle : 'dotted solid' }}>
                                         <div className="card" >
-                                        <div className="card-body">
-                                            <h5 className="card-title">Title: {review.title}</h5>
-                                            <p className="card-text"><strong>Rating: {review.rating}</strong></p>
-                                            <p className="card-text">Description: {review.description}</p>
-                                        </div>
+                                            <div className="card-body">
+                                                <h5 className="card-title">Title: {review.title}</h5>
+                                                <p className="card-text"><strong>Rating: {review.rating}</strong></p>
+                                                <p className="card-text">Description: {review.description}</p>
+                                            </div>
                                         </div>
                                     </li>
                                 )
@@ -134,54 +132,54 @@ class ProductDetail extends Component {
                 /*Update Product - breaking out into component later */
                 auth.isAdmin === false || auth.isAdmin === undefined ? <div></div> :
                 <div>
-                <h5 className='card-title'>Update Product</h5>
-                <form onSubmit={(product) => handleSubmit(product)}>
-                    <div>
+                    <h5 className='card-title'>Update Product</h5>
+                    <form onSubmit={(product) => handleSubmit(product)}>
+                        <div>
+                            <label>
+                                Name: <input name='name' type='text' value={name} onChange={(product) => handleChange(product)} />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Description: <input name='description' type='text' value={description} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Price: <input name='price' type='text' value={price} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Quantity: <input name='quantity' type='text' value={quantity} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Image: <input name='imageUrl' type='text' value={imageUrl} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
                     <label>
-                        Name: <input name='name' type='text' value={name} onChange={(product) => handleChange(product)} />
+                        <p>Categories:</p>
+                        <select name='categories' multiple={true} value={this.state.categories} onChange={handleChange}>
+                        <option value={''}>None</option>
+                        {
+                            categories.map(category => <option key={category.id}>{category.id} - {category.name}</option>)
+                        }
+                        </select>
                     </label>
                     </div>
-                    <div>
-                    <label>
-                        Description: <input name='description' type='text' value={description} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Price: <input name='price' type='text' value={price} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Quantity: <input name='quantity' type='text' value={quantity} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Image: <input name='imageUrl' type='text' value={imageUrl} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                <label>
-                    <p>Categories:</p>
-                    <select name='categories' multiple={true} value={this.state.categories} onChange={handleChange}>
-                    <option value={''}>None</option>
-                    {
-                        categories.map(category => <option key={category.id}>{category.id} - {category.name}</option>)
-                    }
-                    </select>
-                </label>
-                </div>
-                    <button type='submit'>Submit</button>
-                    <div>
-                    <h5>Delete Product</h5>
-                    <button type='button' onClick={handleDelete}>Click here</button>
-                    </div>
-                </form>
+                        <button type='submit'>Submit</button>
+                        <div>
+                            <h5>Delete Product</h5>
+                            <button type='button' onClick={handleDelete}>Click here</button>
+                        </div>
+                    </form>
                 </div>
             }
             </div>
-            </div>
+        </div>
         ) : null
     }
     </Fragment>
@@ -201,8 +199,8 @@ const mapDispatchToProps = dispatch => {
   return {
     editProduct : (productId, product) => dispatch(editProduct(productId, product)),
     deleteProduct : (product) => dispatch(deleteProduct(product)),
-    createLineItem : (order, product) => dispatch(createLineItem(order, product)),
-    updateLineItem : (order, lineItem, increment) => dispatch(updateLineItem(order, lineItem, increment))
+    createLineItem : (order, lineItem, product, quantity) => dispatch(createLineItem(order, lineItem, product, quantity)),
+    updateLineItem : (order, lineItem, increment, quantity) => dispatch(updateLineItem(order, lineItem, increment, quantity))
   };
 };
 
