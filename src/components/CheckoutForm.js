@@ -17,7 +17,7 @@ class CheckoutForm extends Component {
         return Math.round(amount * 100)
     }
 
-    let {token} = await this.props.stripe.createToken({name: "Name"});
+    let {token} = await this.props.stripe.createToken({name: createdOrder.id});
     console.log(token)
 
     let res = await axios.post("/api/charge", {
@@ -25,9 +25,10 @@ class CheckoutForm extends Component {
       amount: fromUSDToCent(amount)
     });
 
-    if (res.data === 'succeeded') this.setState({complete:true})
-
-    updateOrder(createdOrder, 'COMPLETED', isGuest, history)
+    if (res.data === 'succeeded'){
+      this.setState({complete:true})
+      updateOrder(createdOrder, 'COMPLETED', isGuest, history)
+      }
   }
 
   render() {

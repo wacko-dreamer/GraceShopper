@@ -76,7 +76,7 @@ const mapStateToProps = ({ auth, orders }, { history }) => {
     if(auth.id) isGuest = false;
     let amount = 0
     if (createdOrder) {
-        amount = createdOrder.line_items.reduce((accum, lineItem) => {
+        amount = createdOrder.lineItems.reduce((accum, lineItem) => {
             return accum + lineItem.quantity * lineItem.price
         },0)
     }
