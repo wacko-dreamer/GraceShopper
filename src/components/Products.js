@@ -61,7 +61,7 @@ const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
            if (product.categories.find(category => category.id === categoryId*1)){
                return true
            }
-       })
+       }).sort((a, b) => a.id - b.id)
     }
     //lineItem logic
     let order = findOrder(auth, orders, 'CART');

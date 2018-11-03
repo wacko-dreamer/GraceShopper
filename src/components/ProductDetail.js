@@ -60,7 +60,7 @@ class ProductDetail extends Component {
   handleAddToCart(evt) {
     const { product, createLineItem, updateLineItem, order, lineItem } = this.props;
     //evt.preventDefault();
-    if(!lineItem) createLineItem(order, product);
+    if(!lineItem.id) createLineItem(order, product);
     else updateLineItem(order, lineItem, 'increment');
   }
   toggle() {
@@ -71,7 +71,6 @@ class ProductDetail extends Component {
     const { product, auth, categories, order, lineItem } = this.props;
     const { name, description, price, quantity, imageUrl, dropdownOpen, liQuantity } = this.state;
     const { handleChange, handleSubmit, handleDelete, handleAddToCart, toggle } = this;
-    console.log(lineItem, order)
     return(
     <Fragment>
     {
