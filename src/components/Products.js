@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {findLineItemById} from '../util.js'
 import { createLineItem } from '../store/ordersReducer';
 import { findOrder } from '../util';
+import EditCategory from './EditCategory';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const divStyle = {
 
 class Products extends Component {
     render() {
-        const {order, products, createLineItem, auth} = this.props
+        const {order, products, createLineItem, auth, categoryId} = this.props
         let quantity = 0
         return (
             <Fragment>
@@ -48,8 +49,15 @@ class Products extends Component {
                             </div>
                         )
                     })}
-                {auth.id ? <Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link> : null }
+                {auth.id ? <div><Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link><Link to={`/categories/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Categories</button></Link></div> : null }
+                    <div>
+                        {
+                            auth.id && categoryId ? <EditCategory categoryId={categoryId} /> : <span></span>
+                        }
+                    </div>
+
                 </div>
+
             </Fragment>
         )
     }
