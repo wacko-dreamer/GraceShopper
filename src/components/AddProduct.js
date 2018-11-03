@@ -44,7 +44,7 @@ class AddProduct extends Component {
     const { name, description, price, quantity, imageUrl } = this.state;
     const {handleChange, handleSubmit} = this;
     const { categories, auth } = this.props;
-    if (auth.isAdmin === false || auth.isAdmin === undefined) {
+    if (auth.isAdmin) {
       return <h1>You are not authorized to view this page. Womp Womp =(</h1>
     } else {
       return (

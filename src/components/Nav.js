@@ -1,7 +1,6 @@
 
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux';
 import { Badge } from 'reactstrap';
 import { findOrder, findOrders, findLiQuantityByCartOrder, findUserId } from '../util';
 
@@ -18,18 +17,25 @@ const Nav = ({ liQuantity, completedOrders, userId }) => {
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </form> */}
                     </div>
-                    <div style={ { display:'flex', justifyContent: 'space-between' } }>
+                    <div style={{display:'flex', justifyContent: 'space-between'}}>
                         <Link to={ `/user/${userId}/cart` } style={ { color:'white' } }>
                             Cart <Badge color='success'>{ liQuantity }</Badge>
                         </Link>
                         <Link to="/user/:id/orders" style={ { color:'white' } }>
                             Orders <Badge color='success'>{ completedOrders.length }</Badge>
                         </Link>
+                        {
+                            this.props.auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
+                        }
                     </div>
                 </div>
             </nav>
         </Fragment>
     )
+}
+
+const mapStateToProps = ({ auth }) => {
+    return { auth }
 }
 
 const mapStateToProps = ({ auth, orders }) => {

@@ -4,14 +4,27 @@ import { fetchOrders, updateOrder } from '../store/ordersReducer';
 import { findOrder } from '../util';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { create } from 'domain';
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm'
 
 
 class Checkout extends Component {
     constructor() {
         super();
+        this.state = {
+            address: '',
+            address2: '',
+            zip: null,
+            _state: '',
+        }
     }
     render() {
-        const { createdOrder, updateOrder, isGuest, history } = this.props;
+        const { createdOrder, updateOrder, isGuest, history, amount } = this.props;
+        //if we want to add additional shipping addresses...
+        const { address, address2, zip, _state } = this
+
+        console.log("AMOUNT", amount)
+
         return(
             <Fragment>
                 <div>
@@ -31,11 +44,26 @@ class Checkout extends Component {
                             </ListGroupItem>
                         ))
                     }
-                        <Fragment>Total: ${createdOrder.total}</Fragment><br/>
+                        <Fragment>Total: ${amount}</Fragment><br/>
                     </ListGroup>
                 ): null
             }
-                <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', isGuest, history) } >Confirm Order</Button>
+            
+            <div>Payment Information</div>
+            <br />
+            <br />
+            
+            {/* <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', isGuest, history) } >Confirm Order</Button>
+             */}
+
+            <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
+                <div>
+                    <Elements>
+                        <CheckoutForm amount = {amount} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
+                    </Elements>
+                </div>
+            </StripeProvider>
+
             </Fragment>
         )
     }
@@ -45,7 +73,14 @@ const mapStateToProps = ({ auth, orders }, { history }) => {
     let createdOrder = findOrder(auth, orders, 'CREATED');
     let isGuest = true; 
     if(auth.id) isGuest = false;
-    return { createdOrder, isGuest, history };
+    let amount = 0
+    if (createdOrder) {
+        amount = createdOrder.lineItems.reduce((accum, lineItem) => {
+            return accum + lineItem.quantity * lineItem.price
+        },0)
+    }
+    amount = Math.round(amount*100)/100
+    return { createdOrder, isGuest, history, amount };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateOrder });
