@@ -41,10 +41,8 @@ class Products extends Component {
                                     <p className="card-text"><strong>${product.price}</strong></p>
                                     <p style = {{color: 'orange'}} className="card-text"><strong>{product.quantity ? null : 'Temporarily out of stock' }</strong></p>
                                     </div>
-                                    <button className="btn btn-info" style={{margin: '5px'}}>+</button>
-                                    <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
-                                    {auth.id ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
+                                    {auth.isAdmin ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
                                 </div>
                             </div>
                         )

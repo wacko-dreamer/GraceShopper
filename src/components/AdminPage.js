@@ -10,14 +10,17 @@ class AdminPage extends Component {
         <div>
           <div>
             <h3>Products</h3>
-            <Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link>
+            <Link to={'/admin/products/create'}><button className='btn btn-outline-secondary' style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link>
+            <Link to={'/admin/products'}><button className='btn btn-outline-secondary' style={{margin: '10px',padding: '10px'}}>Manage Current Products</button></Link>
           </div>
           <div>
             <h3>Categories</h3>
-            <Link to={`/categories/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Categories</button></Link>
+            <Link to={'/admin/categories/create'}><button className='btn btn-outline-secondary' style={{margin: '10px',padding: '10px'}}>+ Add New Categories</button></Link>
+            <Link to={'/admin/categories'}><button className='btn btn-outline-secondary' style={{margin: '10px',padding: '10px'}}>Manage Current Categories</button></Link>
           </div>
           <div>
             <h3>Orders</h3>
+            <Link to={'/admin/orders'}><button className='btn btn-outline-secondary' style={{margin: '10px',padding: '10px'}}>Manage Orders</button></Link>
           </div>
           <div>
             <h3>Users</h3>

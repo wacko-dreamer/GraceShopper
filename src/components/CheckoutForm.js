@@ -18,6 +18,7 @@ class CheckoutForm extends Component {
     }
 
     let { token } = await this.props.stripe.createToken({name: createdOrder.id});
+
     console.log(token)
 
     let res = await axios.post("/api/charge", {

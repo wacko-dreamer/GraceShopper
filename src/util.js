@@ -12,16 +12,19 @@ export const findFinishedOrders = (auth, orders) => (
     })
 )
 
-export const findOrder = (auth, orders, status) => (
-    orders.find(order => {
+export const findOrder = (auth, orders, status) => {
+    const order = orders.find(order => {
         if(auth.id) return order.status === status && order.customerId === auth.id;
+        else if(!order.customer) return true;
         else {
             if(order.status === status && order.customer) {
                 return order.customer.isGuest;
             }
         }
     })
-)
+    if(order) return order;
+    else return {};
+}
 
 export const findOrders = (auth, orders, status) => (
     orders.filter(order => {
@@ -38,4 +41,18 @@ export const findProduct = (products, productId) => {
     const product = products.find(_product => _product.id == productId);
     if(product) return product;
     else return {};
+}
+
+export const findLiQuantityByCartOrder = (cartOrder) => {
+    let liQuantity = 0;
+    if(cartOrder) {
+        const lineItems = cartOrder.lineItems;
+        if(lineItems) liQuantity = lineItems.reduce((acc, curVal) => acc + curVal.quantity, 0);
+    }
+    return liQuantity;
+}
+
+export const findUserId = (auth, cartOrder) => {
+    if(auth.id) return auth.id;
+    else if(cartOrder.id) return cartOrder.customerId; 
 }
