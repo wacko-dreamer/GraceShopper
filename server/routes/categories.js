@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const { Category } = require('../db/models');
+const { Category, Product } = require('../db/models');
 
 
 router.get('/', (req, res, next) => {
-    Category.findAll()
+    Category.findAll({ include : [ Product ] })
         .then(categories => res.send(categories))
         .catch(next)
 })
@@ -16,6 +16,7 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     Category.create(req.body)
+        .then(category => category.addProducts(req.body.products))
         .then(category => res.send(category))
         .catch(next)
 })

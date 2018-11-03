@@ -29,8 +29,8 @@ class Cart extends Component {
                                         <td>{ lineItem.product.description }</td>
                                         <td>${ lineItem.product.price }</td>
                                         <td>Quantity: { lineItem.quantity }</td>
-                                        <td><button onClick={ () => updateLineItem(cartOrder, lineItem, lineItem.quantity, 1) } className="btn btn-primary">+</button></td> 
-                                        <td><button onClick={ () => updateLineItem(cartOrder, lineItem, lineItem.quantity, -1 ) } disabled={ lineItem.quantity === 1 } className="btn btn-primary">-</button></td>
+                                        <td><button onClick={ () => updateLineItem(cartOrder, lineItem, 'increment') } className="btn btn-primary">+</button></td> 
+                                        <td><button onClick={ () => updateLineItem(cartOrder, lineItem, 'decrement' ) } disabled={ lineItem.quantity === 1 } className="btn btn-primary">-</button></td>
                                         <td><button onClick={ () => deleteLineItem(cartOrder, lineItem) } className="btn btn-danger">Delete</button></td> 
                                     </tr>
                                 ))
@@ -51,9 +51,9 @@ const mapStateToProps = ({ auth, orders }, { history }) => {
     //lineItem logic
     let cartOrder = {};
     cartOrder = findOrder(auth, orders, 'CART')
-    console.log(cartOrder)
+    //console.log(cartOrder)
     let lineItems = [];
-    if(cartOrder) lineItems = cartOrder.line_items.sort((a, b) => a.id - b.id);
+    if(cartOrder) lineItems = cartOrder.lineItems.sort((a, b) => a.id - b.id);
 
     //creating order logic
     let isGuest = true; 

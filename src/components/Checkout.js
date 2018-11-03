@@ -25,7 +25,7 @@ class Checkout extends Component {
                         <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
                         <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
                     {   
-                        createdOrder.line_items.map(lineItem => (
+                        createdOrder.lineItems.map(lineItem => (
                             <ListGroupItem key={lineItem.id}>
                                 <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
                             </ListGroupItem>
