@@ -10,6 +10,7 @@ import Checkout from './Checkout'
 import AddProduct from './AddProduct'
 import AddCategory from './AddCategory'
 import ProductDetail from './ProductDetail'
+import AdminPage from './AdminPage'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
@@ -41,6 +42,7 @@ class App extends Component {
                 <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
                 <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
                 <Route exact path = '/user/:userId/orders' render = {() => <Orders/>}/>
+                <Route path='/admin/homepage' component={AdminPage} />
                 <Switch>
                     <Route path='/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
                     <Route path = '/categories/:categoryId' render = {({match}) => <Shop categoryId={match.params.categoryId}/>}/>
