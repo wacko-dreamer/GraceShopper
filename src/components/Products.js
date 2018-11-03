@@ -23,7 +23,7 @@ const divStyle = {
 
 class Products extends Component {
     render() {
-        const {order, products, createLineItem} = this.props
+        const {order, products, createLineItem, auth} = this.props
         let quantity = 0
         return (
             <Fragment>
@@ -32,23 +32,23 @@ class Products extends Component {
                     {products.map(product => {
                         return (
                             <div className="card" style={cardStyle} key={product.id}>
-                                <img className="card-img-top" src={product.imageUrl} alt="Card image cap" />
+                                <Link to={`/products/${product.id}`}><img className="card-img-top" src={product.imageUrl} alt="Card image cap"/></Link>
                                 <div className="card-body">
-                                    <h5 className="card-title">{product.name}</h5>
+                                    <Link to={`/products/${product.id}`}><h5 className="card-title">{product.name}</h5></Link>
                                     <p className="card-text">{product.description}</p>
                                     <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                     <p className="card-text"><strong>${product.price}</strong></p>
-                                    <p className="card-text"><strong>{quantity}</strong></p>
+                                    <p style = {{color: 'orange'}} className="card-text"><strong>{product.quantity ? null : 'Temporarily out of stock' }</strong></p>
                                     </div>
                                     <button className="btn btn-info" style={{margin: '5px'}}>+</button>
                                     <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
-                                    <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link>
+                                    {auth.id ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
                                 </div>
                             </div>
                         )
                     })}
-                <Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link>
+                {auth.id ? <Link to={`/products/create`}><button className="btn btn-outline-secondary" style={{margin: '10px',padding: '10px'}}>+ Add New Products</button></Link> : null }
                 </div>
             </Fragment>
         )
@@ -65,7 +65,7 @@ const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
     }
     //lineItem logic
     let order = findOrder(auth, orders, 'CART');
-    return { products, order }
+    return { products, order, auth }
 }
 
 const mapDispatchToProps = ({ createLineItem });
