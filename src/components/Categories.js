@@ -13,6 +13,7 @@ class Categories extends Component {
         return (
             <div style={catStyle}>
                 <br />
+                <h5 style={{ fontWeight : 'bold' }}>Categories</h5>
                 <h6>Show results for</h6>
                 <ul className="nav flex-column">
                     {categories.map(category => {
