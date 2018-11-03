@@ -33,7 +33,7 @@ class Checkout extends Component {
                 </div>
                 <br />
             {
-                createdOrder ? (
+                createdOrder.id ? (
                     <ListGroup>
                         <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
                         <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
@@ -71,7 +71,6 @@ class Checkout extends Component {
 
 const mapStateToProps = ({ auth, orders }, { history }) => {
     let createdOrder = findOrder(auth, orders, 'CREATED');
-    if(createdOrder === undefined) createdOrder = null;
     let isGuest = true; 
     if(auth.id) isGuest = false;
     let amount = 0

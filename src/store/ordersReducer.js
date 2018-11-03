@@ -65,7 +65,7 @@ export const fetchOrders = (cart, isGuest) => {
 export const updateOrder = (order, status, isGuest, history) => {
     let userId;
     order = { ...order, status };
-    return (dispatch) => {
+    return (dispatch) => (
         axios.put(`api/users/${userId}/orders/${order.id}`, order)
             .then(() => {
                 if(status === 'CREATED') history.push('/user/:userId/checkout');
@@ -74,23 +74,26 @@ export const updateOrder = (order, status, isGuest, history) => {
             .then(() => dispatch(fetchOrders(order, isGuest)))
             // .then(res => dispatch(updatedOrder(res.data)))
             .catch(ex => console.log(ex))
-    }
+    )
 }
 
-export const createLineItem = (order, product) => {
+export const createLineItem = (order, lineItem, product, quantity) => {
     let userId = null;
-    return (dispatch) => {
+    if(!quantity) quantity = 1;
+    product = { ...product, quantity };
+    return (dispatch) => (
         axios.post(`/api/users/${userId}/orders/${order.id}/lineItems`, product)
-        .then(() => dispatch(fetchOrders()))
-        // .then(res => dispatch(createdLineItem(orderId,res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchOrders()))
+            // .then(res => dispatch(createdLineItem(orderId,res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
-export const updateLineItem = (order, lineItem, change) => {
+export const updateLineItem = (order, lineItem, change, quantity) => {
     let userId;
-    if(change === 'increment') change = 1;
-    else change = - 1;
+    if(change === 'increment' && !quantity) change = 1;
+    else if(change === 'decrement' && !quantity) change = - 1;
+    else change = quantity;
     lineItem = { ...lineItem, quantity: lineItem.quantity + change };
     return (dispatch) =>{
         axios.put(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`, lineItem)
