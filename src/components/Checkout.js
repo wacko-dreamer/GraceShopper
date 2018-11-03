@@ -14,14 +14,31 @@ class Checkout extends Component {
         this.state = {
             address: '',
             address2: '',
-            zip: null,
-            _state: '',
+            zip: 0,
+            stateAddress: '',
+            email: ''
         }
+        this.handleChange = this.handleChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
     }
+
+
+    handleChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    onSubmit(e){
+        const { address, address2, zip, stateAddress, email } = this.state
+        const addressStr = address + address2 + zip + sateAddress + email
+        
+    }
+
     render() {
-        const { createdOrder, updateOrder, isGuest, history, amount } = this.props;
-        //if we want to add additional shipping addresses...
-        const { address, address2, zip, _state } = this
+        const { createdOrder, isGuest, history, amount } = this.props;
+        const { address, address2, zip, stateAddress, email } = this.state
+        const { handleChange } = this
 
         console.log("AMOUNT", amount)
 
@@ -49,12 +66,32 @@ class Checkout extends Component {
                 ): null
             }
             
-            <div>Payment Information</div>
-            <br />
-            <br />
+            <form onChange = {handleChange}>
+                <div>Shipping Information</div><br /><br />
+                <label>Shipping Address: </label>
+                <input type = 'text' name = 'address' value = {address}/>
+                <br />
+
+
+                <label>Address 2 </label>
+                <input type = 'text' name = 'address2' value = {address2}/>
+                <br />
+
+                <label>City/Zip Code</label>
+                <input type = 'text' name = 'zip' value = {zip}/>
+                <br />
+
+                <label>State</label>
+                <input type = 'text' name = 'stateAddress' value = {stateAddress}/>
+                <br />
+
+                <label>Email Address:</label>
+                <input type = 'text' name = 'email' value = {email}/>
+                <br />
+            </form>
+            < hr/>
             
-            {/* <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', isGuest, history) } >Confirm Order</Button>
-             */}
+            <div>Payment Information</div><br /><br/>
 
             <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
                 <div>
