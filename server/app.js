@@ -6,6 +6,7 @@ const jwt = require('jwt-simple');
 
 
 app.use(require('body-parser').json());
+app.use(require('body-parser').text());
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
 
@@ -38,6 +39,7 @@ app.use('/api/orders', require('./routes/orders'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/charge', require('./routes/charge'));
 
 
 app.use((err, req, res, next) => {
