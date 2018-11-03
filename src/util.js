@@ -1,6 +1,9 @@
-export const findLineItemById = (cart, product) => (
-    cart.lineItems.find(lineItem => lineItem.productId === product.id)
-)
+export const findLineItemByProductId = (order, product) => {
+    let lineItem = {};
+    if(order) lineItem = order.lineItems.find(lineItem => lineItem.productId === product.id);
+    if(lineItem) return lineItem;
+    else return {};
+}
 
 export const findFinishedOrders = (auth, orders) => (
     orders.filter(order => {
@@ -30,3 +33,9 @@ export const findOrders = (auth, orders, status) => (
         }
     })
 )
+
+export const findProduct = (products, productId) => {
+    const product = products.find(_product => _product.id == productId);
+    if(product) return product;
+    else return {};
+}
