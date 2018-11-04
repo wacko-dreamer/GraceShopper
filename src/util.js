@@ -72,40 +72,40 @@ export const findOrderTotal = order => {
 
 export const mapOrders = orders => orders.map(order => mapListItems(order));
 
+export const floatRight = { float: 'right' };
+
 export const mapListItems = order => {
     const total = findOrderTotal(order);
         return(
-            <ListGroup key={ order.id }>
-                <Fragment><strong>ORDER ID:</strong> { order.id }</Fragment><br/>
-                <Fragment><strong>Ordered on:</strong> 
-                    { order.updatedAt.slice(0, 10) }  <strong>at</strong>  { order.updatedAt.slice(11, 16) }
-                </Fragment><br/>
-                <Fragment><strong>Shipping Address:</strong> { order.shippingAddress }</Fragment><br/>
-            {   
-                order.lineItems.map((lineItem, idx) => (
-                    <ListGroupItem key={ lineItem.id }>
-                        <div>
-                            <strong>{ idx + 1 }</strong>
-                            <br/>
-                            { lineItem.product.name } 
-                            <br/>
-                            <strong>Quantity: </strong> 
-                            { lineItem.quantity }
-                            <br/>
-                            <strong>Description: </strong>
-                            { lineItem.product.description }
-                            <div style={{ float: 'right' }}>
-                                <strong>Price: </strong> 
-                                ${ lineItem.price }
+            <Fragment>
+                <ListGroup key={ order.id }><br/>
+                    <Fragment><strong>ORDER ID:</strong> { order.id }</Fragment><br/>
+                    <Fragment><strong>Ordered on:</strong> 
+                        { order.updatedAt.slice(0, 10) }  <strong>at</strong>  { order.updatedAt.slice(11, 16) }
+                    </Fragment><br/>
+                    <Fragment><strong>Shipping Address:</strong> { order.shippingAddress }</Fragment><br/><br/>
+                {   
+                    order.lineItems.map(lineItem => (
+                        <ListGroupItem key={ lineItem.id }>
+                            <div>
+                                <h3>{ lineItem.product.name }</h3>
+                                <br/>
+                                <strong>Quantity: </strong> { lineItem.quantity }
+                                <br/>
+                                <strong>Description: </strong> { lineItem.product.description }
+                                <div style={ floatRight }>
+                                    <strong>Price: </strong> ${ lineItem.price }
+                                </div>
+                                <img src={ lineItem.product.imageUrl } style={ floatRight }/>
                             </div>
-                            <img src={ lineItem.product.imageUrl } style={{ float: 'right' }}/>
-                        </div>
-                    </ListGroupItem>
-                ))
-            }
-                <Fragment><strong>Total: ${total}</strong></Fragment>
+                        </ListGroupItem>
+                    ))
+                }
+                    <br/>
+                </ListGroup>
+                <h4 style={ floatRight }>Total: ${total}</h4>
                 <br/><br/>
-            </ListGroup>
+            </Fragment>
     )
 }
 
