@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
-import { findOrder, findOrderTotal } from '../util';
+import { findOrder, findOrderTotal, mapListItems } from '../util';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { create } from 'domain';
 import {Elements, StripeProvider} from 'react-stripe-elements';
@@ -49,44 +49,29 @@ class Checkout extends Component {
                     <span>Wacko Dreamer</span>
                 </div>
                 <br />
-            {
-                createdOrder.id ? (
-                    <ListGroup>
-                        <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
-                        <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
-                    {   
-                        createdOrder.lineItems.map((lineItem, idx) => (
-                            <ListGroupItem key={lineItem.id}>
-                                <Fragment><strong>{ idx + 1 }</strong> Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${total}</Fragment><br/>
-                    </ListGroup>
-                ): null
-            }
+                { createdOrder.id ? mapListItems(createdOrder) : null }
             
-            <form onChange = {handleChange}>
+            <form >
                 <div>Shipping Information</div><br /><br />
                 <label>Shipping Address: </label>
-                <input type = 'text' name = 'address' value = {address}/>
+                <input type = 'text' name = 'address' value = {address} onChange = {handleChange}/>
                 <br />
 
 
                 <label>Address 2 </label>
-                <input type = 'text' name = 'address2' value = {address2}/>
+                <input type = 'text' name = 'address2' value = {address2} onChange = {handleChange}/>
                 <br />
 
                 <label>City/Zip Code</label>
-                <input type = 'text' name = 'zip' value = {zip}/>
+                <input type = 'text' name = 'zip' value = {zip} onChange = {handleChange}/>
                 <br />
 
                 <label>State</label>
-                <input type = 'text' name = 'stateAddress' value = {stateAddress}/>
+                <input type = 'text' name = 'stateAddress' value = {stateAddress} onChange = {handleChange}/>
                 <br />
 
                 <label>Email Address:</label>
-                <input type = 'text' name = 'email' value = {email}/>
+                <input type = 'text' name = 'email' value = {email} onChange = {handleChange}/>
                 <br />
             </form>
             < hr/>

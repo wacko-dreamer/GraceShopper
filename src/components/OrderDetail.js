@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { findOrder, findOrderTotal } from '../util';
+import { findOrder, findOrderTotal, mapListItems } from '../util';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
 
@@ -13,20 +13,7 @@ const OrderDetail = ({ completedOrder, total }) => {
             </div>
             <br />
         {
-            completedOrder ? (
-                <ListGroup>
-                    <Fragment>ORDER ID: {completedOrder.id}</Fragment><br/>
-                    <Fragment>Shipping Address: {completedOrder.shippingAddress}</Fragment><br/>
-                {   
-                    completedOrder.lineItems.map((lineItem, idx) => (
-                        <ListGroupItem key={lineItem.id}>
-                            <Fragment><strong>{ idx + 1 }</strong> Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                        </ListGroupItem>
-                    ))
-                }
-                    <Fragment>Total: ${total}</Fragment><br/>
-                </ListGroup>
-            ): null
+            completedOrder ? mapListItems(completedOrder) : null
         }
         </Fragment>
     )

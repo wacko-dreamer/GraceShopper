@@ -14,9 +14,7 @@ class Orders extends Component {
                     <span>Here you will find all the things that you have ordered from Wacko Dreamer</span>
                 </div>
                 <br />
-            {
-                mapOrders(orders)
-            }
+                { mapOrders(orders) }
             </Fragment>
         )
     }

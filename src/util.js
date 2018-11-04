@@ -100,6 +100,28 @@ export const mapOrders = orders => (
     })
 )
 
-export const mapListItems = listItems => (
-    
-)
+export const mapListItems = order => {
+    const total = findOrderTotal(order);
+        return(
+            <ListGroup key={ order.id }>
+                <Fragment>ORDER ID: { order.id }</Fragment><br/>
+                <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
+            {   
+                order.lineItems.map((lineItem, idx) => (
+                    <ListGroupItem key={ lineItem.id }>
+                        <div>
+                            <strong>{ idx + 1 }</strong>
+                            <br/>
+                            { lineItem.product.name } 
+                            <br/>
+                            Quantity: { lineItem.quantity }
+                            <div style={{ float: 'right' }}>Price: ${ lineItem.price }</div>
+                            <img src={ lineItem.product.imageUrl } style={{ float: 'right' }}/>
+                        </div>
+                    </ListGroupItem>
+                ))
+            }
+                <Fragment>Total: ${total}</Fragment><br/>
+            </ListGroup>
+    )
+}
