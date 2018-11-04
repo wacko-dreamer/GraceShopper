@@ -36,7 +36,7 @@ const deletedLineItem  = (orderId, lineItem) => ({
     type: DELETED__LINEITEM,
     orderId,
     lineItem
-}) 
+})
 
 //thunks
 // 1. fetch orders
@@ -60,13 +60,10 @@ export const fetchOrders = (order, isGuest, status, history) => {
     )
 }
 
-export const updateOrder = (order, status, isGuest, history) => {
-    let userId;
-    order = { ...order, status };
+export const updateOrder = (order) => {
     return (dispatch) => (
-        axios.put(`api/users/${userId}/orders/${order.id}`, order)
-            .then(() => dispatch(fetchOrders(order, isGuest, status, history)))
-            // .then(res => dispatch(updatedOrder(res.data)))
+        axios.put(`/orders/${order.id}`, order)
+            .then(order => dispatch(updatedOrder(order.data)))
             .catch(ex => console.log(ex))
     )
 }
