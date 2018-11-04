@@ -1,8 +1,8 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders } from '../store/ordersReducer.js'
-import { findOrders } from '../util';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { findOrders, findOrderTotal, mapOrders } from '../util';
+
 
 class Orders extends Component {
     render() {
@@ -15,20 +15,7 @@ class Orders extends Component {
                 </div>
                 <br />
             {
-                orders.map(order => (
-                    <ListGroup key={ order.id }>
-                        <Fragment>ORDER ID: { order.id }</Fragment><br/>
-                        <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
-                    {   
-                        order.lineItems.map(lineItem => (
-                            <ListGroupItem key={ lineItem.id }>
-                                <Fragment>ProductId: { lineItem.productId } Quantity: { lineItem.quantity } Price: ${ lineItem.price }</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${order.total}</Fragment><br/>
-                    </ListGroup>
-                ))
+                mapOrders(orders)
             }
             </Fragment>
         )
@@ -36,8 +23,8 @@ class Orders extends Component {
 }
 
 const mapStateToProps = ({ auth, orders }) => {
-    orders = findOrders(auth, orders, 'COMPLETED')
-    return { orders }
+    orders = findOrders(auth, orders, 'COMPLETED');
+    return { orders };
 }
 
 export default connect(mapStateToProps)(Orders)

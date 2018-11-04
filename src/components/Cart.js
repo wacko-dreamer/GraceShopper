@@ -51,7 +51,6 @@ const mapStateToProps = ({ auth, orders }, { history }) => {
     //lineItem logic
     let cartOrder = {};
     cartOrder = findOrder(auth, orders, 'CART')
-    //console.log(cartOrder)
     let lineItems = [];
     if(cartOrder.id) lineItems = cartOrder.lineItems.sort((a, b) => a.id - b.id);
 

@@ -1,6 +1,9 @@
+import React, { Fragment } from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+
 export const findLineItemByProductId = (order, product) => {
     let lineItem = {};
-    if(order) lineItem = order.lineItems.find(lineItem => lineItem.productId === product.id);
+    if(order.lineItem) lineItem = order.lineItems.find(lineItem => lineItem.productId === product.id);
     if(lineItem) return lineItem;
     else return {};
 }
@@ -57,3 +60,46 @@ export const findUserId = (auth, cartOrder) => {
     if(auth.id) return auth.id;
     else if(cartOrder.id) return cartOrder.customerId; 
 }
+
+export const findOrderTotal = order => {
+    let total = 0
+    if (order.lineItems) {
+        total = order.lineItems.reduce((accum, lineItem) => {
+            return accum + lineItem.quantity * lineItem.price
+        },0)
+    }
+    total = Math.round(total*100)/100
+    return total;
+}
+
+export const mapOrders = orders => (
+    orders.map(order => {
+        const total = findOrderTotal(order);
+        return(
+            <ListGroup key={ order.id }>
+                <Fragment>ORDER ID: { order.id }</Fragment><br/>
+                <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
+            {   
+                order.lineItems.map((lineItem, idx) => (
+                    <ListGroupItem key={ lineItem.id }>
+                        <div>
+                            <strong>{ idx + 1 }</strong>
+                            <br/>
+                            { lineItem.product.name } 
+                            <br/>
+                            Quantity: { lineItem.quantity }
+                            <div style={{ float: 'right' }}>Price: ${ lineItem.price }</div>
+                            <img src={ lineItem.product.imageUrl } style={{ float: 'right' }}/>
+                        </div>
+                    </ListGroupItem>
+                ))
+            }
+                <Fragment>Total: ${total}</Fragment><br/>
+            </ListGroup>
+        )
+    })
+)
+
+export const mapListItems = listItems => (
+    
+)
