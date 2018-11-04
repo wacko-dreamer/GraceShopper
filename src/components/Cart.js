@@ -13,6 +13,7 @@ class Cart extends Component {
     const { auth, lineItems, cartOrder, isGuest, updateLineItem, deleteLineItem, updateOrder, history } = this.props;
         return (
             <Fragment>
+                <div className="container" style={{marginTop: '30px'}}>
                 <h3>Shopping Cart</h3>
                 <br/>
             {
@@ -41,6 +42,7 @@ class Cart extends Component {
                     </Fragment>
                 )
             }
+            </div>
             </Fragment>
         )
     }

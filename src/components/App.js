@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { HashRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import Nav from './Nav'
 import Auth from './Auth.js'
 import Shop from './Shop.js'
@@ -13,6 +13,7 @@ import ProductDetail from './ProductDetail'
 import AdminPage from './AdminPage'
 import Products from './Products'
 import Categories from './Categories'
+import Search from './Search'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
@@ -38,20 +39,21 @@ class App extends Component {
             <Router>
                 <div>
                 <Nav/>
-                <Route render={ ({ history }) => <Auth history={ history }/>}/>
-                <Route exact path = '/' render = {() => <Shop/>}/>
+                <Route exact path = '/user/login' render ={ ({ history }) => <Auth history={ history }/>}/>
+                {/* <Route exact path = '/' render ={ ({ history }) => <Search history={ history }/> }/> */}
+                {/* <Route exact path = '/' render = {() => <Shop/>}/> */}
+                <Route exact path = '/' render = {({ history }) => <Shop history={history}/>} />
                 <Route path = '/user/:userId/cart' render = {({ history }) => <Cart history={ history }/>}/>
                 <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
                 <Route path = '/user/:userId/orders/:orderId' render = { () => <OrderDetail/> } />
                 <Route exact path = '/user/:userId/orders' render = {() => <Orders />} />
-                <Route path='/categories/:categoryId' render={({ match }) => <Shop categoryId={match.params.categoryId} />} />
-                <Route path='/products/:productId' render={({ match, history }) => <ProductDetail productId={match.params.productId} history={history} />} />
-                <Route path='/admin/homepage' component={AdminPage} />
-                <Route path='/admin/products' component={Products} />
-                <Route path='/admin/categories' component={Categories} />
-                <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
-                <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
-
+                <Route path = '/categories/:categoryId' render={({ match }) => <Shop categoryId={match.params.categoryId} />} />
+                <Route path = '/products/:productId' render={({ match, history }) => <ProductDetail productId={match.params.productId} history={history} />} />
+                <Route path = '/admin/homepage' component={AdminPage} />
+                <Route path = '/admin/products' component={Products} />
+                <Route path = '/admin/categories' component={Categories} />
+                <Route path = '/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
+                <Route path = '/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
                 </div>
             </Router>
         )

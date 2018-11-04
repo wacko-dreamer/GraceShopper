@@ -9,6 +9,7 @@ class Orders extends Component {
         const { orders } = this.props;
         return (
             <Fragment>
+            <div className="container" style={{marginTop: '30px'}}>
                 <div>
                     <h3>Your Orders</h3>
                     <span>Here you will find all the things that you have ordered from Wacko Dreamer</span>
@@ -30,6 +31,7 @@ class Orders extends Component {
                     </ListGroup>
                 ))
             }
+            </div>
             </Fragment>
         )
     }

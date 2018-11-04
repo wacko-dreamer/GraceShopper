@@ -22,14 +22,29 @@ const divStyle = {
     left: '200px'
 }
 
+
 class Products extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            searchText: this.props.history ? this.props.history.location.search.slice(1) : ''
+        }
+    }
     render() {
-        const {order, products, createLineItem, auth, categoryId} = this.props
+        const {order, createLineItem, auth, categoryId, history} = this.props
+        let {products} = this.props
         let quantity = 0
+        console.log(history.location.search)
+        // products = products.filter(product => {
+        //         if (product.name.includes(this.state.searchText)){
+        //             console.log(product.name)
+        //         }
+        // })
         return (
             <Fragment>
                 <br />
                 <div style={divStyle}>
+                 
                     {products.map(product => {
                         return (
                             <div className="card" style={cardStyle} key={product.id}>
@@ -62,7 +77,7 @@ class Products extends Component {
     }
 }
 
-const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
+const mapStateToProps = ({ products, orders, auth }, { categoryId, history }) => {
     if (categoryId){
        products = products.filter( product => {
            if (product.categories.find(category => category.id === categoryId*1)){
