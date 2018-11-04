@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-// initial state
-const initialState = [
-
-]
 
 //constants
 const GOT_PRODUCTS = 'GOT_PRODUCTS'
@@ -64,69 +60,69 @@ const deletedReview = (productId, reviewId) => ({
 // 7. update a review
 
 export const fetchProducts = () => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.get('/api/products')
-        .then(res => dispatch(gotProducts(res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(res => dispatch(gotProducts(res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const addProduct = (product) => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.post('/api/products', product)
-        .then(() => dispatch(fetchProducts()))
-        // .then(res => dispatch(createdProduct(res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchProducts()))
+            // .then(res => dispatch(createdProduct(res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const deleteProduct = productId  => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.delete(`/api/products/${productId}`)
-        .then(() => dispatch(fetchProducts()))
-        // .then(() => dispatch(deletedProduct(productId)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchProducts()))
+            // .then(() => dispatch(deletedProduct(productId)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const editProduct = (productId, updatedData)  => {
-    return (dispatch) => {
-        axios.put(`/api/products/${productId}`, updatedData)
-        .then(() => dispatch(fetchProducts()))
-        // .then(res => dispatch(updatedProduct(res.data)))
-        .catch(ex => console.log(ex))
-    }
+    return (dispatch) => (
+            axios.put(`/api/products/${productId}`, updatedData)
+            .then(() => dispatch(fetchProducts()))
+            // .then(res => dispatch(updatedProduct(res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const createReview = (productId, review) => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.post(`/api/products/${productId}/reviews`, review)
-        .then(() => dispatch(fetchProducts()))
-        // .then(res => dispatch(createdReview(productId, res.data))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchProducts()))
+            // .then(res => dispatch(createdReview(productId, res.data))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const updateReview = (productId, reviewId, updatedReview) => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.put(`api/products/${productId}/reviews/${reviewId}`, updatedReview)
-        .then(() => dispatch(fetchProducts()))
-        // .then(res => dispatch(updatedReview(productId, res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchProducts()))
+            // .then(res => dispatch(updatedReview(productId, res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const deleteReview = (productId, reviewId) => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.delete(`api/products/${productId}/reviews/${reviewId}`)
-        .then(() => dispatch(fetchProducts()))
-        // .then(() => dispatch(deletedReview(productId, reviewId)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchProducts()))
+            // .then(() => dispatch(deletedReview(productId, reviewId)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 // reducer
-const productReducer = (state = initialState, action) => {
+const productReducer = (state = [], action) => {
     switch(action.type){
         case GOT_PRODUCTS:
             return action.products

@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-// initial state
- const initialState = [
-
- ]
 
 //constants
 const GOT_ORDERS = 'GOT ORDERS'
@@ -50,16 +46,18 @@ const deletedLineItem  = (orderId, lineItem) => ({
 // 5. delete line item
 
 
-export const fetchOrders = (cart, isGuest) => {
+export const fetchOrders = (order, isGuest, status, history) => {
     let userId = 'null';
-    if(cart) userId = cart.customerId;
-    return (dispatch) => {
+    if(order) userId = order.customerId;
+    return (dispatch) => (
         axios.get(`api/orders/users/${userId}/${isGuest}`)
-        .then(res => {
-            dispatch(gotOrders(res.data))
-        })
-        .catch(ex => console.log(ex))
-    }
+            .then(res => {
+                if(status === 'CREATED') history.push(`/user/${ order.customerId }/checkout`);
+                if(status === 'COMPLETED') history.push(`/user/${ order.customerId }/orders/${ order.id }`);
+                dispatch(gotOrders(res.data))
+            })
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const updateOrder = (order, status, isGuest, history) => {
@@ -67,11 +65,7 @@ export const updateOrder = (order, status, isGuest, history) => {
     order = { ...order, status };
     return (dispatch) => (
         axios.put(`api/users/${userId}/orders/${order.id}`, order)
-            .then(() => {
-                if(status === 'CREATED') history.push(`/user/${ order.customerId }/checkout`);
-                if(status === 'COMPLETED') history.push(`/user/${ order.customerId }/orders/${ order.id }`);
-            })
-            .then(() => dispatch(fetchOrders(order, isGuest)))
+            .then(() => dispatch(fetchOrders(order, isGuest, status, history)))
             // .then(res => dispatch(updatedOrder(res.data)))
             .catch(ex => console.log(ex))
     )
@@ -95,30 +89,29 @@ export const updateLineItem = (order, lineItem, change, quantity) => {
     else if(change === 'decrement' && !quantity) change = - 1;
     else change = quantity;
     lineItem = { ...lineItem, quantity: lineItem.quantity + change };
-    return (dispatch) =>{
+    return (dispatch) => (
         axios.put(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`, lineItem)
-        .then(() => dispatch(fetchOrders()))
-        // .then(res => dispatch(updatedLineItem(orderId,res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchOrders()))
+            // .then(res => dispatch(updatedLineItem(orderId,res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const deleteLineItem = (order, lineItem) => {
     let userId;
-    return (dispatch) => {
+    return (dispatch) => (
         axios.delete(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`)
-        .then(() => dispatch(fetchOrders()))
-        //.then(() => dispatch(fetchOrders()))
-        // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchOrders()))
+            // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 
 // reducer
 
 
-const orderReducer = (state = initialState, action) => {
+const orderReducer = (state = [], action) => {
     switch(action.type){
         case GOT_ORDERS:
              return action.orders

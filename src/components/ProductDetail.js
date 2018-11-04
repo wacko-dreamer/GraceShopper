@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { editProduct, deleteProduct } from '../store/productsReducer';
 import orderReducer, { createLineItem, updateLineItem } from '../store/ordersReducer';
 import { findOrder, findProduct, findLineItemByProductId } from '../util';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 
 const cardStyle = {
   border: '1px solid grey',
@@ -12,6 +12,11 @@ const cardStyle = {
   width: '40rem',
   margin: '10px'
 }
+
+const imgStyle = {
+    width: '500px'
+}
+
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -66,66 +71,69 @@ class ProductDetail extends Component {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
   render () {
-    const { product, auth, categories, order, lineItem } = this.props;
+    const { product, auth, categories, order, lineItem, history } = this.props;
     const { name, description, price, quantity, imageUrl, dropdownOpen, liQuantity } = this.state;
     const { handleChange, handleSubmit, handleDelete, handleAddToCart, toggle } = this;
     return(
     <Fragment>
     {
         product.id ? (
-            <div>
+                <div className="container" style={{marginTop: '40px'}}>
+                    <Button color='info' onClick={ () => history.goBack() }>Back</Button>
                 {/* Product detail section */}
-                <div className="card" style={cardStyle}>
-                    <img className="card-img-top" src={product.imageUrl} alt="Card image cap" />
-                    <div className="card-body">
-                        <h5 className="card-title">{product.name}</h5>
-                        <p className="card-text">{product.description}</p>
-                        <p className="card-text"><strong>${product.price}</strong></p>
-                        <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
-                            <DropdownToggle color="dark" caret>{ liQuantity ? liQuantity : "Quantity" }</DropdownToggle>
-                            <DropdownMenu>
-                            {
-                                [1, 2, 3, 4, 5].map(_liQuantity => (
-                                    <DropdownItem key={ _liQuantity } onClick={ (e) => handleChange(e) } name="liQuantity" value={ _liQuantity }>
-                                        { _liQuantity }
-                                    </DropdownItem>
-                                ))
-                            }
-                            </DropdownMenu>
-                        </ButtonDropdown>
-                        <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
+                    <div style={{display: 'flex'}}>
+                        <div>
+                          <img style = {imgStyle} className="card-img-top" src={product.imageUrl} alt="Card image cap" />
+                        </div>
+                        <div style={{marginLeft: '20px'}}>
+                            <h3 className="card-title">{product.name}</h3>
+                            <p className="card-text">{product.description}</p>
+                            <p className="card-text"><strong>${product.price}</strong></p>
+                            <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
+                                <DropdownToggle color="dark" caret>{ liQuantity ? liQuantity : "Quantity" }</DropdownToggle>
+                                <DropdownMenu>
+                                {
+                                    [1, 2, 3, 4, 5].map(_liQuantity => (
+                                        <DropdownItem key={ _liQuantity } onClick={ (e) => handleChange(e) } name="liQuantity" value={ _liQuantity }>
+                                            { _liQuantity }
+                                        </DropdownItem>
+                                    ))
+                                }
+                                </DropdownMenu>
+                            </ButtonDropdown>
+                            <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
+                        </div>
                     </div>
-                </div>
-                <div>
+                    <div>
                 <div>
                     {/* Category section */}
-                    <p style={{fontWeight : 'bold'}}>{product.name} Categories</p>
-                    <ul>
                         {
-                            product.categories.map(category => <li key={category.id}>{category.name}</li>)
+                            product.categories.map(category => <h2 className="badge badge-warning" key={category.id}>{category.name}</h2>)
                         }
-                    </ul>
                 </div>
+                    </div>
+                </div>
+            <div>
                 {/* Review section - breaking out into component later*/}
                 <div>
-                    <p style={{fontWeight : 'bold'}}>Reviews for {product.name}</p>
-                    <ul>
+                    <br/>
+                    <h5 style={{fontWeight : 'bold'}}>Reviews for {product.name}</h5>
+                    <hr/>
                         {
                             product.reviews.map(review => {
                                 return (
-                                    <li key={review.id} style={{ borderStyle : 'dotted solid' }}>
+                                    <div key={review.id}>
                                         <div className="card" >
-                                            <div className="card-body">
-                                                <h5 className="card-title">Title: {review.title}</h5>
-                                                <p className="card-text"><strong>Rating: {review.rating}</strong></p>
-                                                <p className="card-text">Description: {review.description}</p>
+                                            <div className="card-body" style={{backgroundColor: '#F2F2F2'}}>
+                                                <h5 className="card-title">{review.title}</h5>
+                                                <p className="card-text" style={{color: 'orange'}}><strong>{"★".repeat(review.rating)} </strong></p>
+                                                <p className="card-text">{review.description}</p>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
                                 )
                             })
                         }
-                    </ul>
                 </div>
 
             {
@@ -194,14 +202,6 @@ const mapStateToProps = ({ auth, products, categories, orders }, { productId }) 
     return { auth, product, categories, order, lineItem };
 };
 
-const mapDispatchToProps = dispatch => {
-    const increment = 'increment';
-  return {
-    editProduct : (productId, product) => dispatch(editProduct(productId, product)),
-    deleteProduct : (product) => dispatch(deleteProduct(product)),
-    createLineItem : (order, lineItem, product, quantity) => dispatch(createLineItem(order, lineItem, product, quantity)),
-    updateLineItem : (order, lineItem, increment, quantity) => dispatch(updateLineItem(order, lineItem, increment, quantity))
-  };
-};
+const mapDispatchToProps = ({ editProduct, deleteProduct, createLineItem, updateLineItem });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)

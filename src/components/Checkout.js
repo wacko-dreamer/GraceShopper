@@ -4,6 +4,8 @@ import { fetchOrders, updateOrder } from '../store/ordersReducer';
 import { updateUser } from '../store/usersReducer';
 import { findOrder } from '../util';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { findOrder, findOrderTotal, mapListItems } from '../util';
+import { ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { create } from 'domain';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
@@ -38,11 +40,11 @@ class Checkout extends Component {
     }
 
     render() {
-        const { createdOrder, isGuest, history, amount } = this.props;
-        const { address, address2, zip, stateAddress, email, name } = this.state
+        const { createdOrder, isGuest, history, total } = this.props;
+        const { address, address2, zip, stateAddress, email } = this.state
         const { handleChange, handleSubmit } = this
 
-        console.log("AMOUNT", amount)
+        console.log("AMOUNT", total)
 
         return(
             <Fragment>
@@ -51,23 +53,9 @@ class Checkout extends Component {
                     <span>Wacko Dreamer</span>
                 </div>
                 <br />
-            {
-                createdOrder.id ? (
-                    <ListGroup>
-                        <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
-                        <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
-                    {   
-                        createdOrder.lineItems.map(lineItem => (
-                            <ListGroupItem key={lineItem.id}>
-                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${amount}</Fragment><br/>
-                    </ListGroup>
-                ): null
-            }
+                { createdOrder.id ? mapListItems(createdOrder) : null }
             
+
             {isGuest ?
                 <Fragment>
                 <form onChange = {handleChange} onSubmit = {handleSubmit}>
@@ -107,7 +95,7 @@ class Checkout extends Component {
             <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
                 <div>
                     <Elements>
-                        <CheckoutForm amount = {amount} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
+                        <CheckoutForm amount = {total} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
                     </Elements>
                 </div>
             </StripeProvider>
@@ -121,15 +109,8 @@ const mapStateToProps = ({ auth, orders }, { history, userId }) => {
     let createdOrder = findOrder(auth, orders, 'CREATED', userId);
     let isGuest = true; 
     if(auth.id) isGuest = false;
-    let amount = 0
-    if (createdOrder.lineItems) {
-        amount = createdOrder.lineItems.reduce((accum, lineItem) => {
-            return accum + lineItem.quantity * lineItem.price
-        },0)
-    }
-    amount = Math.round(amount*100)/100
-    console.log(createdOrder)
-    return { createdOrder, isGuest, history, amount };
+    const total = findOrderTotal(createdOrder)
+    return { createdOrder, isGuest, history, total };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateOrder, updateUser });

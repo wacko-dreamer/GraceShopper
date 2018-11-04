@@ -1,7 +1,8 @@
 import React from 'react'
 import { Table } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
-const AdminOrderView = ({ orders, status }) => {
+const AdminOrdersView = ({ orders, status }) => {
   const filteredOrders = orders.filter(order => {
     if(status === '') {
       return order
@@ -23,11 +24,12 @@ const AdminOrderView = ({ orders, status }) => {
             return (
               <tbody key={order.id}>
                 <tr>
-                  <td>{order.id}</td>
-                  <td>{order.status}</td>
-                  <td>{order.total}</td>
+                    <td><Link to={`/admin/orders/${order.id}`} >{order.id}</Link></td>
+                    <td>{order.status}</td>
+                    <td>{order.total}</td>
                 </tr>
               </tbody>
+
             )
           })
         }
@@ -35,4 +37,4 @@ const AdminOrderView = ({ orders, status }) => {
   )
 }
 
-export default AdminOrderView
+export default AdminOrdersView
