@@ -22,9 +22,23 @@ const divStyle = {
     left: '200px'
 }
 
+
 class Products extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            searchText: this.props.history ? this.props.history.location.search.slice(1) : ''
+        }
+    }
     render() {
-        const {order, products, createLineItem, auth, categoryId} = this.props;
+        const {order, createLineItem, auth, categoryId, history} = this.props
+        let {products} = this.props
+        console.log(history.location.search)
+        // products = products.filter(product => {
+        //         if (product.name.includes(this.state.searchText)){
+        //             console.log(product.name)
+        //         }
+        // })
         return (
             <Fragment>
                 <br />
@@ -53,6 +67,7 @@ class Products extends Component {
         )
     }
 }
+
 
 const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
     products = filterProductsByCategory(categoryId, products); 

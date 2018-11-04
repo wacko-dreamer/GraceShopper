@@ -38,9 +38,11 @@ class Auth extends Component {
             !auth.id ? (
                 <Fragment>
                     <br/>
-                    <form style={{ float: 'right' }} >
-                        <input onChange={ handleChange } value={ username } name='username' placeholder='Username' autoFocus />
-                        <input onChange={ handleChange } value={ password } name='password' placeholder='Password' />
+                    <div className="container">
+                    <form>
+                        <h2>Hey there!</h2>
+                        <input onChange={ handleChange } value={ username } name='username' placeholder='Username' autoFocus className="form-control"/>
+                        <input onChange={ handleChange } value={ password } name='password' placeholder='Password' className="form-control" />
                         <Button onClick={ () => handleLogin() } color='success'>Login</Button>
                     </form>
                     <br/><br/>
@@ -48,10 +50,11 @@ class Auth extends Component {
                     error ? (
                         <Fragment>
                             <br/>
-                            <div className='error-message' >{ error }</div> 
+                            <div className="alert alert-danger" >{ error }</div> 
                         </Fragment>
                     ) : null
                 }
+                </div>
                 </Fragment>
             ) : (<Fragment>
                     <br/>

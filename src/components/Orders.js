@@ -10,7 +10,7 @@ class Orders extends Component {
     render() {
         const { completedOrders } = this.props;
         return (
-            <Fragment>
+            <div className="container" style={{marginTop: '30px'}}>
                 {
                     !completedOrders[0] ? (
                         <Fragment>
@@ -34,7 +34,7 @@ class Orders extends Component {
                     </Fragment>
                     )
                 }
-            </Fragment>
+            </div>
         )
     }
 }

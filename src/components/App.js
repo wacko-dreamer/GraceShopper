@@ -13,6 +13,7 @@ import ProductDetail from './ProductDetail'
 import AdminPage from './AdminPage'
 import Products from './Products'
 import Categories from './Categories'
+import Search from './Search'
 import AdminOrderPage from './AdminOrderPage'
 import AdminOrderInfo from './AdminOrderInfo'
 import { connect } from 'react-redux'
@@ -42,6 +43,9 @@ class App extends Component {
                     <Nav/>
                     <Route render={ ({ history }) => <Auth history={ history }/>}/>
                     <Route exact path = '/' render = {() => <Shop/>}/>
+                    <Route exact path = '/user/login' render ={ ({ history }) => <Auth history={ history }/>}/>
+                    {/* <Route exact path = '/' render ={ ({ history }) => <Search history={ history }/> }/> */}
+                    {/* <Route exact path = '/' render = {() => <Shop/>}/> */}
                     <Route path = '/user/:userId/cart' render = {({ history, match }) => <Cart history={ history } userId={ match.params.userId }/>}/>
                     <Route path = '/user/:userId/checkout' render = { ({ history }) => <Checkout history={ history }/> } />
                     <Route path = '/user/:userId/orders/:orderId' render = { ({ match }) => <OrderDetail orderId={ match.params.orderId }/> } />

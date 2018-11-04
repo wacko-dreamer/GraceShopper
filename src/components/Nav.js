@@ -1,4 +1,3 @@
-
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Jumbotron } from 'reactstrap';
@@ -27,6 +26,7 @@ const Nav = ({ liQuantity, completedOrders, userId, auth }) => {
                         <Link to={ `/user/${userId}/orders` } style={ { color:'white' } }>
                             Orders <Badge color='success'>{ completedOrders.length }</Badge>
                         </Link>
+                        <Link to="/user/login" style={{color:'white'}}>Login</Link>
                         {
                             auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
                         }
