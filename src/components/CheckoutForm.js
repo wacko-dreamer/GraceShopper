@@ -14,17 +14,17 @@ class CheckoutForm extends Component {
   async submit(e) {
     const { amount, updateOrder, createdOrder, isGuest, history } = this.props
     const fromUSDToCent = amount => { 
-        return Math.round(amount * 100)
+      return Math.round(amount * 100)
     }
 
-    let {token} = await this.props.stripe.createToken({name: createdOrder.id});
+    let { token } = await this.props.stripe.createToken({name: createdOrder.id});
+
     console.log(token)
 
     let res = await axios.post("/api/charge", {
       token: token.id,
       amount: fromUSDToCent(amount)
     });
-
     if (res.data === 'succeeded'){
       this.setState({complete:true})
       updateOrder(createdOrder, 'COMPLETED', isGuest, history)
@@ -34,12 +34,11 @@ class CheckoutForm extends Component {
   render() {
     const { complete } = this.state
     const { submit } = this
-    const { updateOrder, isGuest, history } = this.props
 
     return (
       <div className="checkout">
-        <p>Would you like to complete the purchase?</p>
         <CardElement />
+        <br/><br/>
         <button onClick = {submit}>Confirm Order</button>
         {complete ? <Fragment>Transaction Successful</Fragment>: null}
       </div>

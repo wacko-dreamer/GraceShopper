@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-//initial State
-const initialState = [
-
-]
 
 //constants
 const GOT_CATEGORIES = 'GOT CATEGORIES'
@@ -40,42 +36,42 @@ const deletedCategory = (categoryId) => ({
 // 4. delete category
 
 export const fetchCategories = () => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.get(`/api/categories`)
         .then (res => dispatch(gotCategories(res.data)))
         .catch(ex => console.log(ex))
-    }
+    )
 }
 
 export const createCategory = categoryName => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.post('/api/categories', categoryName)
-        .then(() => dispatch(fetchCategories()))
-        // .then(res => dispatch(createdCategory(res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchCategories()))
+            // .then(res => dispatch(createdCategory(res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const updateCategory = (categoryId, updatedCategory) => {
-    return (dispatch) => {
+    return (dispatch) => (
         axios.put(`/api/categories/${categoryId}`, updatedCategory)
-        .then(() => dispatch(fetchCategories()))
-        // .then(res => dispatch(updatedCategory(res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchCategories()))
+            // .then(res => dispatch(updatedCategory(res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const deleteCategory = categoryId => {
-    return(dispatch) => {
+    return(dispatch) => (
         axios.delete(`api/categories/${categoryId}`)
-        .then(() => dispatch(fetchCategories()))
-        // .then(() => dispatch(deletedCategory(categoryId)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchCategories()))
+            // .then(() => dispatch(deletedCategory(categoryId)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 //reducer
-const categoriesReducer = (state = initialState, action) => {
+const categoriesReducer = (state = [], action) => {
     switch(action.type){
         case GOT_CATEGORIES:
             return action.categories

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {findLineItemById} from '../util.js'
 import { createLineItem } from '../store/ordersReducer';
-import { findOrder } from '../util';
+import { findOrder, filterProductsByCategory } from '../util';
 import EditCategory from './EditCategory';
 
 
@@ -33,7 +33,6 @@ class Products extends Component {
     render() {
         const {order, createLineItem, auth, categoryId, history} = this.props
         let {products} = this.props
-        let quantity = 0
         console.log(history.location.search)
         // products = products.filter(product => {
         //         if (product.name.includes(this.state.searchText)){
@@ -44,9 +43,7 @@ class Products extends Component {
             <Fragment>
                 <br />
                 <div style={divStyle}>
-                 
-                    {products.map(product => {
-                        return (
+                    {products.map(product => (
                             <div className="card" style={cardStyle} key={product.id}>
                                 <Link to={`/products/${product.id}`}><img className="card-img-top" src={product.imageUrl} alt="Card image cap"/></Link>
                                 <div className="card-body">
@@ -56,37 +53,25 @@ class Products extends Component {
                                     <p className="card-text"><strong>${product.price}</strong></p>
                                     <p style = {{color: 'orange'}} className="card-text"><strong>{product.quantity ? null : 'Temporarily out of stock' }</strong></p>
                                     </div>
-                                    <button className="btn btn-info" style={{margin: '5px'}}>+</button>
-                                    <button className="btn btn-info" style={{margin: '5px'}}>-</button>
                                     {/* If user is admin then render below */}
                                     {auth.isAdmin ? <Link to={`/products/${product.id}`}><button className="btn btn-primary" style={{margin: '10px'}}>Edit</button></Link> : null }
                                 </div>
                             </div>
                         )
-                    })}
+                    )}
                     <div>
-                        {
-                            auth.isAdmin && categoryId ? <EditCategory categoryId={categoryId} /> : null
-                        }
+                        { auth.isAdmin && categoryId ? <EditCategory categoryId={categoryId} /> : null }
                     </div>
-
                 </div>
-
             </Fragment>
         )
     }
 }
 
-const mapStateToProps = ({ products, orders, auth }, { categoryId, history }) => {
-    if (categoryId){
-       products = products.filter( product => {
-           if (product.categories.find(category => category.id === categoryId*1)){
-               return true
-           }
-       }).sort((a, b) => a.id - b.id)
-    }
-    //lineItem logic
-    let order = findOrder(auth, orders, 'CART');
+
+const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
+    products = filterProductsByCategory(categoryId, products); 
+    const order = findOrder(auth, orders, 'CART');
     return { products, order, auth }
 }
 

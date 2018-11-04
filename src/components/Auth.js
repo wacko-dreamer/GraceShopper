@@ -14,6 +14,7 @@ class Auth extends Component {
             error: ''
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
     componentDidUpdate(prevProps) {
         const { auth } = this.props;
@@ -24,8 +25,13 @@ class Auth extends Component {
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
+    handleLogin() {
+        const { login, history } = this.props;
+        login(this.state, history)
+            .catch(() => this.setState({ error: 'Incorrect Username and/or Password. Please try again.' })) 
+    }
     render() {
-        const { handleChange } = this;
+        const { handleChange, handleLogin } = this;
         const { username, password, error } = this.state;
         const { auth, login, logout, history } = this.props;
         return(
@@ -37,11 +43,9 @@ class Auth extends Component {
                         <h2>Hey there!</h2>
                         <input onChange={ handleChange } value={ username } name='username' placeholder='Username' autoFocus className="form-control"/>
                         <input onChange={ handleChange } value={ password } name='password' placeholder='Password' className="form-control" />
-                        <Button onClick={ () => login(this.state, history)
-                            .catch(() => this.setState({ error: 'Incorrect Username and/or Password. Please try again.' })) } 
-                            color='success'>Login</Button>
+                        <Button onClick={ () => handleLogin() } color='success'>Login</Button>
                     </form>
-                    <br/>
+                    <br/><br/>
                 {
                     error ? (
                         <Fragment>
@@ -56,7 +60,7 @@ class Auth extends Component {
                     <br/>
                     <Button onClick={ () => logout(history) } color='danger' style={{ float: 'right' }}>Logout</Button>
                     <h3 style={{ display: 'inline-block', float: 'right' }} >Welcome { auth.name }!&emsp;</h3>
-                    <br/>
+                    <br/><br/>
                 </Fragment>
             )
         )

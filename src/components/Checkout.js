@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
-import { findOrder } from '../util';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { findOrder, findOrderTotal, mapListItems } from '../util';
+import { ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { create } from 'domain';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
@@ -14,16 +14,33 @@ class Checkout extends Component {
         this.state = {
             address: '',
             address2: '',
-            zip: null,
-            _state: '',
+            zip: 0,
+            stateAddress: '',
+            email: ''
         }
+        this.handleChange = this.handleChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
     }
-    render() {
-        const { createdOrder, updateOrder, isGuest, history, amount } = this.props;
-        //if we want to add additional shipping addresses...
-        const { address, address2, zip, _state } = this
 
-        console.log("AMOUNT", amount)
+
+    handleChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    onSubmit(e){
+        const { address, address2, zip, stateAddress, email } = this.state
+        const addressStr = address + address2 + zip + sateAddress + email
+        
+    }
+
+    render() {
+        const { createdOrder, isGuest, history, total } = this.props;
+        const { address, address2, zip, stateAddress, email } = this.state
+        const { handleChange } = this
+
+        console.log("AMOUNT", total)
 
         return(
             <Fragment>
@@ -32,34 +49,41 @@ class Checkout extends Component {
                     <span>Wacko Dreamer</span>
                 </div>
                 <br />
-            {
-                createdOrder ? (
-                    <ListGroup>
-                        <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
-                        <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
-                    {   
-                        createdOrder.lineItems.map(lineItem => (
-                            <ListGroupItem key={lineItem.id}>
-                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${amount}</Fragment><br/>
-                    </ListGroup>
-                ): null
-            }
+                { createdOrder.id ? mapListItems(createdOrder) : null }
             
-            <div>Payment Information</div>
-            <br />
-            <br />
+            <Form>
+                <FormGroup>
+                    <div>Shipping Information</div><br /><br />
+                    <Label>Shipping Address: </Label>
+                    <Input type = 'text' name = 'address' value = {address} onChange = {handleChange}/>
+                    <br />
+
+
+                    <Label>Address 2:</Label>
+                    <Input type = 'text' name = 'address2' value = {address2} onChange = {handleChange}/>
+                    <br />
+
+                    <Label>City/Zip Code:</Label>
+                    <Input type = 'text' name = 'zip' value = {zip} onChange = {handleChange}/>
+                    <br />
+
+                    <Label>State:</Label>
+                    <Input type = 'text' name = 'stateAddress' value = {stateAddress} onChange = {handleChange}/>
+                    <br />
+
+                    <Label>Email Address:</Label>
+                    <Input type = 'text' name = 'email' value = {email} onChange = {handleChange}/>
+                    <br />
+                </FormGroup>
+            </Form>
+            < hr/>
             
-            {/* <Button onClick={ () => updateOrder(createdOrder, 'COMPLETED', isGuest, history) } >Confirm Order</Button>
-             */}
+            <div>Payment Information</div><br /><br/>
 
             <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
                 <div>
                     <Elements>
-                        <CheckoutForm amount = {amount} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
+                        <CheckoutForm amount = {total} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
                     </Elements>
                 </div>
             </StripeProvider>
@@ -69,19 +93,12 @@ class Checkout extends Component {
     }
 }
 
-const mapStateToProps = ({ auth, orders }, { history }) => {
-    let createdOrder = findOrder(auth, orders, 'CREATED');
-    if(createdOrder === undefined) createdOrder = null;
+const mapStateToProps = ({ auth, orders }, { history, userId }) => {
+    let createdOrder = findOrder(auth, orders, 'CREATED', userId);
     let isGuest = true; 
     if(auth.id) isGuest = false;
-    let amount = 0
-    if (createdOrder) {
-        amount = createdOrder.lineItems.reduce((accum, lineItem) => {
-            return accum + lineItem.quantity * lineItem.price
-        },0)
-    }
-    amount = Math.round(amount*100)/100
-    return { createdOrder, isGuest, history, amount };
+    const total = findOrderTotal(createdOrder)
+    return { createdOrder, isGuest, history, total };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateOrder });

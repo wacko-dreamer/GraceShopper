@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { editProduct, deleteProduct } from '../store/productsReducer';
 import orderReducer, { createLineItem, updateLineItem } from '../store/ordersReducer';
 import { findOrder, findProduct, findLineItemByProductId } from '../util';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 
 const cardStyle = {
   border: '1px solid grey',
@@ -50,12 +50,10 @@ class ProductDetail extends Component {
   }
 
   handleChange(evt) {
-      console.log(evt.target, evt.target.name, evt.target.value)
     this.setState({
         [ evt.target.name ] : [ evt.target.name ] == 'categories' ? [...evt.target.selectedOptions].map(option => option.value) : evt.target.value
       })
   }
-
   handleDelete(evt) {
     evt.preventDefault()
     this.props.deleteProduct(this.props.productId)
@@ -64,16 +62,16 @@ class ProductDetail extends Component {
 
   handleAddToCart(evt) {
     const { product, createLineItem, updateLineItem, order, lineItem } = this.props;
+    const { liQuantity } = this.state;
     //evt.preventDefault();
-    if(!lineItem.id) createLineItem(order, product);
-    else updateLineItem(order, lineItem, 'increment');
+    if(!lineItem.id) createLineItem(order, lineItem, product, liQuantity * 1);
+    else updateLineItem(order, lineItem, 'increment', liQuantity * 1);
   }
   toggle() {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
   render () {
-
-    const { product, auth, categories, order, lineItem } = this.props;
+    const { product, auth, categories, order, lineItem, history } = this.props;
     const { name, description, price, quantity, imageUrl, dropdownOpen, liQuantity } = this.state;
     const { handleChange, handleSubmit, handleDelete, handleAddToCart, toggle } = this;
     return(
@@ -81,30 +79,33 @@ class ProductDetail extends Component {
     {
         product.id ? (
                 <div className="container" style={{marginTop: '40px'}}>
+                    <Button color='info' onClick={ () => history.goBack() }>Back</Button>
                 {/* Product detail section */}
-                <div style={{display: 'flex'}}>
-                    <div>
-                    <img style = {imgStyle} className="card-img-top" src={product.imageUrl} alt="Card image cap" />
+                    <div style={{display: 'flex'}}>
+                        <div>
+                          <img style = {imgStyle} className="card-img-top" src={product.imageUrl} alt="Card image cap" />
+                        </div>
+                        <div style={{marginLeft: '20px'}}>
+                            <h3 className="card-title">{product.name}</h3>
+                            <p className="card-text">{product.description}</p>
+                            <p className="card-text"><strong>${product.price}</strong></p>
+                            <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
+                                <DropdownToggle color="dark" caret>{ liQuantity ? liQuantity : "Quantity" }</DropdownToggle>
+                                <DropdownMenu>
+                                {
+                                    [1, 2, 3, 4, 5].map(_liQuantity => (
+                                        <DropdownItem key={ _liQuantity } onClick={ (e) => handleChange(e) } name="liQuantity" value={ _liQuantity }>
+                                            { _liQuantity }
+                                        </DropdownItem>
+                                    ))
+                                }
+                                </DropdownMenu>
+                            </ButtonDropdown>
+                            <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
+                        </div>
                     </div>
-                    <div style={{marginLeft: '20px'}}>
-                    <h3 className="card-title">{product.name}</h3>
-                    <p className="card-text">{product.description}</p>
-                    <p className="card-text"><strong>${product.price}</strong></p>
-                    <ButtonDropdown isOpen={ dropdownOpen } toggle={ toggle }>
-                        <DropdownToggle caret>Quantity</DropdownToggle>
-                        <DropdownMenu>
-                        {
-                            [1, 2, 3, 4, 5].map(_liQuantity => (
-                                <DropdownItem key={ _liQuantity }>
-                                    <div onClick={ () => handleChange() } name="liQuantity" value={ _liQuantity*1 }>{ _liQuantity }</div>
-                                </DropdownItem>
-                            ))
-                        }
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                    <a onClick={ () => handleAddToCart() } href="#" className="btn btn-success">Add To Cart</a>
                     <div>
-                        <br/>
+                <div>
                     {/* Category section */}
                         {
                             product.categories.map(category => <h2 className="badge badge-warning" key={category.id}>{category.name}</h2>)
@@ -123,11 +124,11 @@ class ProductDetail extends Component {
                                 return (
                                     <div key={review.id}>
                                         <div className="card" >
-                                        <div className="card-body" style={{backgroundColor: '#F2F2F2'}}>
-                                            <h5 className="card-title">{review.title}</h5>
-                                            <p className="card-text" style={{color: 'orange'}}><strong>{"★".repeat(review.rating)} </strong></p>
-                                            <p className="card-text">{review.description}</p>
-                                        </div>
+                                            <div className="card-body" style={{backgroundColor: '#F2F2F2'}}>
+                                                <h5 className="card-title">{review.title}</h5>
+                                                <p className="card-text" style={{color: 'orange'}}><strong>{"★".repeat(review.rating)} </strong></p>
+                                                <p className="card-text">{review.description}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 )
@@ -139,54 +140,54 @@ class ProductDetail extends Component {
                 /*Update Product - breaking out into component later */
                 auth.isAdmin === false || auth.isAdmin === undefined ? <div></div> :
                 <div>
-                <h5 className='card-title'>Update Product</h5>
-                <form onSubmit={(product) => handleSubmit(product)}>
-                    <div>
+                    <h5 className='card-title'>Update Product</h5>
+                    <form onSubmit={(product) => handleSubmit(product)}>
+                        <div>
+                            <label>
+                                Name: <input name='name' type='text' value={name} onChange={(product) => handleChange(product)} />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Description: <input name='description' type='text' value={description} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Price: <input name='price' type='text' value={price} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Quantity: <input name='quantity' type='text' value={quantity} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Image: <input name='imageUrl' type='text' value={imageUrl} onChange={handleChange}/>
+                            </label>
+                        </div>
+                        <div>
                     <label>
-                        Name: <input name='name' type='text' value={name} onChange={(product) => handleChange(product)} />
+                        <p>Categories:</p>
+                        <select name='categories' multiple={true} value={this.state.categories} onChange={handleChange}>
+                        <option value={''}>None</option>
+                        {
+                            categories.map(category => <option key={category.id}>{category.id} - {category.name}</option>)
+                        }
+                        </select>
                     </label>
                     </div>
-                    <div>
-                    <label>
-                        Description: <input name='description' type='text' value={description} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Price: <input name='price' type='text' value={price} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Quantity: <input name='quantity' type='text' value={quantity} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                    <label>
-                        Image: <input name='imageUrl' type='text' value={imageUrl} onChange={handleChange}/>
-                    </label>
-                    </div>
-                    <div>
-                <label>
-                    <p>Categories:</p>
-                    <select name='categories' multiple={true} value={this.state.categories} onChange={handleChange}>
-                    <option value={''}>None</option>
-                    {
-                        categories.map(category => <option key={category.id}>{category.id} - {category.name}</option>)
-                    }
-                    </select>
-                </label>
-                </div>
-                    <button type='submit'>Submit</button>
-                    <div>
-                    <h5>Delete Product</h5>
-                    <button type='button' onClick={handleDelete}>Click here</button>
-                    </div>
-                </form>
+                        <button type='submit'>Submit</button>
+                        <div>
+                            <h5>Delete Product</h5>
+                            <button type='button' onClick={handleDelete}>Click here</button>
+                        </div>
+                    </form>
                 </div>
             }
             </div>
-            </div>
+        </div>
         ) : null
     }
     </Fragment>
@@ -201,14 +202,6 @@ const mapStateToProps = ({ auth, products, categories, orders }, { productId }) 
     return { auth, product, categories, order, lineItem };
 };
 
-const mapDispatchToProps = dispatch => {
-    const increment = 'increment';
-  return {
-    editProduct : (productId, product) => dispatch(editProduct(productId, product)),
-    deleteProduct : (product) => dispatch(deleteProduct(product)),
-    createLineItem : (order, product) => dispatch(createLineItem(order, product)),
-    updateLineItem : (order, lineItem, increment) => dispatch(updateLineItem(order, lineItem, increment))
-  };
-};
+const mapDispatchToProps = ({ editProduct, deleteProduct, createLineItem, updateLineItem });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)

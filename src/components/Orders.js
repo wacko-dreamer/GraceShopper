@@ -1,45 +1,47 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders } from '../store/ordersReducer.js'
-import { findOrders } from '../util';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { findOrders, findOrderTotal, mapOrders } from '../util';
+import { Link } from 'react-router-dom';
+import { Jumbotron } from 'reactstrap';
+
 
 class Orders extends Component {
     render() {
-        const { orders } = this.props;
+        const { completedOrders } = this.props;
         return (
-            <Fragment>
             <div className="container" style={{marginTop: '30px'}}>
-                <div>
-                    <h3>Your Orders</h3>
-                    <span>Here you will find all the things that you have ordered from Wacko Dreamer</span>
-                </div>
-                <br />
-            {
-                orders.map(order => (
-                    <ListGroup key={ order.id }>
-                        <Fragment>ORDER ID: { order.id }</Fragment><br/>
-                        <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
-                    {   
-                        order.lineItems.map(lineItem => (
-                            <ListGroupItem key={ lineItem.id }>
-                                <Fragment>ProductId: { lineItem.productId } Quantity: { lineItem.quantity } Price: ${ lineItem.price }</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${order.total}</Fragment><br/>
-                    </ListGroup>
-                ))
-            }
+                {
+                    !completedOrders[0] ? (
+                        <Fragment>
+                            <div>
+                                <h3>No Orders!</h3>
+                                <Link to='/'>
+                                    <Jumbotron>
+                                        <h1>Back to Products!</h1>
+                                    </Jumbotron>
+                                </Link>
+                            </div>
+                        </Fragment>
+                    ) : (
+                    <Fragment>
+                        <div>
+                            <h3>Your Orders</h3>
+                            <span>Here you will find all the things that you have ordered from Wacko Dreamer:</span>
+                        </div>
+                        <br />
+                        { mapOrders(completedOrders) }
+                    </Fragment>
+                    )
+                }
             </div>
-            </Fragment>
         )
     }
 }
 
 const mapStateToProps = ({ auth, orders }) => {
-    orders = findOrders(auth, orders, 'COMPLETED')
-    return { orders }
+    const completedOrders = findOrders(auth, orders, 'COMPLETED');
+    return { completedOrders };
 }
 
 export default connect(mapStateToProps)(Orders)
