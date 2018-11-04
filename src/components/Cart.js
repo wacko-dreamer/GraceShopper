@@ -31,7 +31,6 @@ class Cart extends Component {
                     <Fragment>
                         <span>Here you will find all the things that you have added to your cart:</span>
                         <table className="table">
-                            <br/>
                             <tbody>
                             {
                                 lineItems.map(lineItem => (

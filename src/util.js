@@ -77,8 +77,8 @@ export const floatRight = { float: 'right' };
 export const mapListItems = order => {
     const total = findOrderTotal(order);
         return(
-            <Fragment>
-                <ListGroup key={ order.id }><br/>
+            <Fragment key={ order.id }>
+                <ListGroup><br/>
                     <Fragment><strong>ORDER ID:</strong> { order.id }</Fragment><br/>
                     <Fragment><strong>Ordered on:</strong> 
                         { order.updatedAt.slice(0, 10) }  <strong>at</strong>  { order.updatedAt.slice(11, 16) }
