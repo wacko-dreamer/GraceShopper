@@ -33,7 +33,6 @@ class Products extends Component {
     render() {
         const {order, createLineItem, auth, categoryId, history} = this.props
         let {products} = this.props
-        console.log(history.location.search)
         // products = products.filter(product => {
         //         if (product.name.includes(this.state.searchText)){
         //             console.log(product.name)

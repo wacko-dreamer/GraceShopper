@@ -42,7 +42,6 @@ class App extends Component {
             <Router>
                 <Fragment>
                     <Nav/>
-                    <Route render={ ({ history }) => <Auth history={ history }/>}/>
                     <Route exact path = '/' render = {() => <Shop/>}/>
                     <Route exact path = '/user/login' render ={ ({ history }) => <Auth history={ history }/>}/>
                     {/* <Route exact path = '/' render ={ ({ history }) => <Search history={ history }/> }/> */}

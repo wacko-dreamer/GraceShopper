@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
 import { updateUser } from '../store/usersReducer';
-import { findOrder } from '../util';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { findOrder, findOrderTotal, mapListItems } from '../util';
 import { ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { create } from 'domain';
