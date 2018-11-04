@@ -43,7 +43,7 @@ class Auth extends Component {
                         <input onChange={ handleChange } value={ password } name='password' placeholder='Password' />
                         <Button onClick={ () => handleLogin() } color='success'>Login</Button>
                     </form>
-                    <br/>
+                    <br/><br/>
                 {
                     error ? (
                         <Fragment>
@@ -57,7 +57,7 @@ class Auth extends Component {
                     <br/>
                     <Button onClick={ () => logout(history) } color='danger' style={{ float: 'right' }}>Logout</Button>
                     <h3 style={{ display: 'inline-block', float: 'right' }} >Welcome { auth.name }!&emsp;</h3>
-                    <br/>
+                    <br/><br/>
                 </Fragment>
             )
         )

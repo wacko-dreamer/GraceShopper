@@ -76,8 +76,11 @@ export const mapListItems = order => {
     const total = findOrderTotal(order);
         return(
             <ListGroup key={ order.id }>
-                <Fragment>ORDER ID: { order.id }</Fragment><br/>
-                <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
+                <Fragment><strong>ORDER ID:</strong> { order.id }</Fragment><br/>
+                <Fragment><strong>Ordered on:</strong> 
+                    { order.updatedAt.slice(0, 10) }  <strong>at</strong>  { order.updatedAt.slice(11, 16) }
+                </Fragment><br/>
+                <Fragment><strong>Shipping Address:</strong> { order.shippingAddress }</Fragment><br/>
             {   
                 order.lineItems.map((lineItem, idx) => (
                     <ListGroupItem key={ lineItem.id }>
@@ -86,8 +89,15 @@ export const mapListItems = order => {
                             <br/>
                             { lineItem.product.name } 
                             <br/>
-                            Quantity: { lineItem.quantity }
-                            <div style={{ float: 'right' }}>Price: ${ lineItem.price }</div>
+                            <strong>Quantity: </strong> 
+                            { lineItem.quantity }
+                            <br/>
+                            <strong>Description: </strong>
+                            { lineItem.product.description }
+                            <div style={{ float: 'right' }}>
+                                <strong>Price: </strong> 
+                                ${ lineItem.price }
+                            </div>
                             <img src={ lineItem.product.imageUrl } style={{ float: 'right' }}/>
                         </div>
                     </ListGroupItem>

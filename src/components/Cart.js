@@ -49,7 +49,8 @@ class Cart extends Component {
                             }
                             </tbody>
                         </table>
-                        <button onClick={() => updateOrder(cartOrder, 'CREATED', isGuest, history) } className="btn btn-success my-2 my-sm-0">Checkout</button>
+                        <button onClick={() => updateOrder(cartOrder, 'CREATED', isGuest, history) } 
+                            style={{ float: 'right'}} className="btn btn-success my-2 my-sm-0">Checkout</button>
                     </Fragment>
                 )
             }
