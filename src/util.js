@@ -64,11 +64,9 @@ export const findUserId = (auth, cartOrder) => {
 export const findOrderTotal = order => {
     let total = 0
     if (order.lineItems) {
-        total = order.lineItems.reduce((accum, lineItem) => {
-            return accum + lineItem.quantity * lineItem.price
-        },0)
+        total = order.lineItems.reduce((accum, lineItem) => accum + lineItem.quantity * lineItem.price, 0);
     }
-    total = Math.round(total*100)/100
+    total = Math.round(total * 100) / 100
     return total;
 }
 
@@ -96,7 +94,7 @@ export const mapListItems = order => {
                 ))
             }
                 <Fragment><strong>Total: ${total}</strong></Fragment>
-                <br/>
+                <br/><br/>
             </ListGroup>
     )
 }

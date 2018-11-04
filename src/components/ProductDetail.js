@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { editProduct, deleteProduct } from '../store/productsReducer';
 import orderReducer, { createLineItem, updateLineItem } from '../store/ordersReducer';
 import { findOrder, findProduct, findLineItemByProductId } from '../util';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 
 const cardStyle = {
   border: '1px solid grey',
@@ -66,7 +66,7 @@ class ProductDetail extends Component {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
   render () {
-    const { product, auth, categories, order, lineItem } = this.props;
+    const { product, auth, categories, order, lineItem, history } = this.props;
     const { name, description, price, quantity, imageUrl, dropdownOpen, liQuantity } = this.state;
     const { handleChange, handleSubmit, handleDelete, handleAddToCart, toggle } = this;
     return(
@@ -74,6 +74,7 @@ class ProductDetail extends Component {
     {
         product.id ? (
             <div>
+                <Button color='info' onClick={ () => history.goBack() }>Back</Button>
                 {/* Product detail section */}
                 <div className="card" style={cardStyle}>
                     <img className="card-img-top" src={product.imageUrl} alt="Card image cap" />
@@ -194,14 +195,15 @@ const mapStateToProps = ({ auth, products, categories, orders }, { productId }) 
     return { auth, product, categories, order, lineItem };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = ({ editProduct, deleteProduct, createLineItem, updateLineItem })
+/* dispatch => {
     const increment = 'increment';
-  return {
-    editProduct : (productId, product) => dispatch(editProduct(productId, product)),
-    deleteProduct : (product) => dispatch(deleteProduct(product)),
-    createLineItem : (order, lineItem, product, quantity) => dispatch(createLineItem(order, lineItem, product, quantity)),
-    updateLineItem : (order, lineItem, increment, quantity) => dispatch(updateLineItem(order, lineItem, increment, quantity))
-  };
-};
+    return {
+        editProduct : (productId, product) => dispatch(editProduct(productId, product)),
+        deleteProduct : (product) => dispatch(deleteProduct(product)),
+        createLineItem : (order, lineItem, product, quantity) => dispatch(createLineItem(order, lineItem, product, quantity)),
+        updateLineItem : (order, lineItem, increment, quantity) => dispatch(updateLineItem(order, lineItem, increment, quantity))
+    };
+}; */
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)

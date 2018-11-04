@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders, updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
 import { findOrder, findOrders, findLineItems } from '../util';
+import { Jumbotron } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 
 class Cart extends Component {
@@ -16,7 +18,16 @@ class Cart extends Component {
                 <h3>Shopping Cart</h3>
                 <br/>
             {
-                !lineItems.length ? <h4>Your Shopping Cart is Empty!</h4> : (
+                !lineItems.length ? (
+                <Fragment>
+                    <h4>Your Shopping Cart is Empty!</h4> 
+                    <Link to='/'>
+                        <Jumbotron>
+                            <h1>Back to Products!</h1>
+                        </Jumbotron>
+                    </Link>
+                </Fragment>
+                ) : (
                     <Fragment>
                         <span>Here you will find all the things that you have added to your cart</span>
                         <table className="table">

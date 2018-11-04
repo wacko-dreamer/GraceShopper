@@ -63,12 +63,13 @@ class App extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = ({ fetchProducts, fetchCategories, fetchOrders });
+/* (dispatch) => {
     return {
         fetchProducts: () => dispatch(fetchProducts()),
         fetchCategories: () => dispatch(fetchCategories()),
         fetchOrders: () => dispatch(fetchOrders())
     }
-}
+} */
 
 export default connect(null, mapDispatchToProps)(App)
