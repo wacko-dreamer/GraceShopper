@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
+import { updateUser } from '../store/usersReducer';
 import { findOrder } from '../util';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { create } from 'domain';
@@ -16,10 +17,11 @@ class Checkout extends Component {
             address2: '',
             zip: 0,
             stateAddress: '',
-            email: ''
+            email: '',
+            name: ''
         }
         this.handleChange = this.handleChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
 
@@ -29,7 +31,7 @@ class Checkout extends Component {
         })
     }
 
-    onSubmit(e){
+    handleSubmit(e){
         const { address, address2, zip, stateAddress, email } = this.state
         const addressStr = address + address2 + zip + sateAddress + email
         
@@ -37,8 +39,8 @@ class Checkout extends Component {
 
     render() {
         const { createdOrder, isGuest, history, amount } = this.props;
-        const { address, address2, zip, stateAddress, email } = this.state
-        const { handleChange } = this
+        const { address, address2, zip, stateAddress, email, name } = this.state
+        const { handleChange, handleSubmit } = this
 
         console.log("AMOUNT", amount)
 
@@ -66,31 +68,40 @@ class Checkout extends Component {
                 ): null
             }
             
-            <form onChange = {handleChange}>
-                <div>Shipping Information</div><br /><br />
-                <label>Shipping Address: </label>
-                <input type = 'text' name = 'address' value = {address}/>
-                <br />
+            {isGuest ?
+                <Fragment>
+                <form onChange = {handleChange} onSubmit = {handleSubmit}>
+                    <div>Shipping Information</div><br /><br />
+                    <label>Shipping Address: </label>
+                    <input type = 'text' name = 'address' value = {address}/>
+                    <br />
 
+                    <label>Address 2 </label>
+                    <input type = 'text' name = 'address2' value = {address2}/>
+                    <br />
 
-                <label>Address 2 </label>
-                <input type = 'text' name = 'address2' value = {address2}/>
-                <br />
+                    <label>City/Zip Code</label>
+                    <input type = 'text' name = 'zip' value = {zip}/>
+                    <br />
 
-                <label>City/Zip Code</label>
-                <input type = 'text' name = 'zip' value = {zip}/>
-                <br />
+                    <label>State</label>
+                    <input type = 'text' name = 'stateAddress' value = {stateAddress}/>
+                    <br />
+                    
+                    <label>Name:</label>
+                    <input type = 'text' name = 'name' value = {name}/>
+                    <br />
 
-                <label>State</label>
-                <input type = 'text' name = 'stateAddress' value = {stateAddress}/>
-                <br />
+                    <label>Email Address:</label>
+                    <input type = 'text' name = 'email' value = {email}/>
+                    <br />
+                </form>
+                <hr />
+                </Fragment>
+                :
+                null
+            }
 
-                <label>Email Address:</label>
-                <input type = 'text' name = 'email' value = {email}/>
-                <br />
-            </form>
-            < hr/>
-            
             <div>Payment Information</div><br /><br/>
 
             <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
@@ -121,7 +132,7 @@ const mapStateToProps = ({ auth, orders }, { history, userId }) => {
     return { createdOrder, isGuest, history, amount };
 }
 
-const mapDispatchToProps = ({ fetchOrders, updateOrder });
+const mapDispatchToProps = ({ fetchOrders, updateOrder, updateUser });
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

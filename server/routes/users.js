@@ -15,6 +15,7 @@ router.get('/:userId', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
+    console.log(req.body)
     User.create(req.body)
         .then(user => res.send(user))
         .catch(next)

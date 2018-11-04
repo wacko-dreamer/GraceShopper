@@ -25,6 +25,9 @@ const Nav = ({ liQuantity, completedOrders, userId, auth }) => {
                         <Link to="/user/:id/orders" style={ { color:'white' } }>
                             Orders <Badge color='success'>{ completedOrders.length }</Badge>
                         </Link>
+                        <Link to = "/signup" style={ { color:'white' } }>
+                            Sign Up
+                        </Link>
                         {
                             auth.isAdmin ? <Link to='/admin/homepage' style={{ color : 'white' }}> Admin </Link> : <span></span>
                         }

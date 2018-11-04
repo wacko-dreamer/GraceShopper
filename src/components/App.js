@@ -14,6 +14,7 @@ import AdminPage from './AdminPage'
 import Products from './Products'
 import Categories from './Categories'
 import AdminOrderPage from './AdminOrderPage'
+import SignUp from './SignUp'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
 import { fetchCategories } from '../store/categoriesReducer.js'
@@ -53,6 +54,7 @@ class App extends Component {
                 <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
                 <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
                 <Route path='/admin/orders' component={AdminOrderPage} />
+                <Route path = '/signup' render = {() => <SignUp/>}/>
                 </div>
             </Router>
         )
