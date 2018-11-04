@@ -15,6 +15,7 @@ import Products from './Products'
 import Categories from './Categories'
 import Search from './Search'
 import AdminOrderPage from './AdminOrderPage'
+import SignUp from './SignUp'
 import AdminOrderInfo from './AdminOrderInfo'
 import { connect } from 'react-redux'
 import { fetchProducts } from '../store/productsReducer.js'
@@ -57,6 +58,7 @@ class App extends Component {
                     <Route path='/admin/categories' component={Categories} />
                     <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
                     <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
+                    <Route path = '/signup' render = {() => <SignUp/>}/>
                     <Switch>
                         <Route path='/admin/orders/:orderId' render={({ match, history }) => <AdminOrderInfo history={history} orderId={match.params.orderId}/>} />
                         <Route path='/admin/orders' component={AdminOrderPage} />
