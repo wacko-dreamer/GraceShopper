@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
-import { findOrder } from '../util';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { findOrder, findOrderTotal, mapListItems } from '../util';
+import { ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { create } from 'domain';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
@@ -36,11 +36,11 @@ class Checkout extends Component {
     }
 
     render() {
-        const { createdOrder, isGuest, history, amount } = this.props;
+        const { createdOrder, isGuest, history, total } = this.props;
         const { address, address2, zip, stateAddress, email } = this.state
         const { handleChange } = this
 
-        console.log("AMOUNT", amount)
+        console.log("AMOUNT", total)
 
         return(
             <Fragment>
@@ -49,46 +49,33 @@ class Checkout extends Component {
                     <span>Wacko Dreamer</span>
                 </div>
                 <br />
-            {
-                createdOrder.id ? (
-                    <ListGroup>
-                        <Fragment>ORDER ID: {createdOrder.id}</Fragment><br/>
-                        <Fragment>Shipping Address: {createdOrder.shippingAddress}</Fragment><br/>
-                    {   
-                        createdOrder.lineItems.map(lineItem => (
-                            <ListGroupItem key={lineItem.id}>
-                                <Fragment>ProductId: {lineItem.productId} Quantity: {lineItem.quantity} Price: ${lineItem.price}</Fragment>
-                            </ListGroupItem>
-                        ))
-                    }
-                        <Fragment>Total: ${amount}</Fragment><br/>
-                    </ListGroup>
-                ): null
-            }
+                { createdOrder.id ? mapListItems(createdOrder) : null }
             
-            <form onChange = {handleChange}>
-                <div>Shipping Information</div><br /><br />
-                <label>Shipping Address: </label>
-                <input type = 'text' name = 'address' value = {address}/>
-                <br />
+            <Form>
+                <FormGroup>
+                    <div>Shipping Information</div><br /><br />
+                    <Label>Shipping Address: </Label>
+                    <Input type = 'text' name = 'address' value = {address} onChange = {handleChange}/>
+                    <br />
 
 
-                <label>Address 2 </label>
-                <input type = 'text' name = 'address2' value = {address2}/>
-                <br />
+                    <Label>Address 2:</Label>
+                    <Input type = 'text' name = 'address2' value = {address2} onChange = {handleChange}/>
+                    <br />
 
-                <label>City/Zip Code</label>
-                <input type = 'text' name = 'zip' value = {zip}/>
-                <br />
+                    <Label>City/Zip Code:</Label>
+                    <Input type = 'text' name = 'zip' value = {zip} onChange = {handleChange}/>
+                    <br />
 
-                <label>State</label>
-                <input type = 'text' name = 'stateAddress' value = {stateAddress}/>
-                <br />
+                    <Label>State:</Label>
+                    <Input type = 'text' name = 'stateAddress' value = {stateAddress} onChange = {handleChange}/>
+                    <br />
 
-                <label>Email Address:</label>
-                <input type = 'text' name = 'email' value = {email}/>
-                <br />
-            </form>
+                    <Label>Email Address:</Label>
+                    <Input type = 'text' name = 'email' value = {email} onChange = {handleChange}/>
+                    <br />
+                </FormGroup>
+            </Form>
             < hr/>
             
             <div>Payment Information</div><br /><br/>
@@ -96,7 +83,7 @@ class Checkout extends Component {
             <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
                 <div>
                     <Elements>
-                        <CheckoutForm amount = {amount} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
+                        <CheckoutForm amount = {total} createdOrder = {createdOrder} isGuest = {isGuest} history = {history} />
                     </Elements>
                 </div>
             </StripeProvider>
@@ -110,14 +97,8 @@ const mapStateToProps = ({ auth, orders }, { history, userId }) => {
     let createdOrder = findOrder(auth, orders, 'CREATED', userId);
     let isGuest = true; 
     if(auth.id) isGuest = false;
-    let amount = 0
-    if (createdOrder.lineItems) {
-        amount = createdOrder.lineItems.reduce((accum, lineItem) => {
-            return accum + lineItem.quantity * lineItem.price
-        },0)
-    }
-    amount = Math.round(amount*100)/100
-    return { createdOrder, isGuest, history, amount };
+    const total = findOrderTotal(createdOrder)
+    return { createdOrder, isGuest, history, total };
 }
 
 const mapDispatchToProps = ({ fetchOrders, updateOrder });

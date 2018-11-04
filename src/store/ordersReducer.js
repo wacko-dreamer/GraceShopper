@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-// initial state
- const initialState = [
-
- ]
 
 //constants
 const GOT_ORDERS = 'GOT ORDERS'
@@ -53,7 +49,7 @@ const deletedLineItem  = (orderId, lineItem) => ({
 export const fetchOrders = (order, isGuest, status, history) => {
     let userId = 'null';
     if(order) userId = order.customerId;
-    return (dispatch) => {
+    return (dispatch) => (
         axios.get(`api/orders/users/${userId}/${isGuest}`)
             .then(res => {
                 if(status === 'CREATED') history.push(`/user/${ order.customerId }/checkout`);
@@ -61,7 +57,7 @@ export const fetchOrders = (order, isGuest, status, history) => {
                 dispatch(gotOrders(res.data))
             })
             .catch(ex => console.log(ex))
-    }
+    )
 }
 
 export const updateOrder = (order, status, isGuest, history) => {
@@ -93,30 +89,29 @@ export const updateLineItem = (order, lineItem, change, quantity) => {
     else if(change === 'decrement' && !quantity) change = - 1;
     else change = quantity;
     lineItem = { ...lineItem, quantity: lineItem.quantity + change };
-    return (dispatch) =>{
+    return (dispatch) => (
         axios.put(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`, lineItem)
-        .then(() => dispatch(fetchOrders()))
-        // .then(res => dispatch(updatedLineItem(orderId,res.data)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchOrders()))
+            // .then(res => dispatch(updatedLineItem(orderId,res.data)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 export const deleteLineItem = (order, lineItem) => {
     let userId;
-    return (dispatch) => {
+    return (dispatch) => (
         axios.delete(`api/users/${userId}/orders/${order.id}/lineItems/${lineItem.id}`)
-        .then(() => dispatch(fetchOrders()))
-        //.then(() => dispatch(fetchOrders()))
-        // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
-        .catch(ex => console.log(ex))
-    }
+            .then(() => dispatch(fetchOrders()))
+            // .then(() => dispatch(deletedLineItem(orderId,lineItemId)))
+            .catch(ex => console.log(ex))
+    )
 }
 
 
 // reducer
 
 
-const orderReducer = (state = initialState, action) => {
+const orderReducer = (state = [], action) => {
     switch(action.type){
         case GOT_ORDERS:
              return action.orders

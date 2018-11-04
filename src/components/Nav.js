@@ -1,7 +1,7 @@
 
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { Badge } from 'reactstrap';
+import { Badge, Jumbotron } from 'reactstrap';
 import { findOrder, findOrders, findLiQuantityByCartOrder, findUserId } from '../util';
 import { connect } from 'react-redux';
 
@@ -12,7 +12,9 @@ const Nav = ({ liQuantity, completedOrders, userId, auth }) => {
             <nav className="navbar navbar-dark bg-dark">
                 <div>
                     <div>
-                        <Link className="navbar-brand" to="/">Wacko Dreamer</Link>
+                        <Link className="navbar-brand" to="/">
+                            <h1>Wacko Dreamer</h1>
+                        </Link>
                         {/* <form className="form-inline">
                             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
