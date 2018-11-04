@@ -41,7 +41,7 @@ router.get('/users/:userId/:isGuest', async (req, res, next) => {
 
 //reset orders
 router.put('/orders/:id', (req, res, next) => {
- Order.findById(req.params.id)
+ Order.findById(req.params.body.id)
  .then(order => order.update(req.body))
  .then(order => res.send(order))
  .catch(next)

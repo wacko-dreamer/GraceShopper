@@ -61,6 +61,7 @@ export const fetchOrders = (order, isGuest, status, history) => {
 }
 
 export const updateOrder = (order) => {
+    console.log('thunk: ', order)
     return (dispatch) => (
         axios.put(`/orders/${order.id}`, order)
             .then(order => dispatch(updatedOrder(order.data)))

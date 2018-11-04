@@ -53,10 +53,14 @@ class App extends Component {
                     <Route path='/categories/:categoryId' render={({ match }) => <Shop categoryId={match.params.categoryId} />} />
                     <Route path='/products/:productId' render={({ match, history }) => <ProductDetail productId={match.params.productId} history={history} />} />
                     <Route path='/admin/homepage' component={AdminPage} />
-                    <Route path='/admin/products' component={Products} />
-                    <Route path='/admin/categories' component={Categories} />
-                    <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
-                    <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
+                    <Switch>
+                        <Route path='/admin/products/create' render={({ history }) => <AddProduct history={history}/>} />
+                        <Route path='/admin/products' component={Products} />
+                    </Switch>
+                    <Switch>
+                        <Route path='/admin/categories/create' render={({ history }) => <AddCategory history={history}/>}  />
+                        <Route path='/admin/categories' component={Categories} />
+                    </Switch>
                     <Route path = '/signup' render = {() => <SignUp/>}/>
                     <Switch>
                         <Route path='/admin/orders/:orderId' render={({ match, history }) => <AdminOrderInfo history={history} orderId={match.params.orderId}/>} />

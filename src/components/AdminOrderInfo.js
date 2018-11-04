@@ -12,19 +12,19 @@ class AdminOrderInfo extends Component {
     }
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(evt) {
-    console.log('target name:', [evt.target.name])
-    console.log('target value: ', evt.target.value)
     this.setState({
       [ evt.target.name ] : evt.target.value
     })
-    console.log('changeState: ', this.state)
   }
 
   handleSubmit(evt, newStatus, order) {
     evt.preventDefault();
+    console.log('order: ', order);
+    console.log('newStatus:'. newStatus);
     const newOrder = {...order, status : newStatus};
     this.props.updateOrder(newOrder);
   }

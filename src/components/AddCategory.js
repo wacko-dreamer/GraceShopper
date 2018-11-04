@@ -39,7 +39,7 @@ class AddCategory extends Component {
     const { name } = this.state;
     const { products, auth } = this.props;
     const { handleChange, handleSubmit } = this;
-    if(auth.isAdmin) {
+    if(!auth.isAdmin) {
       return <h1>You are not authorized to view this page.</h1>
     } else {
       return (
