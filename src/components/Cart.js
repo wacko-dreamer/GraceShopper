@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { fetchOrders, updateLineItem, deleteLineItem, updateOrder } from '../store/ordersReducer';
-import { findOrder, findOrders } from '../util';
+import { findOrder, findOrders, findLineItems } from '../util';
 
 
 class Cart extends Component {
@@ -25,6 +25,7 @@ class Cart extends Component {
                                 lineItems.map((lineItem, idx) => (
                                     <tr key={ lineItem.id }>
                                         <th scope="row">{ idx + 1 }</th>
+                                        <td><img src={ lineItem.product.imageUrl }/></td>
                                         <td>{ lineItem.product.name }</td>
                                         <td>{ lineItem.product.description }</td>
                                         <td>${ lineItem.product.price }</td>
@@ -49,10 +50,8 @@ class Cart extends Component {
 const mapStateToProps = ({ auth, orders }, { history }) => {
 
     //lineItem logic
-    let cartOrder = {};
-    cartOrder = findOrder(auth, orders, 'CART')
-    let lineItems = [];
-    if(cartOrder.id) lineItems = cartOrder.lineItems.sort((a, b) => a.id - b.id);
+    const cartOrder = findOrder(auth, orders, 'CART')
+    const lineItems = findLineItems(cartOrder);
 
     //creating order logic
     let isGuest = true; 

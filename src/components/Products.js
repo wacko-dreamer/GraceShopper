@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {findLineItemById} from '../util.js'
 import { createLineItem } from '../store/ordersReducer';
-import { findOrder } from '../util';
+import { findOrder, filterProductsByCategory } from '../util';
 import EditCategory from './EditCategory';
 
 
@@ -24,14 +24,12 @@ const divStyle = {
 
 class Products extends Component {
     render() {
-        const {order, products, createLineItem, auth, categoryId} = this.props
-        let quantity = 0
+        const {order, products, createLineItem, auth, categoryId} = this.props;
         return (
             <Fragment>
                 <br />
                 <div style={divStyle}>
-                    {products.map(product => {
-                        return (
+                    {products.map(product => (
                             <div className="card" style={cardStyle} key={product.id}>
                                 <Link to={`/products/${product.id}`}><img className="card-img-top" src={product.imageUrl} alt="Card image cap"/></Link>
                                 <div className="card-body">
@@ -46,30 +44,19 @@ class Products extends Component {
                                 </div>
                             </div>
                         )
-                    })}
+                    )}
                     <div>
-                        {
-                            auth.isAdmin && categoryId ? <EditCategory categoryId={categoryId} /> : null
-                        }
+                        { auth.isAdmin && categoryId ? <EditCategory categoryId={categoryId} /> : null }
                     </div>
-
                 </div>
-
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = ({ products, orders, auth }, { categoryId }) => {
-    if (categoryId){
-       products = products.filter( product => {
-           if (product.categories.find(category => category.id === categoryId*1)){
-               return true
-           }
-       }).sort((a, b) => a.id - b.id)
-    }
-    //lineItem logic
-    let order = findOrder(auth, orders, 'CART');
+    products = filterProductsByCategory(categoryId, products); 
+    const order = findOrder(auth, orders, 'CART');
     return { products, order, auth }
 }
 

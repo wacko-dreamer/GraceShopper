@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders, updateOrder } from '../store/ordersReducer';
 import { findOrder, findOrderTotal, mapListItems } from '../util';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { create } from 'domain';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
@@ -51,29 +51,31 @@ class Checkout extends Component {
                 <br />
                 { createdOrder.id ? mapListItems(createdOrder) : null }
             
-            <form >
-                <div>Shipping Information</div><br /><br />
-                <label>Shipping Address: </label>
-                <input type = 'text' name = 'address' value = {address} onChange = {handleChange}/>
-                <br />
+            <Form>
+                <FormGroup>
+                    <div>Shipping Information</div><br /><br />
+                    <Label>Shipping Address: </Label>
+                    <Input type = 'text' name = 'address' value = {address} onChange = {handleChange}/>
+                    <br />
 
 
-                <label>Address 2 </label>
-                <input type = 'text' name = 'address2' value = {address2} onChange = {handleChange}/>
-                <br />
+                    <Label>Address 2:</Label>
+                    <Input type = 'text' name = 'address2' value = {address2} onChange = {handleChange}/>
+                    <br />
 
-                <label>City/Zip Code</label>
-                <input type = 'text' name = 'zip' value = {zip} onChange = {handleChange}/>
-                <br />
+                    <Label>City/Zip Code:</Label>
+                    <Input type = 'text' name = 'zip' value = {zip} onChange = {handleChange}/>
+                    <br />
 
-                <label>State</label>
-                <input type = 'text' name = 'stateAddress' value = {stateAddress} onChange = {handleChange}/>
-                <br />
+                    <Label>State:</Label>
+                    <Input type = 'text' name = 'stateAddress' value = {stateAddress} onChange = {handleChange}/>
+                    <br />
 
-                <label>Email Address:</label>
-                <input type = 'text' name = 'email' value = {email} onChange = {handleChange}/>
-                <br />
-            </form>
+                    <Label>Email Address:</Label>
+                    <Input type = 'text' name = 'email' value = {email} onChange = {handleChange}/>
+                    <br />
+                </FormGroup>
+            </Form>
             < hr/>
             
             <div>Payment Information</div><br /><br/>

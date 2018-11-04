@@ -38,6 +38,7 @@ class CheckoutForm extends Component {
     return (
       <div className="checkout">
         <CardElement />
+        <br/><br/>
         <button onClick = {submit}>Confirm Order</button>
         {complete ? <Fragment>Transaction Successful</Fragment>: null}
       </div>

@@ -72,33 +72,7 @@ export const findOrderTotal = order => {
     return total;
 }
 
-export const mapOrders = orders => (
-    orders.map(order => {
-        const total = findOrderTotal(order);
-        return(
-            <ListGroup key={ order.id }>
-                <Fragment>ORDER ID: { order.id }</Fragment><br/>
-                <Fragment>Shipping Address: { order.shippingAddress }</Fragment><br/>
-            {   
-                order.lineItems.map((lineItem, idx) => (
-                    <ListGroupItem key={ lineItem.id }>
-                        <div>
-                            <strong>{ idx + 1 }</strong>
-                            <br/>
-                            { lineItem.product.name } 
-                            <br/>
-                            Quantity: { lineItem.quantity }
-                            <div style={{ float: 'right' }}>Price: ${ lineItem.price }</div>
-                            <img src={ lineItem.product.imageUrl } style={{ float: 'right' }}/>
-                        </div>
-                    </ListGroupItem>
-                ))
-            }
-                <Fragment>Total: ${total}</Fragment><br/>
-            </ListGroup>
-        )
-    })
-)
+export const mapOrders = orders => orders.map(order => mapListItems(order));
 
 export const mapListItems = order => {
     const total = findOrderTotal(order);
@@ -121,7 +95,25 @@ export const mapListItems = order => {
                     </ListGroupItem>
                 ))
             }
-                <Fragment>Total: ${total}</Fragment><br/>
+                <Fragment><strong>Total: ${total}</strong></Fragment>
+                <br/>
             </ListGroup>
     )
+}
+
+export const findLineItems = order => {
+    let lineItems = [];
+    if(order.id) lineItems = order.lineItems.sort((a, b) => a.id - b.id);
+    return lineItems;
+}
+
+export const filterProductsByCategory = (categoryId, products) => {
+    if (categoryId){
+        return products.filter( product => {
+            if (product.categories.find(category => category.id === categoryId*1)){
+                return true
+            }
+        }).sort((a, b) => a.id - b.id)
+    }
+    else return products;
 }
